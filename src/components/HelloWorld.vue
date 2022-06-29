@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useTestStore } from '@/store/modules/test';
+  import { useTestStore } from '@/store/modules/test';
 
-defineProps<{ msg: string }>();
-const count = ref(0);
-const testStore = useTestStore();
+  defineProps<{ msg: string }>();
+  const count = ref(0);
+  const testStore = useTestStore();
 
-const testCount = computed(()=>{
-  return testStore.count;
-});
+  const testCount = computed(() => {
+    return testStore.count;
+  });
 </script>
 
 <template>
@@ -17,19 +17,19 @@ const testCount = computed(()=>{
 </template>
 
 <style scoped>
-a {
-  color: #42b983;
-}
+  a {
+    color: #42b983;
+  }
 
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
+  label {
+    margin: 0 0.5em;
+    font-weight: bold;
+  }
 
-code {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
-}
+  code {
+    background-color: #eee;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #304455;
+  }
 </style>

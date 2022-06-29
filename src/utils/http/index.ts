@@ -73,7 +73,7 @@ const transform: AxiosTransform = {
         if (msg) {
           errorMsg = msg;
         }
-        else {
+ else {
           errorMsg = '未知错误';
         }
     }
@@ -83,7 +83,7 @@ const transform: AxiosTransform = {
     if (options.errorMessageMode === 'modal') {
       modalError(errorMsg);
     }
-    else if (options.errorMessageMode === 'message') {
+ else if (options.errorMessageMode === 'message') {
       msgError(errorMsg);
     }
 
@@ -109,20 +109,20 @@ const transform: AxiosTransform = {
         // 给 get 请求加上时间戳参数，避免从缓存中拿数据。
         config.params = Object.assign(params || {}, joinTimestamp(joinTime, false));
       }
-      else {
+ else {
         // 兼容restful风格
         config.url = config.url + params + `${joinTimestamp(joinTime, true)}`;
         config.params = undefined;
       }
     }
-    else {
+ else {
       if (!isString(params)) {
         formatDate && formatRequestDate(params);
         if (Reflect.has(config, 'data') && config.data && Object.keys(config.data).length > 0) {
           config.data = data;
           config.params = params;
         }
-        else {
+ else {
           // 非GET请求如果没有提供data，则将params视为data
           config.data = params;
           config.params = undefined;
@@ -131,7 +131,7 @@ const transform: AxiosTransform = {
           config.url = setObjToUrlParams(config.url as string, Object.assign({}, config.params, config.data));
         }
       }
-      else {
+ else {
         // 兼容restful风格
         config.url = config.url + params;
         config.params = undefined;
@@ -185,13 +185,13 @@ const transform: AxiosTransform = {
         if (errorMessageMode === 'modal') {
           modalError(errMessage);
         }
-        else if (errorMessageMode === 'message') {
+ else if (errorMessageMode === 'message') {
           msgError(errMessage);
         }
         return Promise.reject(error);
       }
     }
-    catch (error) {
+ catch (error) {
       throw new Error(error as unknown as string);
     }
     checkStatus(error?.response?.status, msg, errorMessageMode);

@@ -53,7 +53,7 @@ module.exports = {
     // '@typescript-eslint/no-extra-semi': [2, 'always'],
     // TS
     '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
-    '@typescript-eslint/member-delimiter-style': ['error', { multiline: { delimiter: 'none' } }],
+    // '@typescript-eslint/member-delimiter-style': ['error', { multiline: { delimiter: 'none' } }],
     '@typescript-eslint/type-annotation-spacing': ['error', {}],
     '@typescript-eslint/consistent-type-imports': [
       'error',

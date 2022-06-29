@@ -74,7 +74,7 @@ export function checkStatus(
     if (errorMessageMode === 'modal') {
       modalError(errMessage);
     }
-    else if (errorMessageMode === 'message') {
+ else if (errorMessageMode === 'message') {
       msgError(errMessage);
       // createMsg.error({ message: errMessage, key: `global_error_message_status_${status}` });
     }

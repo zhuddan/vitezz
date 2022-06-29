@@ -122,7 +122,7 @@ export class VAxios {
     if (params.filename) {
       formData.append(customFilename, params.file, params.filename);
     }
-    else {
+ else {
       formData.append(customFilename, params.file);
     }
 
@@ -211,7 +211,7 @@ export class VAxios {
               const ret = transformRequestHook(res, opt);
               resolve(ret);
             }
-            catch (err) {
+ catch (err) {
               reject(err || new Error('request error!'));
             }
             return;
