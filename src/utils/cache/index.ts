@@ -14,8 +14,7 @@ function beforeHandleSet(val: any): string {
 function afterHandleGet(val: any): string | null | undefined {
   try {
     return JSON.parse(val);
-  }
- catch (e) {
+  } catch (e) {
     if (val === 'null') {
       return null;
     }
