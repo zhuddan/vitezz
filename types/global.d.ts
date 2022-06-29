@@ -27,12 +27,12 @@ declare global {
     data: T;
   }>;
 
-  declare interface ListParmas {
+  declare interface ListParams {
     pageNum: number;
     pageSize: number;
   }
 
-  declare type ListQuery<T = Recordable> = ListParmas & Partial<T>;
+  declare type ListQuery<T = Recordable> = ListParams & Partial<T>;
 
   declare interface VEvent extends Event {
     target: HTMLInputElement;
