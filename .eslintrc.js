@@ -24,7 +24,6 @@ module.exports = {
   },
   extends: [
     'plugin:import/recommended',
-    // 'plugin:eslint-comments/recommended',
     'plugin:vue/vue3-recommended',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
@@ -33,16 +32,16 @@ module.exports = {
     'import/resolver': {
       node: { 
         extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'],
-  
       },
       'eslint-import-resolver-custom-alias': {
         alias: {
           '@': './src',
+          '~':'./types',
         },
         extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'],
-        packages: [
-          'packages/*',
-        ],
+        // packages: [
+        //   '/*',
+        // ],
       },
     },
   },
@@ -288,5 +287,6 @@ module.exports = {
     'vue/template-curly-spacing': 'error',
 
     'quote-props':['error', 'as-needed'],
+    'import/no-unresolved':'off',
   },
 };
