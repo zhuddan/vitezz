@@ -14,7 +14,8 @@
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.14",
     "qs": "^6.11.0",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.16"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",
