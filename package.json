@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:eslint": "eslint --cache --max-warnings 0  \"{src,types}/**/*.{vue,ts,tsx}\" --fix"
   },
   "dependencies": {
     "axios": "^0.27.2",
