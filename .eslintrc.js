@@ -24,6 +24,7 @@ module.exports = {
   },
   extends: [
     'plugin:import/recommended',
+    'plugin:eslint-comments/recommended',
     'plugin:vue/vue3-recommended',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
@@ -111,6 +112,7 @@ module.exports = {
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     'no-use-before-define': 'off',
+    'eslint-comments/disable-enable-pair': 'off',
     '@typescript-eslint/no-use-before-define': [
       'error',
       { functions: false, classes: false, variables: true },
