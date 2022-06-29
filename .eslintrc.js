@@ -28,16 +28,18 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
   settings: {
     'import/resolver': {
-      node: { 
+      node: {
         extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'],
       },
       'eslint-import-resolver-custom-alias': {
         alias: {
           '@': './src',
-          '~':'./types',
+          '~': './types',
         },
         extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx', '.d.ts'],
         // packages: [
@@ -50,14 +52,8 @@ module.exports = {
     // 'no-extra-semi': [],
     // '@typescript-eslint/no-extra-semi': [2, 'always'],
     // TS
-    '@typescript-eslint/ban-ts-comment': [
-      'error',
-      { 'ts-ignore': 'allow-with-description' },
-    ],
-    '@typescript-eslint/member-delimiter-style': [
-      'error',
-      { multiline: { delimiter: 'none' } },
-    ],
+    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
+    '@typescript-eslint/member-delimiter-style': ['error', { multiline: { delimiter: 'none' } }],
     '@typescript-eslint/type-annotation-spacing': ['error', {}],
     '@typescript-eslint/consistent-type-imports': [
       'error',
@@ -69,7 +65,7 @@ module.exports = {
     'no-useless-constructor': 'off',
     indent: 'off',
     '@typescript-eslint/indent': [
-      'error',
+      'off',
       2,
       {
         SwitchCase: 1,
@@ -118,11 +114,7 @@ module.exports = {
       { functions: false, classes: false, variables: true },
     ],
     'brace-style': 'off',
-    '@typescript-eslint/brace-style': [
-      'error',
-      'stroustrup',
-      { allowSingleLine: true },
-    ],
+    '@typescript-eslint/brace-style': ['error', 'stroustrup', { allowSingleLine: true }],
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     'object-curly-spacing': 'off',
@@ -145,15 +137,9 @@ module.exports = {
     'space-infix-ops': 'off',
     '@typescript-eslint/space-infix-ops': 'error',
     'keyword-spacing': 'off',
-    '@typescript-eslint/keyword-spacing': [
-      'error',
-      { before: true, after: true },
-    ],
+    '@typescript-eslint/keyword-spacing': ['error', { before: true, after: true }],
     'comma-spacing': 'off',
-    '@typescript-eslint/comma-spacing': [
-      'error',
-      { before: false, after: true },
-    ],
+    '@typescript-eslint/comma-spacing': ['error', { before: false, after: true }],
     'no-extra-parens': 'off',
     '@typescript-eslint/no-extra-parens': ['error', 'functions'],
     'no-dupe-class-members': 'off',
@@ -161,11 +147,7 @@ module.exports = {
     'no-loss-of-precision': 'off',
     '@typescript-eslint/no-loss-of-precision': 'error',
     'lines-between-class-members': 'off',
-    '@typescript-eslint/lines-between-class-members': [
-      'error',
-      'always',
-      { exceptAfterSingleLine: true },
-    ],
+    '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     // The following rule overrides require a parser service, aka. require a `typescript.json` path.
     // This needs to be done individually for each project, and it slows down linting significantly.
     // 'no-throw-literal': 'off',
@@ -256,22 +238,11 @@ module.exports = {
     'vue/no-extra-parens': ['error', 'functions'],
     'vue/no-irregular-whitespace': 'error',
     'vue/no-loss-of-precision': 'error',
-    'vue/no-restricted-syntax': [
-      'error',
-      'DebuggerStatement',
-      'LabeledStatement',
-      'WithStatement',
-    ],
+    'vue/no-restricted-syntax': ['error', 'DebuggerStatement', 'LabeledStatement', 'WithStatement'],
     'vue/no-sparse-arrays': 'error',
-    'vue/object-curly-newline': [
-      'error',
-      { multiline: true, consistent: true },
-    ],
+    'vue/object-curly-newline': ['error', { multiline: true, consistent: true }],
     'vue/object-curly-spacing': ['error', 'always'],
-    'vue/object-property-newline': [
-      'error',
-      { allowMultiplePropertiesPerLine: true },
-    ],
+    'vue/object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
     'vue/object-shorthand': [
       'error',
       'always',
@@ -288,7 +259,7 @@ module.exports = {
     'vue/space-unary-ops': ['error', { words: true, nonwords: false }],
     'vue/template-curly-spacing': 'error',
 
-    'quote-props':['error', 'as-needed'],
-    'import/no-unresolved':'off',
+    'quote-props': ['error', 'as-needed'],
+    'import/no-unresolved': 'off',
   },
 };
