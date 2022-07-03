@@ -26,11 +26,11 @@ const routes: VueRouteRecordRaw[] = [
     component: () => import('@/views/redirect.vue'),
   },
   {
-    path: '/about',
+    path: '/:pathMatch(.*)',
     meta: {
       title: '关于',
     },
-    component: () => import('@/views/About.vue'),
+    component: () => import('@/views/Error/404.vue'),
   },
 ];
 const router = createRouter({

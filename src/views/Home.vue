@@ -16,6 +16,7 @@
 
 <template>
   <div class="home">
+    <router-link to="/about">404 页面 测试</router-link>
     ---Home.vue---
     <div class="box">
       <button @click="testStore.increase"> increase </button>

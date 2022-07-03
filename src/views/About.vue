@@ -4,9 +4,10 @@
   const testCount = computed(() => {
     return testStore.count;
   });
+  document.getElementById;
 </script>
 
 <template>
-  ---About.vue---
   {{ testCount }}
+  <router-link to="/">home</router-link>
 </template>
