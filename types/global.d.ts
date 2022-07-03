@@ -1,11 +1,4 @@
-import type {
-  // ComponentRenderProxy,
-  // VNode,
-  // VNodeChild,
-  // ComponentPublicInstance,
-  // FunctionalComponent,
-  PropType as VuePropType,
-} from 'vue';
+import type { PropType as VuePropType } from 'vue';
 
 declare global {
   /**
