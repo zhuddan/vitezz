@@ -5,7 +5,7 @@ import type { AxiosResponse } from 'axios';
 import { clone } from 'lodash-es';
 
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum';
-import { useGlobSetting } from '@/hooks/setting';
+import { useGlobSetting } from '@/hooks/settings';
 // import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 // import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';

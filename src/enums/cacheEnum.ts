@@ -1,3 +1,4 @@
-export enum CacheTypeEnum {
-  TOKEN_KEY = 'Authorization',
+export enum CacheEnums {
+  TOKEN = 'Authorization',
+  SYSTEM_ID = 'system_id',
 }

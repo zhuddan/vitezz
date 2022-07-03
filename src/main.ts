@@ -5,11 +5,7 @@ import router from '@/router';
 
 createApp(App).use(store).use(router).mount('#app');
 
-// import alias test
-import type { Name, Data } from '~/test';
-const names: Name[] = ['张三', '李四', '王二', '王二', '麻子'];
-const data: Data = {
-  name: 'zd',
-};
+import { useCache } from './hooks/web/useCache';
 
-console.log(names, data);
+const webCache = useCache();
+webCache.set('token', 'data');
