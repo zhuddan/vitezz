@@ -4,4 +4,8 @@
   <div> any... </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  p {
+    color: red;
+  }
+</style>
