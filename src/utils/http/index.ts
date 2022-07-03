@@ -5,7 +5,7 @@ import type { AxiosResponse } from 'axios';
 import { clone } from 'lodash-es';
 
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum';
-import { useGlobSetting } from '@/hooks/settings';
+import { useSettings } from '@/hooks/settings';
 // import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 // import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
@@ -21,7 +21,7 @@ import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { checkStatus } from './checkStatus';
 import { formatRequestDate, joinTimestamp } from './helper';
 
-const globSetting = useGlobSetting();
+const globSetting = useSettings();
 const { msgError, modalError } = useMessage();
 
 /**
@@ -224,9 +224,9 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           // 消息提示类型
           errorMessageMode: 'message',
           // 接口地址
-          apiUrl: globSetting.API_BASE_URL,
+          apiUrl: globSetting.VITE_APP_BASE_API,
           // 接口拼接地址
-          urlPrefix: globSetting.URL_PREFIX,
+          urlPrefix: globSetting.VITE_APP_PREFIX,
           //  是否加入时间戳
           joinTime: true,
           // 忽略重复请求
