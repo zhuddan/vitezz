@@ -11,7 +11,7 @@ import { useMessage } from '@/hooks/web/useMessage';
 // import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
 // import { useUserStoreWithOut } from '@/store/modules/user';
 import { deepMerge, setObjToUrlParams } from '@/utils';
-import { getToken } from '@/utils/auth';
+import { getToken } from '@/utils/cache';
 // import { AxiosRetry } from '@/utils/http/axios/axiosRetry';
 import { isString } from '@/utils/is';
 import type { RequestOptions, Result } from '~/axios';
