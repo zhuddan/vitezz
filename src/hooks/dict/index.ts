@@ -75,7 +75,8 @@ interface OPT {
 const defaultOptions: OPT = {
   isLazy: false,
 };
-export function useDicts<EE extends DICT_TYPE = DICT_TYPE>(_args: EE[], options: OPT) {
+
+export function useDicts<EE extends DICT_TYPE = DICT_TYPE>(_args: EE[], options?: OPT) {
   type Dict = {
     [key in EE]: DICT_DATA[];
   };

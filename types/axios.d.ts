@@ -25,7 +25,7 @@ export interface RequestOptions {
   // Whether to send token in header
   withToken?: boolean;
 
-  tokenKey: string;
+  tokenKey?: string;
 }
 
 export interface Result<T = any> {
