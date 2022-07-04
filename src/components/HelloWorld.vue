@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  var e = defineEmits(['sss']);
+  e('sss');
+</script>
 
 <template>
   <div> any... </div>

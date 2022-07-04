@@ -7,7 +7,9 @@
       alert('username is required');
       return;
     }
-    setToken(Date.now() + username.value);
+    setToken(
+      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjYxYjdkNDU3LTlhZmQtNDI1ZC1iNGYxLTI3OWNiYjA5NGM2MiJ9.9udQpXYPrYSj_ks1UNF5_d4Olu_WlFeesvNTd1uSFrss2jbe75QUNxuAPkVKb-kif5AZwSpaF63WNAAPYMMgxA',
+    );
     router.push('/');
   }
 </script>

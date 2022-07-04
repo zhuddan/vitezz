@@ -1,6 +1,7 @@
 <script setup lang="ts">
   // import alias test
   import HelloWorld from '@/components/HelloWorld.vue';
+  import { useDicts } from '@/hooks/dict';
   import { useTestStore } from '@/store/modules/test';
   import { removeToken } from '@/utils/cache';
   const testStore = useTestStore();
@@ -12,6 +13,8 @@
     removeToken();
     router.push('/redirect/');
   }
+  const { dicts } = useDicts(['sys_job_group']);
+  console.log(dicts);
 </script>
 
 <template>
