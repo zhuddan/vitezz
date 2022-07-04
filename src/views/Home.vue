@@ -14,11 +14,11 @@
     router.push('/redirect/');
   }
   const { dicts } = useDicts(['sys_job_group']);
-  console.log(dicts);
 </script>
 
 <template>
   <div class="home">
+    {{ dicts.sys_job_group }}
     <router-link to="/about">404 页面 测试</router-link>
     ---Home.vue---
     <div class="box">
@@ -27,7 +27,6 @@
       <button @click="testStore.decrease"> decrease </button>
     </div>
     <button @click="logout"> logout </button>
-
     <HelloWorld msg="beautiful world" />
   </div>
 </template>

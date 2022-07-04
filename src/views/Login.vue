@@ -8,7 +8,7 @@
       return;
     }
     setToken(
-      'Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjYxYjdkNDU3LTlhZmQtNDI1ZC1iNGYxLTI3OWNiYjA5NGM2MiJ9.9udQpXYPrYSj_ks1UNF5_d4Olu_WlFeesvNTd1uSFrss2jbe75QUNxuAPkVKb-kif5AZwSpaF63WNAAPYMMgxA',
+      'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6Ijc2YTgzNDA1LTY0MTMtNDA2NS1hNGEzLWUyNmM3NGNlOTY4YyJ9.BEkfOsVFWx-Nvb27BLT1_gFzQrkE9FPECbubCPo-K9H0RA0OYQCoZJDGxS5WpmWsYU_ezfVrgefh4wie6X4yoA',
     );
     router.push('/');
   }
