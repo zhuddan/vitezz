@@ -11,3 +11,22 @@ export function getCodeImg() {
     },
   );
 }
+
+// 登录方法
+export function login(username: string, password: string, code: string, uuid: string) {
+  const data = {
+    username,
+    password,
+    code,
+    uuid,
+  };
+  return defHttp.post<MergeBaseResData<{ token: string }>>(
+    {
+      url: '/login',
+      data: data,
+    },
+    {
+      withToken: false,
+    },
+  );
+}

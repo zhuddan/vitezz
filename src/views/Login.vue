@@ -1,22 +1,19 @@
 <script setup lang="ts">
   import { setToken } from '@/utils/cache';
-  import { getCodeImg } from '@/api/login';
+  import { getCodeImg, login } from '@/api/login';
   const router = useRouter();
-  const username = ref('admin');
-  const password = ref('admin123');
+  const username = ref('csgr222');
+  const password = ref('123456');
   const code = ref('');
   const uuid = ref('');
   const codeUrl = ref('');
 
   function handleLogin() {
-    if (!username.value) {
-      alert('username is required');
-      return;
-    }
-    setToken(
-      'eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6Ijc2YTgzNDA1LTY0MTMtNDA2NS1hNGEzLWUyNmM3NGNlOTY4YyJ9.BEkfOsVFWx-Nvb27BLT1_gFzQrkE9FPECbubCPo-K9H0RA0OYQCoZJDGxS5WpmWsYU_ezfVrgefh4wie6X4yoA',
-    );
-    router.push('/');
+    login(username.value, password.value, code.value, uuid.value).then((res) => {
+      console.log(res);
+      setToken(res.token);
+      router.push('/');
+    });
   }
   getCodeImg().then((res) => {
     codeUrl.value = 'data:image/gif;base64,' + res.img;
@@ -27,9 +24,12 @@
 <template>
   <div style="overflow: hidden">
     <div class="login">
-      <img :src="codeUrl" alt="" />
-      <label for="username">username</label>
+      <div>
+        <img :src="codeUrl" alt="" />
+        <input id="code" v-model="code" type="text" />
+      </div>
       <input id="username" v-model="username" type="text" />
+      <input id="password" v-model="password" type="text" />
       <button @click="handleLogin">login</button>
     </div>
   </div>
