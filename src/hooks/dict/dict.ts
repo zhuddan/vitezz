@@ -13,9 +13,10 @@ import type {
 } from './typings';
 
 // 根据字典类型查询字典数据信息
-export function getDicts(dictType: DICT_TYPE) {
+export function getDicts(dictType: DICT_TYPE, t = 0) {
+  console.log(dictType, t);
   return defHttp.get<ResData<OriginDictData[]>>({
-    url: '/system/dict/data/type/' + dictType,
+    url: t != 5 ? '/stat' : `/system/dict/data/type/${dictType}`,
     // timeout: 10,
   });
 }
@@ -28,6 +29,8 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
     isLazy: false,
     labelFields: DEFAULT_LABEL_FIELDS,
     valueFields: DEFAULT_VALUE_FIELDS,
+    retryTime: 8,
+    retryTimeout: 1 * 500,
   };
 
   get labelFields() {
@@ -66,40 +69,79 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
 
   init() {
     this._data.value = this.getDefaultValue([]);
-    this.state = this.getDefaultValue('pending');
+    this.state = this.getDefaultValue({
+      loading: 'pending',
+      time: 0,
+    });
     if (!this.options.isLazy) {
       this.loadAll();
     }
   }
 
   loadAll(): Promise<DictData[][]> {
-    return Promise.all(this.keys.map((f) => this.load(f)));
+    const promFn = [];
+    for (let i = 0; i < this.keys.length; i++) {
+      const key = this.keys[i];
+      promFn.push(() => this.load(key));
+    }
+
+    return Promise.all(promFn.map((e) => e()))
+      .then((res) => {
+        return res;
+      })
+      .catch((e) => {
+        return Promise.reject(e);
+      });
   }
 
   load(dictKey: KK): Promise<DictData[]> {
-    return new Promise(async (resolve) => {
-      const data = await this.requestDicts(dictKey);
-      this._data.value[dictKey] = data;
-      resolve(data);
+    return new Promise((resolve, reject) => {
+      this.requestDicts(dictKey)
+        .then((data) => {
+          this._data.value[dictKey] = data;
+          console.log(this.state[dictKey].time, dictKey);
+          console.log(JSON.parse(JSON.stringify(this.state)), dictKey);
+          resolve(data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
     });
   }
 
   requestDicts(dictKey: KK): Promise<DictData[]> {
-    return new Promise((resolve) => {
-      getDicts(dictKey)
+    this.state[dictKey].time++;
+    return new Promise((resolve, reject) => {
+      return getDicts(dictKey, this.state[dictKey].time)
         .then((res) => {
-          this.state[dictKey] = 'fulfilled';
+          this.state[dictKey].loading = 'fulfilled';
+          // this.state[dictKey].time = 0;
           resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
         .catch((e) => {
-          this.state[dictKey] = 'rejected';
-          console.error(e);
+          console.error(
+            `[Dictionary error] Request dictionary data \`${dictKey}\` failed for the \`${this.state[dictKey].time}\` times.`,
+          );
+          if (this.state[dictKey].time >= this.options.retryTime) {
+            console.error(
+              `[Dict error] Attempt to repeat the request for dictionary data \`${dictKey}\` for the ${this.state[dictKey].time} times failed. Request has been abandoned.`,
+            );
+            this.state[dictKey].loading = 'rejected';
+            reject(e);
+            return;
+          }
+          const t = setTimeout(() => {
+            clearTimeout(t);
+            this.requestDicts(dictKey)
+              .then((res) => resolve(res))
+              .catch((e) => reject(e));
+          }, this.options.retryTimeout);
         });
     });
   }
 
   format(dictKey: KK, values: string[] | string, options?: FormatDictOptions) {
-    if (this.state[dictKey] == 'pending') {
+    if (this.state[dictKey].loading != 'fulfilled') {
       return '';
     }
     const defaultOpt: FormatDictOptions = { separator: '/' };
