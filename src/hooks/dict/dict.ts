@@ -6,7 +6,7 @@ import type {
   DictData,
   DICT_DATA_KEY,
   DICT_TYPE,
-  formatDictOptions,
+  FormatDictOptions,
   OriginDictData,
 } from './typings';
 
@@ -21,15 +21,27 @@ const DEFAULT_LABEL_FIELDS: DICT_DATA_KEY = ['label', 'dictLabel', 'name', 'titl
 const DEFAULT_VALUE_FIELDS: DICT_DATA_KEY = ['value', 'dictValue', 'code', 'key'];
 
 export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
-  options: DictOptions = { isLazy: false };
+  options: DictOptions = {
+    isLazy: false,
+    labelFields: DEFAULT_LABEL_FIELDS,
+    valueFields: DEFAULT_VALUE_FIELDS,
+  };
+
+  get labelFields() {
+    return Array.from(new Set(this.options.labelFields));
+  }
+
+  get valueFields() {
+    return Array.from(new Set(this.options.valueFields));
+  }
+
+  keys: KK[] = [];
 
   _data = ref<DictValues<KK>>({} as DictValues<KK>);
 
   get data() {
     return this._data.value;
   }
-
-  keys: KK[] = [];
 
   constructor(keys: KK[], options?: Partial<DictOptions>) {
     this.options = Object.assign({}, this.options, options || {});
@@ -72,16 +84,16 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
     return new Promise((resolve) => {
       getDicts(dictType)
         .then((res) => {
-          resolve(compileDict(res.data));
+          resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
         .catch(() => {
-          resolve(compileDict([]));
+          resolve(compileDict([], this.labelFields, this.valueFields));
         });
     });
   }
 
-  format(dictKey: KK, values: string[] | string, options?: formatDictOptions) {
-    const defaultOpt: formatDictOptions = { separator: '/' };
+  format(dictKey: KK, values: string[] | string, options?: FormatDictOptions) {
+    const defaultOpt: FormatDictOptions = { separator: '/' };
     const data = this.data[dictKey];
     const opt = Object.assign({}, defaultOpt, options || {});
     if (isArray(values)) {
@@ -96,14 +108,18 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
   }
 }
 
-function compileDict(list: OriginDictData[]): DictData[] {
-  return list.map((e) => convertDict(e));
+function compileDict(
+  list: OriginDictData[],
+  labelFields: DICT_DATA_KEY,
+  valueFields: DICT_DATA_KEY,
+): DictData[] {
+  return list.map((e) => convertDict(e, labelFields, valueFields));
 }
 
-function convertDict(data: OriginDictData) {
+function convertDict(data: OriginDictData, labelFields: DICT_DATA_KEY, valueFields: DICT_DATA_KEY) {
   const res = { row: data } as unknown as DictData;
-  const labelField = determineDictField(data, ...DEFAULT_LABEL_FIELDS);
-  const valueField = determineDictField(data, ...DEFAULT_VALUE_FIELDS);
+  const labelField = determineDictField(data, ...labelFields);
+  const valueField = determineDictField(data, ...valueFields);
   res.label = data[labelField];
   res.value = data[valueField];
   return res;

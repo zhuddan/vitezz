@@ -1,9 +1,5 @@
 export type DICT_TYPE = 'sys_job_group' | 'sys_job_status';
 
-export interface DictOptions {
-  isLazy: boolean;
-}
-
 export interface OriginDictData {
   id: string;
   dictValue: string;
@@ -31,6 +27,12 @@ export type DictValues<T extends string> = {
 
 export type DICT_DATA_KEY = Array<keyof OriginDictData>;
 
-export interface formatDictOptions {
+export interface FormatDictOptions {
   separator: string;
+}
+
+export interface DictOptions {
+  isLazy: boolean;
+  labelFields: DICT_DATA_KEY;
+  valueFields: DICT_DATA_KEY;
 }

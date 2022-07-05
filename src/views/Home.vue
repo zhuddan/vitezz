@@ -14,7 +14,9 @@
     removeToken();
     router.push('/redirect/');
   }
-  const { dicts, format } = useDicts(['sys_job_group']);
+  const { dicts, format } = useDicts(['sys_job_group'], {
+    valueFields: ['code', 'code'],
+  });
   // const d = new Dict(['sys_job_group']);
 </script>
 
