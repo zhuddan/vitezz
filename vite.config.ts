@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: Number(env.VITE_APP_PORT),
+      host: true,
     },
   };
 });

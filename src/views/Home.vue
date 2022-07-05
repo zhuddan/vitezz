@@ -14,15 +14,14 @@
     removeToken();
     router.push('/redirect/');
   }
-  const { dicts, format } = useDicts(['sys_job_group'], {
-    valueFields: ['code', 'code'],
-  });
+  const { dicts, format } = useDicts(['sys_job_group', 'sys_job_status'], {});
   // const d = new Dict(['sys_job_group']);
 </script>
 
 <template>
   <div class="home">
     <p>
+      {{ dicts }}
       <!-- {{ d.data.sys_job_group }} -->
     </p>
     <p>

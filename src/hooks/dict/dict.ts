@@ -4,21 +4,24 @@ import type {
   DictOptions,
   DictValues,
   DictData,
-  DICT_DATA_KEY,
+  DictDataKey,
   DICT_TYPE,
   FormatDictOptions,
   OriginDictData,
+  DictState,
+  DictMap,
 } from './typings';
 
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: DICT_TYPE) {
   return defHttp.get<ResData<OriginDictData[]>>({
     url: '/system/dict/data/type/' + dictType,
+    // timeout: 10,
   });
 }
 
-const DEFAULT_LABEL_FIELDS: DICT_DATA_KEY = ['label', 'dictLabel', 'name', 'title'];
-const DEFAULT_VALUE_FIELDS: DICT_DATA_KEY = ['value', 'dictValue', 'code', 'key'];
+const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
+const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 
 export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
   options: DictOptions = {
@@ -39,6 +42,8 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
 
   _data = ref<DictValues<KK>>({} as DictValues<KK>);
 
+  state = {} as DictState<KK>;
+
   get data() {
     return this._data.value;
   }
@@ -47,52 +52,56 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
     this.options = Object.assign({}, this.options, options || {});
     this.keys = keys;
     this.init();
+    console.log(this);
   }
 
-  getDefaultValue() {
-    const defaultValue = {} as DictValues<KK>;
+  getDefaultValue<T>(value: T) {
+    const defaultValue = {} as DictMap<KK, T>;
     for (let index = 0; index < this.keys.length; index++) {
       const key = this.keys[index];
-      defaultValue[key] = [];
+      defaultValue[key] = value;
     }
     return defaultValue;
   }
 
   init() {
-    this._data.value = this.getDefaultValue();
+    this._data.value = this.getDefaultValue([]);
+    this.state = this.getDefaultValue('pending');
     if (!this.options.isLazy) {
-      this.load();
+      this.loadAll();
     }
   }
 
-  load(dictKey?: KK): Promise<void> {
+  loadAll(): Promise<DictData[][]> {
+    return Promise.all(this.keys.map((f) => this.load(f)));
+  }
+
+  load(dictKey: KK): Promise<DictData[]> {
     return new Promise(async (resolve) => {
-      if (dictKey) {
-        this._data.value[dictKey] = await this.requestDicts(dictKey);
-        resolve();
-        return;
-      }
-      for (let index = 0; index < this.keys.length; index++) {
-        const key = this.keys[index];
-        this._data.value[key] = await this.requestDicts(key);
-      }
-      resolve();
+      const data = await this.requestDicts(dictKey);
+      this._data.value[dictKey] = data;
+      resolve(data);
     });
   }
 
-  requestDicts(dictType: DICT_TYPE): Promise<DictData[]> {
+  requestDicts(dictKey: KK): Promise<DictData[]> {
     return new Promise((resolve) => {
-      getDicts(dictType)
+      getDicts(dictKey)
         .then((res) => {
+          this.state[dictKey] = 'fulfilled';
           resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
-        .catch(() => {
-          resolve(compileDict([], this.labelFields, this.valueFields));
+        .catch((e) => {
+          this.state[dictKey] = 'rejected';
+          console.error(e);
         });
     });
   }
 
   format(dictKey: KK, values: string[] | string, options?: FormatDictOptions) {
+    if (this.state[dictKey] == 'pending') {
+      return '';
+    }
     const defaultOpt: FormatDictOptions = { separator: '/' };
     const data = this.data[dictKey];
     const opt = Object.assign({}, defaultOpt, options || {});
@@ -104,27 +113,39 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
   }
 
   baseFormatDict(data: DictData[], value: string) {
-    return data.find((e) => e.value == value)?.label || '';
+    const res = data.find((e) => e.value == value)?.label;
+    if (!res) {
+      const options = data.map((e) => ({
+        label: e.label,
+        value: e.value,
+      }));
+      console.warn(
+        `[Dict format warning]: Can not find the dictionary with value ${value} in data: `,
+        options,
+      );
+      return '';
+    }
+    return res;
   }
 }
 
-function compileDict(
-  list: OriginDictData[],
-  labelFields: DICT_DATA_KEY,
-  valueFields: DICT_DATA_KEY,
-): DictData[] {
+function compileDict(list: OriginDictData[], labelFields: DictDataKey, valueFields: DictDataKey): DictData[] {
   return list.map((e) => convertDict(e, labelFields, valueFields));
 }
 
-function convertDict(data: OriginDictData, labelFields: DICT_DATA_KEY, valueFields: DICT_DATA_KEY) {
+function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields: DictDataKey) {
   const res = { row: data } as unknown as DictData;
-  const labelField = determineDictField(data, ...labelFields);
-  const valueField = determineDictField(data, ...valueFields);
+  const labelField = getDictField(data, ...labelFields);
+  const valueField = getDictField(data, ...valueFields);
   res.label = data[labelField];
   res.value = data[valueField];
   return res;
 }
 
-function determineDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
-  return fields.find((f) => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
+function getDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
+  const res = fields.find((f) => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
+  if (!res) {
+    console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
+  }
+  return res;
 }

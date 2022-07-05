@@ -21,11 +21,15 @@ export interface DictData {
   raw: Partial<OriginDictData>;
 }
 
-export type DictValues<T extends string> = {
-  [key in T]: DictData[];
+export type DictMap<T extends string, P> = {
+  [key in T]: P;
 };
 
-export type DICT_DATA_KEY = Array<keyof OriginDictData>;
+export type DictValues<T extends string> = DictMap<T, DictData[]>;
+
+export type DictState<T extends string> = DictMap<T, 'pending' | 'fulfilled' | 'rejected'>;
+
+export type DictDataKey = Array<keyof OriginDictData>;
 
 export interface FormatDictOptions {
   separator: string;
@@ -33,6 +37,6 @@ export interface FormatDictOptions {
 
 export interface DictOptions {
   isLazy: boolean;
-  labelFields: DICT_DATA_KEY;
-  valueFields: DICT_DATA_KEY;
+  labelFields: DictDataKey;
+  valueFields: DictDataKey;
 }

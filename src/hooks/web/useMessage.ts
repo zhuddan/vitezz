@@ -2,10 +2,10 @@ export function useMessage() {
   return {
     // just test, you can configure  yourself msg
     msgError: (msg: string) => {
-      alert(msg);
+      console.error('error', msg);
     },
     modalError: (msg: string) => {
-      alert(msg);
+      console.error('error', msg);
     },
   };
 }
