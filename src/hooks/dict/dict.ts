@@ -1,5 +1,6 @@
 import { defHttp } from '@/utils/http';
 import { isArray } from '@/utils/is';
+import { cloneDeep } from 'lodash-es';
 import type {
   DictOptions,
   DictValues,
@@ -10,13 +11,14 @@ import type {
   OriginDictData,
   DictState,
   DictMap,
+  DictStateItem,
 } from './typings';
 
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: DICT_TYPE, t = 0) {
-  console.log(dictType, t);
+  const data = dictType == 'sys_job_group' ? 5 : 3;
   return defHttp.get<ResData<OriginDictData[]>>({
-    url: t != 5 ? '/stat' : `/system/dict/data/type/${dictType}`,
+    url: t != data ? '/stat' : `/system/dict/data/type/${dictType}`,
     // timeout: 10,
   });
 }
@@ -24,7 +26,7 @@ export function getDicts(dictType: DICT_TYPE, t = 0) {
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 
-export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
+export class Base {
   options: DictOptions = {
     isLazy: false,
     labelFields: DEFAULT_LABEL_FIELDS,
@@ -41,20 +43,29 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
     return Array.from(new Set(this.options.valueFields));
   }
 
+  constructor(options?: Partial<DictOptions>) {
+    this.options = Object.assign({}, this.options, options || {});
+  }
+}
+
+export class Dict<KK extends DICT_TYPE = DICT_TYPE> extends Base {
   keys: KK[] = [];
 
   _data = ref<DictValues<KK>>({} as DictValues<KK>);
 
   state = {} as DictState<KK>;
 
+  dictMeta = {} as DictMap<KK, DictMeta>;
+
   get data() {
     return this._data.value;
   }
 
   constructor(keys: KK[], options?: Partial<DictOptions>) {
-    this.options = Object.assign({}, this.options, options || {});
+    super(options);
     this.keys = keys;
     this.init();
+    this.init2();
     console.log(this);
   }
 
@@ -62,9 +73,17 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
     const defaultValue = {} as DictMap<KK, T>;
     for (let index = 0; index < this.keys.length; index++) {
       const key = this.keys[index];
-      defaultValue[key] = value;
+      defaultValue[key] = cloneDeep(value);
     }
     return defaultValue;
+  }
+
+  init2() {
+    for (let index = 0; index < this.keys.length; index++) {
+      const key = this.keys[index];
+      this.dictMeta[key] = new DictMeta(key, this.options);
+    }
+    console.log(this.dictMeta);
   }
 
   init() {
@@ -99,8 +118,6 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
       this.requestDicts(dictKey)
         .then((data) => {
           this._data.value[dictKey] = data;
-          console.log(this.state[dictKey].time, dictKey);
-          console.log(JSON.parse(JSON.stringify(this.state)), dictKey);
           resolve(data);
         })
         .catch((e) => {
@@ -110,23 +127,25 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
   }
 
   requestDicts(dictKey: KK): Promise<DictData[]> {
-    this.state[dictKey].time++;
+    const state = this.state[dictKey];
+    state.time++;
     return new Promise((resolve, reject) => {
-      return getDicts(dictKey, this.state[dictKey].time)
+      return getDicts(dictKey, state.time)
         .then((res) => {
-          this.state[dictKey].loading = 'fulfilled';
-          // this.state[dictKey].time = 0;
+          state.loading = 'fulfilled';
+          state.time = 0;
+          console.log(state);
           resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
         .catch((e) => {
           console.error(
-            `[Dictionary error] Request dictionary data \`${dictKey}\` failed for the \`${this.state[dictKey].time}\` times.`,
+            `[Dictionary error] Request dictionary data \`${dictKey}\` failed for the \`${state.time}\` times.`,
           );
-          if (this.state[dictKey].time >= this.options.retryTime) {
+          if (state.time >= this.options.retryTime) {
             console.error(
-              `[Dict error] Attempt to repeat the request for dictionary data \`${dictKey}\` for the ${this.state[dictKey].time} times failed. Request has been abandoned.`,
+              `[Dict error] Attempt to repeat the request for dictionary data \`${dictKey}\` for the ${state.time} times failed. Request has been abandoned.`,
             );
-            this.state[dictKey].loading = 'rejected';
+            state.loading = 'rejected';
             reject(e);
             return;
           }
@@ -168,6 +187,100 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> {
       return '';
     }
     return res;
+  }
+}
+
+class Dispatcher {
+  handlers: Fn[];
+  constructor() {
+    this.handlers = [];
+  }
+
+  listen(handler: Fn) {
+    this.handlers.push(handler);
+  }
+
+  emit<T>(...args: T[]) {
+    this.handlers.forEach((handler) => {
+      handler(...args);
+    });
+  }
+
+  remove(fn: Fn) {
+    const index = this.handlers.findIndex((e) => e == fn);
+    this.handlers.splice(index, 1);
+  }
+}
+
+class DictMeta extends Base {
+  name;
+  constructor(name: DICT_TYPE, options?: Partial<DictOptions>) {
+    super(options);
+    this.name = name;
+    this.init();
+  }
+
+  async init() {
+    if (!this.options.isLazy) {
+      console.log(!this.options.isLazy);
+      this.data = await this.requestDicts();
+    }
+  }
+
+  _state: DictStateItem = 'pending';
+
+  time = 0;
+
+  set state(data: DictStateItem) {
+    this._state = data;
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  _data: DictData[] = [];
+
+  onDataChange = new Dispatcher();
+
+  set data(data: DictData[]) {
+    this._data = data;
+    this.onDataChange.emit<typeof data>(data);
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  requestDicts(): Promise<DictData[]> {
+    this.time++;
+    return new Promise((resolve, reject) => {
+      return getDicts(this.name, this.time)
+        .then((res) => {
+          this.state = 'fulfilled';
+          this.time = 0;
+          resolve(compileDict(res.data, this.labelFields, this.valueFields));
+        })
+        .catch((e) => {
+          console.error(
+            `[Dictionary error] Request dictionary data \`${this.name}\` failed for the \`${this.time}\` times.`,
+          );
+          if (this.time >= this.options.retryTime) {
+            console.error(
+              `[Dict error] Attempt to repeat the request for dictionary data \`${this.name}\` for the ${this.time} times failed. Request has been abandoned.`,
+            );
+            this.state = 'rejected';
+            reject(e);
+            return;
+          }
+          const t = setTimeout(() => {
+            clearTimeout(t);
+            this.requestDicts()
+              .then((res) => resolve(res))
+              .catch((e) => reject(e));
+          }, this.options.retryTimeout);
+        });
+    });
   }
 }
 
