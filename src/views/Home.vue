@@ -2,6 +2,7 @@
   // import alias test
   import HelloWorld from '@/components/HelloWorld.vue';
   import { useDicts } from '@/hooks/dict';
+  import { Dict } from '@/hooks/dict/dict';
   import { useTestStore } from '@/store/modules/test';
   import { removeToken } from '@/utils/cache';
   const testStore = useTestStore();
@@ -13,12 +14,25 @@
     removeToken();
     router.push('/redirect/');
   }
-  const { dicts } = useDicts(['sys_job_group']);
+  const { dicts, format } = useDicts(['sys_job_group']);
+  // const d = new Dict(['sys_job_group']);
 </script>
 
 <template>
   <div class="home">
-    {{ dicts.sys_job_group }}
+    <p>
+      <!-- {{ d.data.sys_job_group }} -->
+    </p>
+    <p>
+      <!-- {{ d.format('sys_job_group', 'DEFAULT') }} -->
+    </p>
+    <!-- DEFAULT SYSTEM -->
+    <p>
+      {{ format('sys_job_group', 'DEFAULT') }}
+    </p>
+    <p>
+      {{ format('sys_job_group', ['SYSTEM', 'DEFAULT'], { separator: '----' }) }}
+    </p>
     <router-link to="/about">404 页面 测试</router-link>
     ---Home.vue---
     <div class="box">
@@ -31,24 +45,4 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .home {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-    .box {
-      width: 200px;
-      display: flex;
-      justify-content: space-between;
-      margin: 10px auto;
-      align-items: center;
-    }
-    button {
-      font-size: 18px;
-      cursor: pointer;
-    }
-  }
-</style>
+<style lang="scss" scoped></style>
