@@ -1,11 +1,15 @@
 import { Dict } from './dict';
 import type { DictOptions, DICT_TYPE, FormatDictOptions } from './typings';
 
-export function useDicts<KK extends DICT_TYPE = DICT_TYPE>(keys: KK[], options?: Partial<DictOptions>) {
+export function useDicts<DK extends DICT_TYPE = DICT_TYPE>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
 
-  const format = (dictKey: KK, values: string[] | string, options?: FormatDictOptions) => {
+  const format = (dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) => {
     return dict.format.call(dict, dictKey, values, options);
+  };
+
+  const load = (dictKey?: DK) => {
+    return dict.load.call(dict, dictKey);
   };
 
   const dicts = dict.data;
@@ -13,6 +17,7 @@ export function useDicts<KK extends DICT_TYPE = DICT_TYPE>(keys: KK[], options?:
   return {
     dict,
     dicts,
+    load,
     format,
   };
 }

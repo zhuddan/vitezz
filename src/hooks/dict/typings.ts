@@ -33,6 +33,9 @@ export type DictDataKey = Array<keyof OriginDictData>;
 
 export interface FormatDictOptions {
   separator: string;
+  labelField: keyof OriginDictData;
+  valueField: keyof OriginDictData;
+  primitive: boolean;
 }
 
 export interface DictOptions {

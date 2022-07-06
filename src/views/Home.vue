@@ -2,7 +2,6 @@
   // import alias test
   import HelloWorld from '@/components/HelloWorld.vue';
   import { useDicts } from '@/hooks/dict';
-  import { Dict } from '@/hooks/dict/dict';
   import { useTestStore } from '@/store/modules/test';
   import { removeToken } from '@/utils/cache';
   const testStore = useTestStore();
@@ -15,13 +14,14 @@
     router.push('/redirect/');
   }
   const { dict, dicts, format } = useDicts(['sys_job_group', 'sys_job_status'], {});
-  // const d = new Dict(['sys_job_group']);
 </script>
 
 <template>
   <div class="home">
+    <button @click="dict.load()">dict.load</button>
+    <div>-------------------</div>
     <p>
-      {{ dicts }}
+      <!-- {{ dicts }} -->
       <!-- {{ d.data.sys_job_group }} -->
     </p>
     <p>
@@ -37,7 +37,7 @@
     <router-link to="/about">404 页面 测试</router-link>
     ---Home.vue---
     <h1>------------------</h1>
-    <p>{{ dict.data }}</p>
+    <p style="color: red">{{ dict.data }}</p>
     <div class="box">
       <button @click="testStore.increase"> increase </button>
       {{ testCount }}
