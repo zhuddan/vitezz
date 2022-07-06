@@ -169,16 +169,16 @@ class DictMeta extends BaseDict {
     return this.data;
   }
 
-  _state: DictState = 'pending';
+  _state = ref<DictState>('pending');
 
   time = 0;
 
   set state(data: DictState) {
-    this._state = data;
+    this._state.value = data;
   }
 
   get state() {
-    return this._state;
+    return this._state.value;
   }
 
   _data = ref<DictData[]>([]);
