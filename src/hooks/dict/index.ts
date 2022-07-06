@@ -18,6 +18,7 @@ type UseDictsReturn<DK extends DictTypes = DictTypes> = DictRef<DK> & DictMapRef
 
 export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
+
   const format = (dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) => {
     return dict.format.call(dict, dictKey, values, options);
   };
@@ -32,9 +33,9 @@ export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?:
 
   return {
     dict,
+    dicts,
     format,
     load,
-    dicts,
     ...toRefs(dict.data),
   } as UseDictsReturn<DK>;
 }

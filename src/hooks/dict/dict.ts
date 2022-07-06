@@ -18,6 +18,7 @@ export function getDicts(dictType: DictTypes) {
     url: `/system/dict/data/type/${dictType}`,
   });
 }
+// private就像protected，但不允许从子类访问成员：
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 const defaultFormatOptions: FormatDictOptions = {
@@ -54,7 +55,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
 
   dictMeta = {} as DictMap<DK, DictMeta>;
 
-  _data = reactive<DictValues<DK>>({} as DictValues<DK>);
+  private _data = reactive<DictValues<DK>>({} as DictValues<DK>);
 
   get data() {
     for (const _key in this.dictMeta) {
@@ -73,7 +74,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     this.init();
   }
 
-  init() {
+  private init() {
     for (let index = 0; index < this.keys.length; index++) {
       const key = this.keys[index];
       this.dictMeta[key] = new DictMeta(key, this.options);
@@ -100,7 +101,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     return this.formatByDictData(dictKey, values, options);
   }
 
-  formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
+  private formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
     if (this.dictMeta[dictKey].state != 'fulfilled') {
       return '';
     }
@@ -108,11 +109,15 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     return this.handleFormat(data, values, options);
   }
 
-  formatByDictData(data: OriginDictData[], values: string[] | string, options?: Partial<FormatDictOptions>) {
+  private formatByDictData(
+    data: OriginDictData[],
+    values: string[] | string,
+    options?: Partial<FormatDictOptions>,
+  ) {
     return this.handleFormat(data, values, options);
   }
 
-  handleFormat(
+  private handleFormat(
     data: Array<OriginDictData | DictData>,
     values: string[] | string,
     options?: Partial<FormatDictOptions>,
@@ -125,7 +130,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     }
   }
 
-  formatValue(data: Array<OriginDictData | DictData>, value: string, options: FormatDictOptions) {
+  private formatValue(data: Array<OriginDictData | DictData>, value: string, options: FormatDictOptions) {
     const res = data.find((e) => e[options.valueField] == value) || {};
     if (!res) {
       const _options = data.map((e) => ({
@@ -190,7 +195,7 @@ class DictMeta extends BaseDict {
     return this._data;
   }
 
-  requestDicts(): Promise<DictData[]> {
+  private requestDicts(): Promise<DictData[]> {
     this.state = 'pending';
     this.time++;
     return new Promise((resolve, reject) => {
