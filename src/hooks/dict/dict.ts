@@ -95,12 +95,12 @@ export class Dict<DK extends DICT_TYPE = DICT_TYPE> extends BaseDict {
 
   format(dictKey: DK | OriginDictData[], values: string[] | string, options?: Partial<FormatDictOptions>) {
     if (isString(dictKey)) {
-      return this.formatByKey(dictKey, values, options);
+      return this.formatByDictKey(dictKey, values, options);
     }
-    return this.formatByList(dictKey, values, options);
+    return this.formatByDictData(dictKey, values, options);
   }
 
-  formatByKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
+  formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
     if (this.dictMeta[dictKey].state != 'fulfilled') {
       return '';
     }
@@ -108,7 +108,7 @@ export class Dict<DK extends DICT_TYPE = DICT_TYPE> extends BaseDict {
     return this.handleFormat(data, values, options);
   }
 
-  formatByList(data: OriginDictData[], values: string[] | string, options?: Partial<FormatDictOptions>) {
+  formatByDictData(data: OriginDictData[], values: string[] | string, options?: Partial<FormatDictOptions>) {
     return this.handleFormat(data, values, options);
   }
 
