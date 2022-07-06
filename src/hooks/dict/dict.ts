@@ -1,6 +1,6 @@
 import { defHttp } from '@/utils/http';
 import { isArray } from '@/utils/is';
-import { cloneDeep } from 'lodash-es';
+// import { cloneDeep } from 'lodash-es';
 import type {
   DictOptions,
   DictValues,
@@ -9,24 +9,21 @@ import type {
   DICT_TYPE,
   FormatDictOptions,
   OriginDictData,
-  DictState,
   DictMap,
-  DictStateItem,
+  DictState,
 } from './typings';
 
 // 根据字典类型查询字典数据信息
-export function getDicts(dictType: DICT_TYPE, t = 0) {
-  const data = dictType == 'sys_job_group' ? 5 : 3;
+export function getDicts(dictType: DICT_TYPE) {
   return defHttp.get<ResData<OriginDictData[]>>({
-    url: t != data ? '/stat' : `/system/dict/data/type/${dictType}`,
-    // timeout: 10,
+    url: `/system/dict/data/type/${dictType}`,
   });
 }
 
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 
-export class Base {
+export class BaseDict {
   options: DictOptions = {
     isLazy: false,
     labelFields: DEFAULT_LABEL_FIELDS,
@@ -48,132 +45,51 @@ export class Base {
   }
 }
 
-export class Dict<KK extends DICT_TYPE = DICT_TYPE> extends Base {
+export class Dict<KK extends DICT_TYPE = DICT_TYPE> extends BaseDict {
   keys: KK[] = [];
 
-  _data = ref<DictValues<KK>>({} as DictValues<KK>);
-
-  state = {} as DictState<KK>;
-
   dictMeta = {} as DictMap<KK, DictMeta>;
-
-  get data() {
-    return this._data.value;
-  }
 
   constructor(keys: KK[], options?: Partial<DictOptions>) {
     super(options);
     this.keys = keys;
     this.init();
-    this.init2();
-    console.log(this);
   }
 
-  getDefaultValue<T>(value: T) {
-    const defaultValue = {} as DictMap<KK, T>;
-    for (let index = 0; index < this.keys.length; index++) {
-      const key = this.keys[index];
-      defaultValue[key] = cloneDeep(value);
-    }
-    return defaultValue;
-  }
-
-  init2() {
+  init() {
     for (let index = 0; index < this.keys.length; index++) {
       const key = this.keys[index];
       this.dictMeta[key] = new DictMeta(key, this.options);
     }
-    console.log(this.dictMeta);
   }
 
-  init() {
-    this._data.value = this.getDefaultValue([]);
-    this.state = this.getDefaultValue({
-      loading: 'pending',
-      time: 0,
-    });
-    if (!this.options.isLazy) {
-      this.loadAll();
+  _data = ref({} as DictValues<KK>);
+
+  get data() {
+    for (const key in this.dictMeta) {
+      if (Object.prototype.hasOwnProperty.call(this.dictMeta, key)) {
+        const element = this.dictMeta[key];
+        this._data.value[key] = element.data;
+      }
     }
-  }
-
-  loadAll(): Promise<DictData[][]> {
-    const promFn = [];
-    for (let i = 0; i < this.keys.length; i++) {
-      const key = this.keys[i];
-      promFn.push(() => this.load(key));
-    }
-
-    return Promise.all(promFn.map((e) => e()))
-      .then((res) => {
-        return res;
-      })
-      .catch((e) => {
-        return Promise.reject(e);
-      });
-  }
-
-  load(dictKey: KK): Promise<DictData[]> {
-    return new Promise((resolve, reject) => {
-      this.requestDicts(dictKey)
-        .then((data) => {
-          this._data.value[dictKey] = data;
-          resolve(data);
-        })
-        .catch((e) => {
-          reject(e);
-        });
-    });
-  }
-
-  requestDicts(dictKey: KK): Promise<DictData[]> {
-    const state = this.state[dictKey];
-    state.time++;
-    return new Promise((resolve, reject) => {
-      return getDicts(dictKey, state.time)
-        .then((res) => {
-          state.loading = 'fulfilled';
-          state.time = 0;
-          console.log(state);
-          resolve(compileDict(res.data, this.labelFields, this.valueFields));
-        })
-        .catch((e) => {
-          console.error(
-            `[Dictionary error] Request dictionary data \`${dictKey}\` failed for the \`${state.time}\` times.`,
-          );
-          if (state.time >= this.options.retryTime) {
-            console.error(
-              `[Dict error] Attempt to repeat the request for dictionary data \`${dictKey}\` for the ${state.time} times failed. Request has been abandoned.`,
-            );
-            state.loading = 'rejected';
-            reject(e);
-            return;
-          }
-          const t = setTimeout(() => {
-            clearTimeout(t);
-            this.requestDicts(dictKey)
-              .then((res) => resolve(res))
-              .catch((e) => reject(e));
-          }, this.options.retryTimeout);
-        });
-    });
+    return this._data;
   }
 
   format(dictKey: KK, values: string[] | string, options?: FormatDictOptions) {
-    if (this.state[dictKey].loading != 'fulfilled') {
+    if (this.dictMeta[dictKey].state != 'fulfilled') {
       return '';
     }
     const defaultOpt: FormatDictOptions = { separator: '/' };
-    const data = this.data[dictKey];
+    const data = this.data.value[dictKey];
     const opt = Object.assign({}, defaultOpt, options || {});
     if (isArray(values)) {
-      return values.map((e) => this.baseFormatDict(data, e)).join(opt.separator);
+      return values.map((e) => this.formatValue(data, e)).join(opt.separator);
     } else {
-      return this.baseFormatDict(data, values);
+      return this.formatValue(data, values);
     }
   }
 
-  baseFormatDict(data: DictData[], value: string) {
+  formatValue(data: DictData[], value: string) {
     const res = data.find((e) => e.value == value)?.label;
     if (!res) {
       const options = data.map((e) => ({
@@ -190,29 +106,7 @@ export class Dict<KK extends DICT_TYPE = DICT_TYPE> extends Base {
   }
 }
 
-class Dispatcher {
-  handlers: Fn[];
-  constructor() {
-    this.handlers = [];
-  }
-
-  listen(handler: Fn) {
-    this.handlers.push(handler);
-  }
-
-  emit<T>(...args: T[]) {
-    this.handlers.forEach((handler) => {
-      handler(...args);
-    });
-  }
-
-  remove(fn: Fn) {
-    const index = this.handlers.findIndex((e) => e == fn);
-    this.handlers.splice(index, 1);
-  }
-}
-
-class DictMeta extends Base {
+class DictMeta extends BaseDict {
   name;
   constructor(name: DICT_TYPE, options?: Partial<DictOptions>) {
     super(options);
@@ -220,18 +114,21 @@ class DictMeta extends Base {
     this.init();
   }
 
-  async init() {
+  init() {
     if (!this.options.isLazy) {
-      console.log(!this.options.isLazy);
-      this.data = await this.requestDicts();
+      this.load();
     }
   }
 
-  _state: DictStateItem = 'pending';
+  async load() {
+    this.data = await this.requestDicts();
+  }
+
+  _state: DictState = 'pending';
 
   time = 0;
 
-  set state(data: DictStateItem) {
+  set state(data: DictState) {
     this._state = data;
   }
 
@@ -239,23 +136,20 @@ class DictMeta extends Base {
     return this._state;
   }
 
-  _data: DictData[] = [];
-
-  onDataChange = new Dispatcher();
+  _data = ref<DictData[]>([]);
 
   set data(data: DictData[]) {
-    this._data = data;
-    this.onDataChange.emit<typeof data>(data);
+    this._data.value = data;
   }
 
   get data() {
-    return this._data;
+    return this._data.value;
   }
 
   requestDicts(): Promise<DictData[]> {
     this.time++;
     return new Promise((resolve, reject) => {
-      return getDicts(this.name, this.time)
+      return getDicts(this.name)
         .then((res) => {
           this.state = 'fulfilled';
           this.time = 0;
@@ -289,7 +183,7 @@ function compileDict(list: OriginDictData[], labelFields: DictDataKey, valueFiel
 }
 
 function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields: DictDataKey) {
-  const res = { row: data } as unknown as DictData;
+  const res = { raw: data } as unknown as DictData;
   const labelField = getDictField(data, ...labelFields);
   const valueField = getDictField(data, ...valueFields);
   res.label = data[labelField];

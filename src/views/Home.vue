@@ -14,7 +14,7 @@
     removeToken();
     router.push('/redirect/');
   }
-  const { dicts, format } = useDicts(['sys_job_group', 'sys_job_status'], {});
+  const { dict, dicts, format } = useDicts(['sys_job_group', 'sys_job_status'], {});
   // const d = new Dict(['sys_job_group']);
 </script>
 
@@ -36,6 +36,8 @@
     </p>
     <router-link to="/about">404 页面 测试</router-link>
     ---Home.vue---
+    <h1>------------------</h1>
+    <p>{{ dict.data }}</p>
     <div class="box">
       <button @click="testStore.increase"> increase </button>
       {{ testCount }}

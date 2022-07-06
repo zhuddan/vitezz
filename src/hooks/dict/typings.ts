@@ -27,14 +27,7 @@ export type DictMap<T extends string, P> = {
 
 export type DictValues<T extends string> = DictMap<T, DictData[]>;
 
-export type DictStateItem = 'pending' | 'fulfilled' | 'rejected';
-
-interface State {
-  loading: 'pending' | 'fulfilled' | 'rejected';
-  time: number;
-}
-
-export type DictState<T extends string> = DictMap<T, State>;
+export type DictState = 'pending' | 'fulfilled' | 'rejected';
 
 export type DictDataKey = Array<keyof OriginDictData>;
 
