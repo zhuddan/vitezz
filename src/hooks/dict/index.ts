@@ -1,8 +1,8 @@
 import type { ComputedRef, Ref } from 'vue';
 import { Dict } from './dict';
-import type { DictMap, DictOptions, DictTypes, DictValues, FormatDictOptions } from './typings';
+import type { DictData, DictMap, DictOptions, DictTypes, DictValues, FormatDictOptions } from './typings';
 
-type DictRef<DK extends DictTypes = DictTypes> = DictMap<DK, Ref<DictValues<DK>>>;
+type DictRef<DK extends DictTypes = DictTypes> = DictMap<DK, Ref<DictData[]>>;
 
 interface DictMapRef<DK extends DictTypes = DictTypes> {
   dict: Dict<DK>;
@@ -16,10 +16,7 @@ interface DictMapRef<DK extends DictTypes = DictTypes> {
 }
 type UseDictsReturn<DK extends DictTypes = DictTypes> = DictRef<DK> & DictMapRef<DK>;
 
-export function useDicts<DK extends DictTypes = DictTypes>(
-  keys: DK[],
-  options?: Partial<DictOptions>,
-): UseDictsReturn<DK> {
+export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
   const format = (dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) => {
     return dict.format.call(dict, dictKey, values, options);
@@ -38,6 +35,6 @@ export function useDicts<DK extends DictTypes = DictTypes>(
     format,
     load,
     dicts,
-    ...(toRefs(dict.data) as DictRef<DK>),
+    ...toRefs(dict.data),
   } as UseDictsReturn<DK>;
 }
