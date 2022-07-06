@@ -1,4 +1,4 @@
-export type DICT_TYPE = 'sys_job_group' | 'sys_job_status';
+export type DictTypes = 'sys_job_group' | 'sys_job_status';
 
 export interface OriginDictData {
   id: string;

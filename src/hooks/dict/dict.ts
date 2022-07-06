@@ -5,7 +5,7 @@ import type {
   DictValues,
   DictData,
   DictDataKey,
-  DICT_TYPE,
+  DictTypes,
   FormatDictOptions,
   OriginDictData,
   DictMap,
@@ -13,7 +13,7 @@ import type {
 } from './typings';
 
 // 根据字典类型查询字典数据信息
-export function getDicts(dictType: DICT_TYPE) {
+export function getDicts(dictType: DictTypes) {
   return defHttp.get<ResData<OriginDictData[]>>({
     url: `/system/dict/data/type/${dictType}`,
   });
@@ -50,7 +50,7 @@ export class BaseDict {
   }
 }
 
-export class Dict<DK extends DICT_TYPE = DICT_TYPE> extends BaseDict {
+export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   keys: DK[] = [];
 
   dictMeta = {} as DictMap<DK, DictMeta>;
@@ -147,7 +147,7 @@ export class Dict<DK extends DICT_TYPE = DICT_TYPE> extends BaseDict {
 
 class DictMeta extends BaseDict {
   name;
-  constructor(name: DICT_TYPE, options?: Partial<DictOptions>) {
+  constructor(name: DictTypes, options?: Partial<DictOptions>) {
     super(options);
     this.name = name;
     this.init();

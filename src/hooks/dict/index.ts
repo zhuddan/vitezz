@@ -1,7 +1,7 @@
 import { Dict } from './dict';
-import type { DictOptions, DICT_TYPE, FormatDictOptions } from './typings';
+import type { DictOptions, DictTypes, FormatDictOptions } from './typings';
 
-export function useDicts<DK extends DICT_TYPE = DICT_TYPE>(keys: DK[], options?: Partial<DictOptions>) {
+export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
 
   const format = (dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) => {
