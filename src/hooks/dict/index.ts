@@ -1,5 +1,5 @@
 import { Dict } from './dict';
-import type { DictOptions, DictTypes, FormatDictOptions } from './typings';
+import type { DictOptions, DictTypes, DictValues, FormatDictOptions } from './typings';
 
 export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
@@ -12,7 +12,9 @@ export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?:
     return dict.load.call(dict, dictKey);
   };
 
-  const dicts = dict.data;
+  const dicts = computed<DictValues<DK>>(() => {
+    return dict.data.value;
+  });
 
   return {
     dict,
