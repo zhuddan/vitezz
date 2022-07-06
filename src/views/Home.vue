@@ -14,17 +14,18 @@
     removeToken();
     router.push('/redirect/');
   }
-  const { dict, dicts, format } = useDicts(['sys_job_group', 'sys_job_status'], {});
-  const d = new Dict(['sys_job_group']);
+  const { dicts, sys_job_status, sys_job_group } = useDicts(['sys_job_status', 'sys_job_group'], {});
 </script>
 
 <template>
   <div class="home">
-    <button @click="dict.load()">dict.load</button>
+    <p> {{ sys_job_status }} </p>
+    <!-- <button @click="dict.load()">dict.load</button> -->
     <div>-------------------</div>
     <p style="color: blue">
       {{ dicts }}
     </p>
+
     <div>
       <button @click="logout">logout</button>
     </div>

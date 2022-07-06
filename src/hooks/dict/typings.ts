@@ -25,7 +25,7 @@ export type DictMap<T extends string, P> = {
   [key in T]: P;
 };
 
-export type DictValues<T extends string> = DictMap<T, DictData[]>;
+export type DictValues<T extends DictTypes> = DictMap<T, DictData[]>;
 
 export type DictState = 'pending' | 'fulfilled' | 'rejected';
 

@@ -18,7 +18,6 @@ export function getDicts(dictType: DictTypes) {
     url: `/system/dict/data/type/${dictType}`,
   });
 }
-
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 const defaultFormatOptions: FormatDictOptions = {
@@ -55,16 +54,17 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
 
   dictMeta = {} as DictMap<DK, DictMeta>;
 
-  _data = ref({} as DictValues<DK>);
+  _data = reactive<DictValues<DK>>({} as DictValues<DK>);
 
   get data() {
-    for (const key in this.dictMeta) {
+    for (const _key in this.dictMeta) {
+      const key = _key as DK;
       if (Object.prototype.hasOwnProperty.call(this.dictMeta, key)) {
         const element = this.dictMeta[key];
-        this._data.value[key] = element.data;
+        this._data[key] = element.primitiveData as any;
       }
     }
-    return this._data;
+    return this._data as DictValues<DK>;
   }
 
   constructor(keys: DK[], options?: Partial<DictOptions>) {
@@ -80,7 +80,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     }
   }
 
-  load(dictKey?: DK) {
+  load(dictKey?: DK): Promise<DictData[] | DictData[][]> {
     return new Promise(async (resolve) => {
       if (dictKey) {
         const data = await this.dictMeta[dictKey].load();
@@ -104,7 +104,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     if (this.dictMeta[dictKey].state != 'fulfilled') {
       return '';
     }
-    const data = this.data.value[dictKey];
+    const data = this.data[dictKey];
     return this.handleFormat(data, values, options);
   }
 
@@ -184,6 +184,10 @@ class DictMeta extends BaseDict {
 
   get data() {
     return this._data.value;
+  }
+
+  get primitiveData() {
+    return this._data;
   }
 
   requestDicts(): Promise<DictData[]> {
