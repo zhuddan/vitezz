@@ -10,7 +10,6 @@
 
   function handleLogin() {
     login(username.value, password.value, code.value, uuid.value).then((res) => {
-      console.log(res);
       setToken(res.token);
       router.push('/');
     });

@@ -1,14 +1,7 @@
-<script setup lang="ts">
-  var e = defineEmits(['sss']);
-  e('sss');
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div> any... </div>
+  <div> </div>
 </template>
 
-<style scoped lang="scss">
-  p {
-    color: red;
-  }
-</style>
+<style scoped></style>

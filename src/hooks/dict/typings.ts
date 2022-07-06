@@ -15,6 +15,8 @@ export interface OriginDictData {
   title: string;
 }
 
+export type DictDataKey = Array<keyof OriginDictData>;
+
 export interface DictData {
   value: string;
   label: string;
@@ -28,8 +30,6 @@ export type DictMap<T extends string, P> = {
 export type DictValues<T extends DictTypes> = DictMap<T, DictData[]>;
 
 export type DictState = 'pending' | 'fulfilled' | 'rejected';
-
-export type DictDataKey = Array<keyof OriginDictData>;
 
 export interface FormatDictOptions {
   separator: string;

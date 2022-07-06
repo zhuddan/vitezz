@@ -158,7 +158,7 @@ class DictMeta extends BaseDict {
     this.init();
   }
 
-  init() {
+  private init() {
     if (!this.options.isLazy) {
       this.load();
     }

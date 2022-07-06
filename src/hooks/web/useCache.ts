@@ -111,8 +111,3 @@ const webCache = new WebCache();
 export function useCache() {
   return webCache;
 }
-
-// type getFn<T extends string> = `${'get' | 'set' | 'remove'}${Capitalize<T>}`;
-// export type WebCacheMaps = {
-//   [fn in getFn<CacheEnumsKey>]: () => any | ((value: string) => void);
-// };
