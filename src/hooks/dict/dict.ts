@@ -33,8 +33,8 @@ export class BaseDict {
     isLazy: false,
     labelFields: DEFAULT_LABEL_FIELDS,
     valueFields: DEFAULT_VALUE_FIELDS,
-    retryTime: 8,
-    retryTimeout: 1 * 500,
+    retryTime: 1,
+    retryTimeout: 1 * 1000,
   };
 
   get labelFields() {
