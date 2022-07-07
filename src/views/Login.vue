@@ -25,6 +25,8 @@
 <template>
   <div style="overflow: hidden">
     <div class="login">
+      <router-link to="/about/aaa/aaa">about</router-link>
+
       <div>
         <img :src="codeUrl" alt="" />
         <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />

@@ -20,6 +20,7 @@ import { VAxios } from './Axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { checkStatus } from './checkStatus';
 import { formatRequestDate, joinTimestamp } from './helper';
+import { useUserStore } from '@/store/modules/user';
 
 const globSetting = useSettings();
 const { msgError, modalError } = useMessage();
@@ -65,7 +66,9 @@ const transform: AxiosTransform = {
     switch (code) {
       case ResultEnum.TIMEOUT:
         errorMsg = '登录超时,请重新登录!';
-        // const userStore = useUserStoreWithOut();
+        const userStore = useUserStore();
+        userStore.logout();
+        // this.
         // userStore.setToken(undefined);
         // userStore.logout(true);
         break;

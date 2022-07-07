@@ -14,28 +14,26 @@ export const useUserStore = defineStore({
     permissions: [],
   }),
   actions: {
-    login(username: string, password: string, code: string, uuid: string) {
-      return login(username, password, code, uuid).then((res) => {
-        setToken(res.token);
-      });
+    async login(username: string, password: string, code: string, uuid: string) {
+      const res = await login(username, password, code, uuid);
+      setToken(res.token);
+    },
+    logout() {
+      this.resetAllState();
+    },
+    async getInfo() {
+      const res = await getInfo();
+      this.info = res.info;
+      this.roles = res.roles;
+      this.permissions = res.permissions;
     },
     resetAllState() {
       const permissionStore = usePermissionStore();
       const testStore = useTestStore();
-      permissionStore.$reset();
-      testStore.$reset();
+      permissionStore.resetState();
+      testStore.resetState();
       this.$reset();
-    },
-    logout() {
       removeToken();
-      this.resetAllState();
-    },
-    getInfo() {
-      return getInfo().then((res) => {
-        this.info = res.info;
-        this.roles = res.roles;
-        this.permissions = res.permissions;
-      });
     },
   },
 });

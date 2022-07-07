@@ -16,5 +16,8 @@ export const useTestStore = defineStore({
     decrease() {
       this.count--;
     },
+    resetState() {
+      this.$reset();
+    },
   },
 });

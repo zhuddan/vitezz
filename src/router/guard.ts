@@ -14,11 +14,7 @@ export function useGuard(router: Router) {
         await userStore.getInfo();
       }
       if (!permission.routes.length) {
-        const rs = await permission.addSyncRoutes();
-        for (let index = 0; index < rs.length; index++) {
-          const element = rs[index];
-          router.addRoute(element);
-        }
+        await permission.addSyncRoutes();
         next({
           path: to.path,
           replace: true,

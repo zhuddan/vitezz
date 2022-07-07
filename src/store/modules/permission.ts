@@ -1,8 +1,6 @@
-// export
-
-import { getFakeRoutes } from '@/router/syncRouters';
+import { getRoutes } from '@/router/syncRouters';
+import util from '@/router/util';
 import { defineStore } from 'pinia';
-
 import type { PermissionState } from '../typings/permission';
 
 export const usePermissionStore = defineStore({
@@ -12,9 +10,16 @@ export const usePermissionStore = defineStore({
   }),
   actions: {
     async addSyncRoutes() {
-      const routes = await getFakeRoutes();
+      const routes = await getRoutes();
       this.routes = routes;
-      return routes;
+      util.addRoutes(this.routes);
+    },
+    removeSyncRoutes() {
+      util.removeRoutes(this.routes);
+    },
+    resetState() {
+      this.removeSyncRoutes();
+      this.$reset();
     },
   },
 });

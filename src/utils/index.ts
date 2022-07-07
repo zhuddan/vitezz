@@ -26,3 +26,10 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   }
   return src as T;
 }
+
+// string
+export function capitalize(str: string, strict = true) {
+  const str1 = str.slice(0, 1).toUpperCase();
+  const str2 = str.slice(1);
+  return `${str1}${strict ? str2.toLocaleLowerCase() : str2}`;
+}
