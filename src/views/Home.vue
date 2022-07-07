@@ -2,6 +2,7 @@
   // import alias test
   import { useDicts } from '@/hooks/dict';
   import { Dict } from '@/hooks/dict/dict';
+  import { useUserStore } from '@/store/modules/user';
   import { removeToken } from '@/utils/cache';
 
   const router = useRouter();
@@ -11,10 +12,15 @@
   }
   const { sys_job_group, format, load } = useDicts(['sys_job_group'], {});
   var d = new Dict(['sys_job_status']);
+  const userStore = useUserStore();
 </script>
 
 <template>
   <div class="home">
+    <div>
+      <p>{{ userStore.info?.userName }}</p>
+      <button @click="logout">logout</button>
+    </div>
     <p> {{ sys_job_group }} </p>
     <button @click="load()">dict.load</button>
     <div>-------------------</div>
@@ -22,9 +28,7 @@
       {{ format('sys_job_group', 'DEFAULT') }}
     </p>
 
-    <div>
-      <button @click="logout">logout</button>
-    </div>
+    <div> </div>
   </div>
 </template>
 

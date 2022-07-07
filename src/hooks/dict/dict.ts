@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http';
-import { isArray, isObject, isString } from '@/utils/is';
+import { isArray, isString } from '@/utils/is';
 import type {
   DictOptions,
   DictValues,
@@ -18,6 +18,7 @@ export function getDicts(dictType: DictTypes) {
     url: `/system/dict/data/type/${dictType}`,
   });
 }
+// private就像protected，但不允许从子类访问成员：
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 const defaultFormatOptions: FormatDictOptions = {
@@ -33,7 +34,7 @@ export class BaseDict {
     labelFields: DEFAULT_LABEL_FIELDS,
     valueFields: DEFAULT_VALUE_FIELDS,
     retryTime: 1,
-    retryTimeout: 1 * 500,
+    retryTimeout: 1 * 1000,
   };
 
   get labelFields() {
@@ -42,13 +43,6 @@ export class BaseDict {
 
   get valueFields() {
     return Array.from(new Set(this.options.valueFields));
-  }
-
-  isEqual<T>(value: T, oldValue: T) {
-    if (isObject(value) || isArray(value)) {
-      return JSON.stringify(value) == JSON.stringify(oldValue);
-    }
-    return value == oldValue;
   }
 
   constructor(options?: Partial<DictOptions>) {
@@ -175,27 +169,21 @@ class DictMeta extends BaseDict {
     return this.data;
   }
 
-  _state = ref<DictState>('pending');
+  _state: DictState = 'pending';
 
   time = 0;
 
   set state(data: DictState) {
-    if (this.isEqual(this._state.value, data)) {
-      return;
-    }
-    this._state.value = data;
+    this._state = data;
   }
 
   get state() {
-    return this._state.value;
+    return this._state;
   }
 
   _data = ref<DictData[]>([]);
 
   set data(data: DictData[]) {
-    if (this.isEqual(this._data.value, data)) {
-      return;
-    }
     this._data.value = data;
   }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { setToken } from '@/utils/cache';
-  import { getCodeImg, login } from '@/api/login';
+  import { getCodeImg } from '@/api/login';
+  import { useUserStore } from '@/store/modules/user';
   const router = useRouter();
   const username = ref('csgr222');
   const password = ref('123456');
@@ -8,12 +8,14 @@
   const uuid = ref('');
   const codeUrl = ref('');
 
+  const userStore = useUserStore();
+
   function handleLogin() {
-    login(username.value, password.value, code.value, uuid.value).then((res) => {
-      setToken(res.token);
+    userStore.login(username.value, password.value, code.value, uuid.value).then(() => {
       router.push('/');
     });
   }
+
   getCodeImg().then((res) => {
     codeUrl.value = 'data:image/gif;base64,' + res.img;
     uuid.value = res.uuid;
@@ -25,7 +27,7 @@
     <div class="login">
       <div>
         <img :src="codeUrl" alt="" />
-        <input id="code" v-model="code" type="text" />
+        <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
       </div>
       <input id="username" v-model="username" type="text" />
       <input id="password" v-model="password" type="text" />
