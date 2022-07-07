@@ -26,7 +26,7 @@ const routes: VueRouteRecordRaw[] = [
     component: () => import('@/views/redirect.vue'),
   },
   {
-    path: '/:pathMatch(.*)',
+    path: '/:path(.*)',
     meta: {
       title: '关于',
     },
