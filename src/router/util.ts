@@ -3,7 +3,9 @@ import router from '.';
 
 export class RouteUtil {
   id = 0;
+
   maps: Record<string | symbol, boolean> = {};
+
   reset() {
     for (const key in this.maps) {
       if (Object.prototype.hasOwnProperty.call(this.maps, key)) {

@@ -1,15 +1,15 @@
 // 动态路由
 export const syncRoutes: VueRouteRecordRaw[] = [
   {
-    path: '/about/aaa/aaa',
+    path: '/list',
     meta: {
       title: '关于',
       auth: false,
     },
-    component: () => import('@/views/About.vue'),
+    component: () => import('@/views/List.vue'),
   },
   {
-    path: '/about/aaa',
+    path: '/detail/:id',
     meta: {
       title: '关于',
     },

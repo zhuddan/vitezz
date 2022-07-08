@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { getCodeImg } from '@/api/login';
   import { useUserStore } from '@/store/modules/user';
+  import Image from '@/components/Image.vue';
   const router = useRouter();
   const username = ref('csgr222');
   const password = ref('123456');
@@ -15,20 +16,30 @@
       router.push('/');
     });
   }
-
+  const errorBase64 = 'error';
   getCodeImg().then((res) => {
     codeUrl.value = 'data:image/gif;base64,' + res.img;
     uuid.value = res.uuid;
   });
+
+  const isError = ref(false);
+  const url = computed(() => {
+    return isError.value ? errorBase64 : codeUrl.value;
+  });
+  function toggleValue() {
+    isError.value = !isError.value;
+  }
 </script>
 
 <template>
   <div style="overflow: hidden">
     <div class="login">
       <router-link to="/about/aaa/aaa">about</router-link>
-
       <div>
-        <img :src="codeUrl" alt="" />
+        <button @click="toggleValue">toggleError</button>
+      </div>
+      <div>
+        <Image :src="url" />
         <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
       </div>
       <input id="username" v-model="username" type="text" />

@@ -18,8 +18,11 @@ export const useUserStore = defineStore({
       const res = await login(username, password, code, uuid);
       setToken(res.token);
     },
-    logout() {
-      this.resetAllState();
+    logout(): Promise<void> {
+      return new Promise((resolve) => {
+        this.resetAllState();
+        resolve();
+      });
     },
     async getInfo() {
       const res = await getInfo();

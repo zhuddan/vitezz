@@ -10,6 +10,7 @@
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,types}/**/*.{vue,ts,tsx}\" --fix"
   },
   "dependencies": {
+    "@vueuse/core": "^8.9.1",
     "axios": "^0.27.2",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.14",

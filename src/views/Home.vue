@@ -20,7 +20,7 @@
     </div>
     <p> {{ sys_job_group }} </p>
     <button @click="load()">dict.load</button>
-    <router-link to="/about/aaa/aaa">about</router-link>
+    <router-link to="/list">list</router-link>
     <div>-------------------</div>
     <p style="color: blue">
       {{ format('sys_job_group', 'DEFAULT') }}

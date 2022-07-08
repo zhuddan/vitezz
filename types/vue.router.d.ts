@@ -10,5 +10,4 @@ declare global {
   }
   type _VueRouteRecordRaw = RouteRecordRaw & ExtendRouteRecordRaw;
   declare type VueRouteRecordRaw = TreeItem<_VueRouteRecordRaw>;
-  declare type s = Pick<RouteRecordRaw, 'meta'>;
 }
