@@ -39,7 +39,7 @@
         <button @click="toggleValue">toggleError</button>
       </div>
       <div>
-        <Image :src="url" />
+        <Image :src="url"> </Image>
         <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
       </div>
       <input id="username" v-model="username" type="text" />

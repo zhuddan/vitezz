@@ -2,6 +2,7 @@
   import { useDicts } from '@/hooks/dict';
   import { useUserStore } from '@/store/modules/user';
   import { removeToken } from '@/utils/cache';
+  import Image from '@/components/Image.vue';
   const userStore = useUserStore();
 
   const router = useRouter();
@@ -14,6 +15,9 @@
 
 <template>
   <div class="home">
+    <div>
+      <Image style="width: 20px" src="http://192.168.31.31:8080/all.png"></Image>
+    </div>
     <div>
       <p>{{ userStore.info?.userName }}</p>
       <button @click="logout">logout</button>

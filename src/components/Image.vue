@@ -1,39 +1,81 @@
 <script setup lang="ts">
-  import { useDateFormat, useImage, useNow } from '@vueuse/core';
-
-  const props = defineProps<{
-    src: string;
-  }>();
-
+  import { useSlotsVisible } from '@/hooks/utils/slots';
+  const props = defineProps({
+    src: {
+      type: String,
+      default: '',
+    },
+    alt: {
+      type: String,
+      default: '',
+    },
+    loading: {
+      type: String as PropType<'eager' | 'lazy'>,
+      default: 'eager',
+    },
+    width: {
+      type: [Number, String],
+      default: 320,
+    },
+    height: {
+      type: [Number, String],
+      default: 200,
+    },
+  });
+  const isLoading = ref(true);
   const isError = ref(false);
 
   watch(
     () => props.src,
-    () => {
-      isError.value = false;
+    (src) => {
+      src && load();
     },
-  );
-  const data = useImage(
-    { src: props.src },
     {
-      onError: (e) => {
-        isError.value = true;
-      },
+      immediate: true,
     },
   );
-  const { isLoading, error, state } = data;
-  data.execute(200, () => {
-    console.log();
-  });
-
-  const d = useDateFormat(useNow({}), 'YYYY-MM-DD HH:mm:ss d');
+  function load() {
+    const img = new Image();
+    isLoading.value = true;
+    isError.value = false;
+    img.src = props.src;
+    return new Promise(() => {
+      img.onload = () => {
+        // isLoading.value = false;
+      };
+      img.onerror = () => {
+        // isLoading.value = false;
+        isError.value = true;
+      };
+    });
+  }
+  const { loadingVisible, errorVisible } = useSlotsVisible('loading', 'error');
+  loadingVisible.value;
 </script>
 
 <template>
-  {{ d }}
-  <span v-if="isLoading">Loading</span>
-  <span v-else-if="isError">isError</span>
-  <img v-else :src="src" />
+  <div class="img-wrap">
+    <template v-if="isLoading">
+      <div v-if="!loadingVisible" class="default_loading"> loading... </div>
+      <slot name="loading"></slot>
+    </template>
+    <template v-if="isError">
+      <slot v-if="errorVisible" name="error"></slot>
+      <div class="default_error"> error... </div>
+    </template>
+
+    <img v-if="!isLoading && !isError" :src="src" :alt="alt" />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .img-wrap {
+    display: inline-block;
+    background: wheat;
+    img {
+      width: 400px;
+      width: 300px;
+      display: block;
+    }
+  }
+</style>
