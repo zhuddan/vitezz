@@ -15,6 +15,7 @@
       "esnext",
       "dom"
     ],
+    "types": ["unplugin-vue-define-options"],
     "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types",

@@ -1,3 +1,4 @@
+import type { App } from 'vue';
 import { isObject } from './is';
 
 /**
@@ -26,6 +27,18 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   }
   return src as T;
 }
+
+export const withInstall = <T>(component: T, alias?: string) => {
+  const comp = component as any;
+  console.log(comp);
+  comp.install = (app: App) => {
+    app.component(comp.name || comp.displayName, component);
+    if (alias) {
+      app.config.globalProperties[alias] = component;
+    }
+  };
+  return component as T & Plugin;
+};
 
 // string
 /**
