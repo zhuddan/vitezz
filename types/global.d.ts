@@ -1,32 +1,6 @@
 import type { PropType as VuePropType } from 'vue';
 
 declare global {
-  /**
-   * @description 请求响应
-   */
-  declare interface _MergeBaseResData {
-    code: number;
-    msg?: string;
-  }
-
-  declare type MergeBaseResData<T> = T & _MergeBaseResData;
-
-  declare type ListData<T> = MergeBaseResData<{
-    total: number;
-    rows: T[];
-  }>;
-
-  declare type ResData<T = any> = MergeBaseResData<{
-    data: T;
-  }>;
-
-  declare interface ListParams {
-    pageNum: number;
-    pageSize: number;
-  }
-
-  declare type ListQuery<T = Recordable> = ListParams & Partial<T>;
-
   declare interface VEvent extends Event {
     target: HTMLInputElement;
   }

@@ -16,9 +16,6 @@
 <template>
   <div class="home">
     <div>
-      <Image style="width: 20px" src="http://192.168.31.31:8080/all.png"></Image>
-    </div>
-    <div>
       <p>{{ userStore.info?.userName }}</p>
       <button @click="logout">logout</button>
     </div>

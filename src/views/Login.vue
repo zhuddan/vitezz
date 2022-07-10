@@ -2,6 +2,7 @@
   import { getCodeImg } from '@/api/login';
   import { useUserStore } from '@/store/modules/user';
   import Image from '@/components/Image.vue';
+  import type { UserState } from '@/store/typings/user';
   const router = useRouter();
   const username = ref('csgr222');
   const password = ref('123456');
@@ -16,19 +17,13 @@
       router.push('/');
     });
   }
-  const errorBase64 = 'error';
-  getCodeImg().then((res) => {
-    codeUrl.value = 'data:image/gif;base64,' + res.img;
-    uuid.value = res.uuid;
-  });
-
-  const isError = ref(false);
-  const url = computed(() => {
-    return isError.value ? errorBase64 : codeUrl.value;
-  });
-  function toggleValue() {
-    isError.value = !isError.value;
+  function getCode() {
+    getCodeImg().then((res) => {
+      codeUrl.value = 'data:image/gif;base64,' + res.img;
+      uuid.value = res.uuid;
+    });
   }
+  getCode();
 </script>
 
 <template>
@@ -36,10 +31,7 @@
     <div class="login">
       <router-link to="/about/aaa/aaa">about</router-link>
       <div>
-        <button @click="toggleValue">toggleError</button>
-      </div>
-      <div>
-        <Image :src="url"> </Image>
+        <Image :src="codeUrl" style="width: 100px; height: 30px" object-fit="fill" @click="getCode"> </Image>
         <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
       </div>
       <input id="username" v-model="username" type="text" />

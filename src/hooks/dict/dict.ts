@@ -14,7 +14,7 @@ import type {
 
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: DictTypes) {
-  return defHttp.get<ResData<OriginDictData[]>>({
+  return defHttp.get<ResponseData<OriginDictData[]>>({
     url: `/system/dict/data/type/${dictType}`,
   });
 }

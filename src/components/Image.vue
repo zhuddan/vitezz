@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useSlotsVisible } from '@/hooks/utils/slots';
+  import { emit } from 'process';
   const props = defineProps({
     src: {
       type: String,
@@ -13,15 +14,12 @@
       type: String as PropType<'eager' | 'lazy'>,
       default: 'eager',
     },
-    width: {
-      type: [Number, String],
-      default: 320,
-    },
-    height: {
-      type: [Number, String],
-      default: 200,
+    objectFit: {
+      type: String as PropType<'fill' | 'contain' | 'cover' | 'none' | 'scale-down'>,
+      default: 'fill',
     },
   });
+  const emits = defineEmits(['click']);
   const isLoading = ref(true);
   const isError = ref(false);
 
@@ -41,41 +39,64 @@
     img.src = props.src;
     return new Promise(() => {
       img.onload = () => {
-        // isLoading.value = false;
+        isLoading.value = false;
       };
       img.onerror = () => {
-        // isLoading.value = false;
+        isLoading.value = false;
         isError.value = true;
       };
     });
   }
   const { loadingVisible, errorVisible } = useSlotsVisible('loading', 'error');
-  loadingVisible.value;
+  const attrs = useAttrs();
+  function onClick() {
+    if (isLoading.value) return;
+    emits('click');
+  }
+
+  const imgStyle = computed(() => {
+    return {
+      objectFit: props.objectFit,
+    };
+  });
 </script>
 
 <template>
-  <div class="img-wrap">
+  <div class="img-wrap" v-bind="attrs" @click="onClick">
     <template v-if="isLoading">
-      <div v-if="!loadingVisible" class="default_loading"> loading... </div>
+      <div v-if="!loadingVisible" class="default_loading"> 加载中... </div>
       <slot name="loading"></slot>
     </template>
-    <template v-if="isError">
+    <template v-else-if="isError">
       <slot v-if="errorVisible" name="error"></slot>
-      <div class="default_error"> error... </div>
+      <div class="default_error"> 预览失败... </div>
     </template>
-
-    <img v-if="!isLoading && !isError" :src="src" :alt="alt" />
+    <img v-else :src="src" :alt="alt" :style="imgStyle" />
   </div>
 </template>
 
 <style scoped lang="scss">
   .img-wrap {
     display: inline-block;
-    background: wheat;
+    overflow: hidden;
     img {
-      width: 400px;
-      width: 300px;
+      width: inherit;
+      height: inherit;
       display: block;
+      // object-fit: ;
+    }
+    .default_loading,
+    .default_error {
+      width: inherit;
+      height: inherit;
+      background: rgba(148, 148, 148, 0.502);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .default_loading {
+      cursor: wait;
     }
   }
 </style>
