@@ -2,6 +2,7 @@ export function useSlotsVisible<S extends string = string>(...arg: S[]) {
   const slots = useSlots();
 
   type A = `${S}Visible`;
+
   type SlotVisible = {
     [key in A]: boolean;
   };
@@ -20,6 +21,7 @@ export function useSlotsVisible<S extends string = string>(...arg: S[]) {
       immediate: true,
     },
   );
+
   return {
     ...toRefs(slotVisible),
   };

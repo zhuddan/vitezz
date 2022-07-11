@@ -23,6 +23,7 @@
       uuid.value = res.uuid;
     });
   }
+
   getCode();
 </script>
 
