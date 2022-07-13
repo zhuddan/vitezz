@@ -36,8 +36,7 @@ declare global {
     mozRequestAnimationFrame: Fn<FrameRequestCallback, number>;
   }
 
-  // 当前系统所有可以登录的角色类型
-  type RoleItem = 'company' | 'yuanqu';
-
   declare type TargetContext = '_self' | '_blank';
+
+  declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;
 }

@@ -2,7 +2,8 @@
   import { getCodeImg } from '@/api/login';
   import { useUserStore } from '@/store/modules/user';
   import Image from '@/components/Image.vue';
-  import type { UserState } from '@/store/typings/user';
+  import { IconPicker } from '@/components/Icon';
+
   const router = useRouter();
   const username = ref('csgr222');
   const password = ref('123456');
@@ -28,6 +29,9 @@
 </script>
 
 <template>
+  <div>
+    <IconPicker />
+  </div>
   <div style="overflow: hidden">
     <div class="login">
       <router-link to="/about/aaa/aaa">about</router-link>

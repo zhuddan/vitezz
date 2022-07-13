@@ -11,6 +11,8 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "suppressImplicitAnyIndexErrors":true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "esnext",
       "dom"
@@ -35,11 +37,8 @@
     "types/**/*.ts",
     "types/**/*.d.ts",
     "types/**/*.tsx",
-    "types/**/*.vue"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    "types/**/*.vue",
+    "build/**/*.ts",
+    "build/**/*.d.ts",
   ]
 }
