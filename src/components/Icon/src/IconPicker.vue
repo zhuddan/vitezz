@@ -2,10 +2,6 @@
   import { AntdIcons, EpIcons, IC } from '../data/index';
   import Icon from './Icon.vue';
 
-  const iconss = ref<IC>({
-    'element-plus':
-  }});
-
   const keywords = ref('');
   const icons = computed(() => {
     if (!keywords.value) {

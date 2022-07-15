@@ -105,7 +105,7 @@
   ></span>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .app-iconify {
     display: inline-block;
     // vertical-align: middle;
