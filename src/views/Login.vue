@@ -26,6 +26,8 @@
   }
 
   getCode();
+
+  const d = computed(() => {});
 </script>
 
 <template>

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-  import { AntdIcons, EpIcons, IC } from '../data/index';
+  import type { IconsType } from '../data/index';
+  import { IconCollections } from '../data/index';
   import Icon from './Icon.vue';
-
+  const activeIcons = ref<IconsType>('element-plus');
+  const baseIcons = computed(() => {
+    return IconCollections[activeIcons.value];
+  });
   const keywords = ref('');
   const icons = computed(() => {
     if (!keywords.value) {
-      return AntdIcons.icons;
+      return baseIcons.value.icons;
     }
-    return AntdIcons.icons.filter((e) => e.includes(keywords.value));
+    return baseIcons.value.icons.filter((e) => e.includes(keywords.value));
   });
   const pageSize = ref(20);
   const pageNum = ref(1);
@@ -45,18 +49,31 @@
       pageNum.value = v;
     }
   }
+
+  function toggleIcons(key: IconsType) {
+    if (activeIcons.value != key) {
+      activeIcons.value = key;
+      keywords.value = '';
+      pageNum.value = 1;
+    }
+  }
 </script>
 
 <template>
   <div>
     <div class="search-box">
       <input v-model="keywords" />
-      <span :class="{ active: iconActive == 'ant-design' }">ant-design</span>
-      <span :class="{}">element-plus</span>
+      <span
+        v-for="(item, key) in IconCollections"
+        :key="key"
+        :class="{ active: activeIcons === key }"
+        @click="toggleIcons(key)"
+        >{{ key }}</span
+      >
     </div>
     <ul>
       <li v-for="(item, index) in data" :key="index">
-        <Icon class="icon" :icon="`${AntdIcons.prefix}:${item}`" size="30"></Icon>
+        <Icon class="icon" :icon="`${baseIcons.prefix}:${item}`" size="30"></Icon>
         <span class="name">{{ item }}</span>
       </li>
     </ul>
@@ -91,10 +108,11 @@
       box-sizing: border-box;
       color: #000;
       flex-direction: column;
-      // justify-content: space-around;
       align-items: center;
       padding: 10px 0;
-
+      overflow: hidden;
+      justify-content: center;
+      margin: 0;
       span.name {
         margin-top: 6px;
         display: block;
@@ -138,6 +156,7 @@
       &.active {
         color: rgba(22, 119, 255, 0.8);
       }
+      cursor: pointer;
     }
   }
 
