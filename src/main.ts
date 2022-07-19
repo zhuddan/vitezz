@@ -7,6 +7,3 @@ import Icon from '@/components/Icon';
 const app = createApp(App).use(store).use(router);
 app.component('Icon', Icon);
 app.mount('#app');
-
-const s = ' ni -D stylelint stylelint-config-recommended stylelint-order stylelint-config-standard-scss';
-s;
