@@ -52,5 +52,9 @@
   .login {
     margin: 200px auto 0;
     width: 200px;
+
+    a {
+      color: red;
+    }
   }
 </style>
