@@ -101,6 +101,7 @@
     padding: 0;
     overflow: hidden;
     width: 700px;
+
     li {
       display: inline-flex;
       height: 80px;
@@ -113,6 +114,7 @@
       overflow: hidden;
       justify-content: center;
       margin: 0;
+
       span.name {
         margin-top: 6px;
         display: block;
@@ -125,6 +127,7 @@
         padding: 0 10px;
         box-sizing: border-box;
       }
+
       &:hover {
         background: rgba(22, 119, 255, 0.8);
         color: #fff;
@@ -132,31 +135,34 @@
       }
     }
   }
+
   .page-control {
     display: flex;
   }
 
   button {
     background: none;
-    border: 1px solid;
     height: 30px;
     font-size: 12px;
     cursor: pointer;
     border: none;
     color: rgba(22, 119, 255, 1);
+
     &:hover {
       background: rgba(22, 119, 255, 0.8);
       color: #fff;
       border-radius: 8px;
     }
   }
+
   .search-box {
     span {
       margin-left: 10px;
+      cursor: pointer;
+
       &.active {
         color: rgba(22, 119, 255, 0.8);
       }
-      cursor: pointer;
     }
   }
 
@@ -166,6 +172,7 @@
     line-height: 30px;
     padding: 0 5px;
     user-select: none;
+
     span {
       height: 30px;
       width: 30px;
@@ -180,6 +187,7 @@
       & + span {
         margin-left: 5px;
       }
+
       &.active {
         background: rgba(22, 119, 255, 0.8);
         color: #fff;
