@@ -31,6 +31,7 @@ module.exports = {
     'prettier',
     'plugin:prettier/recommended',
   ],
+  plugins: ['simple-import-sort', 'unused-imports'],
   settings: {
     'import/resolver': {
       node: {
@@ -261,5 +262,13 @@ module.exports = {
 
     'quote-props': ['error', 'as-needed'],
     'import/no-unresolved': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
+    // 'unused-imports/no-unused-imports': 'error',
+    // 'unused-imports/no-unused-vars': [
+    //   'warn',
+    //   { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+    // ],
   },
 };

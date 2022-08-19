@@ -21,6 +21,8 @@ specifiers:
   eslint-plugin-eslint-comments: ^3.2.0
   eslint-plugin-import: ^2.26.0
   eslint-plugin-prettier: ^4.2.1
+  eslint-plugin-simple-import-sort: ^7.0.0
+  eslint-plugin-unused-imports: ^2.0.0
   eslint-plugin-vue: ^9.1.1
   fs-extra: ^10.1.0
   inquirer: ^9.0.0
@@ -79,6 +81,8 @@ devDependencies:
   eslint-plugin-eslint-comments: 3.2.0_eslint@8.19.0
   eslint-plugin-import: 2.26.0_b991b8cc37fbaea14375bc1442f912c5
   eslint-plugin-prettier: 4.2.1_fd2e32b7574349919aac0818c3f895ea
+  eslint-plugin-simple-import-sort: 7.0.0_eslint@8.19.0
+  eslint-plugin-unused-imports: 2.0.0_74486172339017f6655bac52fd276dcc
   eslint-plugin-vue: 9.1.1_eslint@8.19.0
   fs-extra: 10.1.0
   inquirer: 9.0.0
@@ -1789,6 +1793,29 @@ packages:
       prettier-linter-helpers: 1.0.0
     dev: true
 
+  /eslint-plugin-simple-import-sort/7.0.0_eslint@8.19.0:
+    resolution: {integrity: sha512-U3vEDB5zhYPNfxT5TYR7u01dboFZp+HNpnGhkDB2g/2E4wZ/g1Q9Ton8UwCLfRV9yAKyYqDh62oHOamvkFxsvw==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: 8.19.0
+    dev: true
+
+  /eslint-plugin-unused-imports/2.0.0_74486172339017f6655bac52fd276dcc:
+    resolution: {integrity: sha512-3APeS/tQlTrFa167ThtP0Zm0vctjr4M44HMpeg1P4bK6wItarumq0Ma82xorMKdFsWpphQBlRPzw/pxiVELX1A==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^5.0.0
+      eslint: ^8.0.0
+    peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.30.3_bd298502bfa44e376686f9e6b29811dd
+      eslint: 8.19.0
+      eslint-rule-composer: 0.3.0
+    dev: true
+
   /eslint-plugin-vue/9.1.1_eslint@8.19.0:
     resolution: {integrity: sha512-W9n5PB1X2jzC7CK6riG0oAcxjmKrjTF6+keL1rni8n57DZeilx/Fulz+IRJK3lYseLNAygN0I62L7DvioW40Tw==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -1805,6 +1832,11 @@ packages:
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /eslint-rule-composer/0.3.0:
+    resolution: {integrity: sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==}
+    engines: {node: '>=4.0.0'}
     dev: true
 
   /eslint-scope/5.1.1:
