@@ -15,8 +15,20 @@ import type {
 
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: DictTypes) {
-  return defHttp.get<ResponseData<OriginDictData[]>>({
-    url: `/system/dict/data/type/${dictType}`,
+  return new Promise<ResponseData<OriginDictData[]>>((resolve, reject) => {
+    defHttp
+      .get<ResponseData<OriginDictData[]>>({
+        url: `/system/dict/data/type/${dictType}`,
+      })
+      .then((res) => {
+        if (!res.data) {
+          reject(
+            `[Dictionary error] Get dictionary data \`${dictType}\` with null.Please check your dictionary key with \`${dictType}\`.`,
+          );
+        } else {
+          resolve(res);
+        }
+      });
   });
 }
 // private就像protected，但不允许从子类访问成员：
@@ -218,8 +230,13 @@ class DictMeta extends BaseDict {
       return getDicts(this.name)
         .then((res) => {
           this.status = 'fulfilled';
+          return compileDict(res.data, this.labelFields, this.valueFields);
+        })
+        .then((dictData) => {
+          resolve(dictData);
+        })
+        .then(() => {
           this.time = 0;
-          resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
         .catch((e) => {
           console.error(
