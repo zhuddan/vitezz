@@ -1,5 +1,6 @@
 import { CacheEnums } from '@/enums/cacheEnum';
-import { isObject } from '@/utils/is';
+import { isNumber, isObject } from '@/utils/is';
+
 import { name as projectName, version as projectVersion } from '../../../package.json';
 
 type _CacheEnums = typeof CacheEnums;
@@ -19,7 +20,7 @@ interface WebCacheData {
 }
 
 class WebCache {
-  defaultExpires = 1 * 1000;
+  defaultExpires = 86400 * 1000 * 7;
 
   get VALUE_PREFIX() {
     return `${projectName}_${projectVersion}_`;
@@ -42,7 +43,11 @@ class WebCache {
     this.defaultExpires = t;
   }
 
-  formatTime({ day, hour, minutes, second }: Partial<Time>): number {
+  formatTime(data: Partial<Time> | number): number {
+    if (isNumber(data)) {
+      return data;
+    }
+    const { day, hour, minutes, second } = data;
     const dataDay = (day ? day * 24 : 0) * 60 * 60 * 24;
     const dataHours = (hour || 0) * 60 * 60;
     const dataMinutes = (minutes || 0) * 60;
@@ -50,9 +55,11 @@ class WebCache {
     return (dataDay + dataHours + dataMinutes + dataSeconds) * 1000;
   }
 
-  getExpires(time?: Partial<Time>): number {
+  getExpires(time?: Partial<Time> | number): number {
     let expires = this.defaultExpires;
-    if (time || isObject(time)) {
+    if (time == -1) {
+      expires = Number.MAX_SAFE_INTEGER;
+    } else if (time || isObject(time)) {
       expires = this.formatTime(time);
     }
     return new Date().getTime() + expires;
@@ -74,7 +81,7 @@ class WebCache {
     }
   }
 
-  set(key: CacheEnumsKey, value: any, options?: Partial<Time>) {
+  set(key: CacheEnumsKey, value: any, options?: Partial<Time> | number) {
     const _key = this.assembleKey(key);
     const data = this.stringifyJson({
       value,
