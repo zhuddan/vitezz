@@ -1,7 +1,8 @@
-import path from 'path';
 import fs from 'fs-extra';
 import inquirer from 'inquirer';
+import path from 'path';
 import colors from 'picocolors';
+
 import pkg from '../../../package.json';
 
 async function generateIcon() {

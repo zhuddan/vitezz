@@ -2,10 +2,10 @@ import { createApp } from 'vue';
 
 import { registerGlobComp } from '@/components/registerGlobComp';
 import router, { setupRouter } from '@/router';
+import { setupRouterGuard } from '@/router/setupRouterGuard';
 import { setupStore } from '@/store';
 
 import App from './App.vue';
-import { setupRouterGuard } from './router/setupRouterGuard';
 
 function __init__() {
   const app = createApp(App);
