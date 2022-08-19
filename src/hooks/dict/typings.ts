@@ -1,6 +1,13 @@
-export type DictTypes = 'sys_job_group' | 'sys_job_status';
+import type { ComputedRef, Ref } from 'vue';
 
-export interface OriginDictData {
+import type { Dict } from './dict';
+
+export type DictTypes =
+  | 'product_type' // 产品分类
+  | 'order_status' // 订单状态
+  | 'order_pay_status'; // 支付状态
+
+export interface _OriginDictData {
   id: string;
   dictValue: string;
   value: string;
@@ -13,7 +20,10 @@ export interface OriginDictData {
   // other label
   name: string;
   title: string;
+
+  listClass: string;
 }
+export type OriginDictData = Partial<_OriginDictData>;
 
 export type DictDataKey = Array<keyof OriginDictData>;
 
@@ -29,19 +39,106 @@ export type DictMap<T extends string, P> = {
 
 export type DictValues<T extends DictTypes> = DictMap<T, DictData[]>;
 
-export type DictState = 'pending' | 'fulfilled' | 'rejected';
+export type DictStatus = 'pending' | 'fulfilled' | 'rejected';
 
 export interface FormatDictOptions {
+  // 分割符号
   separator: string;
-  labelField: keyof OriginDictData;
-  valueField: keyof OriginDictData;
+  // 是否显示原始数据
   primitive: boolean;
 }
 
 export interface DictOptions {
+  // 懒加载
   isLazy: boolean;
+  // 字典label字段
   labelFields: DictDataKey;
+  // 字典value字段
   valueFields: DictDataKey;
+  // 重试次数
   retryTime: number;
+  // 重试延迟
   retryTimeout: number;
 }
+type DictRef<DK extends DictTypes = DictTypes> = DictMap<DK, Ref<DictData[]>>;
+
+export interface BaseDictsReturn<DK extends DictTypes = DictTypes> {
+  dict: Dict<DK>;
+  format: {
+    (dictKey: OriginDictData[] | DK, values: string[] | string): string;
+    (
+      dictKey: OriginDictData[] | DK,
+      values: string | string[],
+      options: {
+        separator?: string;
+      },
+    ): string;
+    (
+      dictKey: OriginDictData[],
+      values: string,
+      options: {
+        separator?: string;
+        primitive: true;
+      },
+    ): DictData;
+    (
+      dictKey: DK,
+      values: string,
+      options: {
+        separator?: string;
+        primitive: true;
+      },
+    ): DictData;
+    (
+      dictKey: OriginDictData[],
+      values: string[],
+      options: {
+        separator?: string;
+        primitive: true;
+      },
+    ): DictData[];
+    (
+      dictKey: DK,
+      values: string[],
+      options: {
+        separator?: string;
+        primitive: true;
+      },
+    ): DictData[];
+    (
+      dictKey: OriginDictData[],
+      values: string,
+      options: {
+        primitive: true;
+      },
+    ): DictData;
+    (
+      dictKey: DK,
+      values: string,
+      options: {
+        primitive: true;
+      },
+    ): DictData;
+    (
+      dictKey: OriginDictData[],
+      values: string[],
+      options: {
+        primitive: true;
+      },
+    ): DictData[];
+    (
+      dictKey: DK,
+      values: string[],
+      options: {
+        primitive: true;
+      },
+    ): DictData[];
+  };
+  load: {
+    (): Promise<DictData[][]>;
+    (dictKey: DK): Promise<DictData[]>;
+  };
+  dicts: ComputedRef<DictValues<DK>>;
+}
+
+export type WithBaseDictReturn<DK extends DictTypes = DictTypes> = DictRef<DK> & BaseDictsReturn<DK>;

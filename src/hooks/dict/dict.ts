@@ -1,15 +1,16 @@
 import { defHttp } from '@/utils/http';
 import { isArray, isString } from '@/utils/is';
+
 import type {
-  DictOptions,
-  DictValues,
   DictData,
   DictDataKey,
+  DictMap,
+  DictOptions,
+  DictStatus,
   DictTypes,
+  DictValues,
   FormatDictOptions,
   OriginDictData,
-  DictMap,
-  DictState,
 } from './typings';
 
 // 根据字典类型查询字典数据信息
@@ -23,8 +24,6 @@ const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
 const defaultFormatOptions: FormatDictOptions = {
   separator: '/',
-  labelField: 'label',
-  valueField: 'value',
   primitive: false,
 };
 
@@ -55,6 +54,24 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
 
   dictMeta = {} as DictMap<DK, DictMeta>;
 
+  _status = computed<DictStatus>(() => {
+    if (!this.keys.length) {
+      return 'fulfilled';
+    }
+    if (this.keys.every((e) => this.dictMeta[e].status == 'fulfilled')) {
+      return 'fulfilled';
+    }
+
+    if (this.keys.some((e) => this.dictMeta[e].status == 'rejected')) {
+      return 'rejected';
+    }
+    return 'pending';
+  });
+
+  get status() {
+    return this._status.value;
+  }
+
   private _data = reactive<DictValues<DK>>({} as DictValues<DK>);
 
   get data() {
@@ -81,6 +98,8 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     }
   }
 
+  load(): Promise<DictData[][]>;
+  load(dictKey: DK): Promise<DictData[]>;
   load(dictKey?: DK): Promise<DictData[] | DictData[][]> {
     return new Promise(async (resolve) => {
       if (dictKey) {
@@ -94,15 +113,19 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     });
   }
 
-  format(dictKey: DK | OriginDictData[], values: string[] | string, options?: Partial<FormatDictOptions>) {
-    if (isString(dictKey)) {
-      return this.formatByDictKey(dictKey, values, options);
-    }
-    return this.formatByDictData(dictKey, values, options);
+  format(dictKey: OriginDictData[] | DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
+    const res = computed(() => {
+      if (values == undefined || values == null) return '';
+      if (isString(dictKey)) {
+        return this.formatByDictKey(dictKey, values, options);
+      }
+      return this.formatByDictData(unref(dictKey), values, options);
+    });
+    return unref(res);
   }
 
   private formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
-    if (this.dictMeta[dictKey].state != 'fulfilled') {
+    if (this.dictMeta[dictKey].status != 'fulfilled') {
       return '';
     }
     const data = this.data[dictKey];
@@ -131,22 +154,15 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   }
 
   private formatValue(data: Array<OriginDictData | DictData>, value: string, options: FormatDictOptions) {
-    const res = data.find((e) => e[options.valueField] == value) || {};
+    const res = data.find((e) => e[getDictField(e, ...this.valueFields)] == value) || {};
     if (!res) {
-      const _options = data.map((e) => ({
-        label: e[options.labelField],
-        value: e[options.valueField],
-      }));
-      console.warn(
-        `[Dict format warning]: Can not find the dictionary with value ${value} in data: `,
-        _options,
-      );
+      console.warn(`[Dict format warning]: Can not find the dictionary with value ${value} in data: `, data);
       return '';
     }
     if (options.primitive) {
       return res;
     }
-    return res?.[options.labelField];
+    return res?.[getDictField(res, ...this.labelFields)];
   }
 }
 
@@ -169,16 +185,16 @@ class DictMeta extends BaseDict {
     return this.data;
   }
 
-  _state: DictState = 'pending';
+  _status = ref<DictStatus>('pending');
 
   time = 0;
 
-  set state(data: DictState) {
-    this._state = data;
+  set status(data: DictStatus) {
+    this._status.value = data;
   }
 
-  get state() {
-    return this._state;
+  get status() {
+    return this._status.value;
   }
 
   _data = ref<DictData[]>([]);
@@ -196,12 +212,12 @@ class DictMeta extends BaseDict {
   }
 
   private requestDicts(): Promise<DictData[]> {
-    this.state = 'pending';
+    this.status = 'pending';
     this.time++;
     return new Promise((resolve, reject) => {
       return getDicts(this.name)
         .then((res) => {
-          this.state = 'fulfilled';
+          this.status = 'fulfilled';
           this.time = 0;
           resolve(compileDict(res.data, this.labelFields, this.valueFields));
         })
@@ -213,7 +229,7 @@ class DictMeta extends BaseDict {
             console.error(
               `[Dict error] Attempt to repeat the request for dictionary data \`${this.name}\` for the ${this.time} times failed. Request has been abandoned.`,
             );
-            this.state = 'rejected';
+            this.status = 'rejected';
             reject(e);
             return;
           }
@@ -236,8 +252,8 @@ function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields
   const res = { raw: data } as unknown as DictData;
   const labelField = getDictField(data, ...labelFields);
   const valueField = getDictField(data, ...valueFields);
-  res.label = data[labelField];
-  res.value = data[valueField];
+  res.label = data[labelField] as string;
+  res.value = data[valueField] as string;
   return res;
 }
 
