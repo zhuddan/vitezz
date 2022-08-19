@@ -1,5 +1,7 @@
-import { capitalize } from '@/utils';
 import type { RouteRecordRaw } from 'vue-router';
+
+import { capitalize } from '@/utils';
+
 import router from '.';
 
 export class RouteUtil {

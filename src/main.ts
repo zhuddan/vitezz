@@ -1,9 +1,11 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+
+import { registerGlobComp } from '@/components/registerGlobComp';
 import router, { setupRouter } from '@/router';
 import { setupStore } from '@/store';
+
+import App from './App.vue';
 import { setupRouterGuard } from './router/setupRouterGuard';
-import { registerGlobComp } from '@/components/registerGlobComp';
 
 function __init__() {
   const app = createApp(App);

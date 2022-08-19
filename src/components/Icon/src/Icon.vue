@@ -1,9 +1,11 @@
 <script lang="ts">
-  import type { PropType, CSSProperties } from 'vue';
-  import { defineComponent, ref, watch, onMounted, nextTick, unref, computed } from 'vue';
-  import SvgIcon from './SvgIcon.vue';
   import Iconify from '@purge-icons/generated';
+  import type { CSSProperties, PropType } from 'vue';
+  import { computed, defineComponent, nextTick, onMounted, ref, unref, watch } from 'vue';
+
   import { isString } from '@/utils/is';
+
+  import SvgIcon from './SvgIcon.vue';
 
   const SVG_END_WITH_FLAG = '|svg';
   export default defineComponent({

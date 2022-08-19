@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { getCodeImg } from '@/api/login';
-  import { useUserStore } from '@/store/modules/user';
-  import Image from '@/components/Image.vue';
   import { IconPicker } from '@/components/Icon';
+  import Image from '@/components/Image.vue';
+  import { useUserStore } from '@/store/modules/user';
 
   const router = useRouter();
   const username = ref('csgr222');

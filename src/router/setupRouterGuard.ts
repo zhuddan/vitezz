@@ -1,8 +1,9 @@
+import type { Router } from 'vue-router';
+
 import { useSettings } from '@/hooks/settings';
 import { usePermissionStore } from '@/store/modules/permission';
 import { useUserStore } from '@/store/modules/user';
 import { getToken } from '@/utils/cache';
-import type { Router } from 'vue-router';
 const settings = useSettings();
 export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {

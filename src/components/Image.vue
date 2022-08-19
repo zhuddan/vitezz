@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { useSlotsVisible } from '@/hooks/utils/slots';
   import { emit } from 'process';
+
+  import { useSlotsVisible } from '@/hooks/utils/slots';
   const props = defineProps({
     src: {
       type: String,
