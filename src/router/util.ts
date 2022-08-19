@@ -1,4 +1,5 @@
 import { capitalize } from '@/utils';
+import type { RouteRecordRaw } from 'vue-router';
 import router from '.';
 
 export class RouteUtil {
@@ -14,7 +15,7 @@ export class RouteUtil {
     }
   }
 
-  handleRouteName(route: VueRouteRecordRaw) {
+  handleRouteName(route: RouteRecordRaw) {
     if (route.name) {
       this.maps[route.name] = true;
       return;
@@ -32,24 +33,24 @@ export class RouteUtil {
     route.name = name;
   }
 
-  addRoutes(routes: VueRouteRecordRaw[], autoName = true) {
+  addRoutes(routes: RouteRecordRaw[], autoName = true) {
     routes.forEach((route) => {
       autoName && this.handleRouteName(route);
       this.addRoute(route);
     });
   }
 
-  addRoute(route: VueRouteRecordRaw) {
+  addRoute(route: RouteRecordRaw) {
     router.addRoute(route);
   }
 
-  removeRoutes(routes: VueRouteRecordRaw[]) {
+  removeRoutes(routes: RouteRecordRaw[]) {
     routes.forEach((route) => {
       this.removeRoute(route);
     });
   }
 
-  removeRoute(route: VueRouteRecordRaw) {
+  removeRoute(route: RouteRecordRaw) {
     const name = route.name;
     if (!name) {
       return;

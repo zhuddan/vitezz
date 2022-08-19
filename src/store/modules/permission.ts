@@ -1,4 +1,4 @@
-import { getRoutes } from '@/router/syncRouters';
+import { getRoutes } from '@/router/routes/syncRouters';
 import util from '@/router/util';
 import { defineStore } from 'pinia';
 import type { PermissionState } from '../typings/permission';

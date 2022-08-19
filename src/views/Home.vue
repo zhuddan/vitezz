@@ -10,7 +10,7 @@
     userStore.logout();
     router.push('/redirect/');
   }
-  const { sys_job_group, format, load } = useDicts(['sys_job_group'], {});
+  const { product_type, format, load } = useDicts(['product_type'], {});
 </script>
 
 <template>
@@ -19,12 +19,12 @@
       <p>{{ userStore.info?.userName }}</p>
       <button @click="logout">logout</button>
     </div>
-    <p> {{ sys_job_group }} </p>
+    <p> {{ product_type }} </p>
     <button @click="load()">dict.load</button>
     <router-link to="/list">list</router-link>
     <div>-------------------</div>
     <p style="color: blue">
-      {{ format('sys_job_group', 'DEFAULT') }}
+      {{ format('product_type', 'DEFAULT') }}
     </p>
   </div>
 </template>

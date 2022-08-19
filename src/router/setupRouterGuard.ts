@@ -4,7 +4,7 @@ import { useUserStore } from '@/store/modules/user';
 import { getToken } from '@/utils/cache';
 import type { Router } from 'vue-router';
 const settings = useSettings();
-export function useGuard(router: Router) {
+export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     document.title = `${settings.VITE_APP_TITLE} | ${to.meta.title}`;
     const permission = usePermissionStore();

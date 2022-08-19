@@ -1,7 +1,8 @@
+import type { App } from 'vue';
+import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
-import { useGuard } from './guard';
 
-const routes: VueRouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     meta: {
@@ -30,12 +31,15 @@ const routes: VueRouteRecordRaw[] = [
     meta: {
       title: '关于',
     },
-    component: () => import('@/views/Error/404.vue'),
+    component: () => import('@/views/404.vue'),
   },
 ];
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
 });
-useGuard(router);
+
+export function setupRouter(app: App) {
+  app.use(router);
+}
 export default router;

@@ -1,5 +1,7 @@
 // 动态路由
-export const syncRoutes: VueRouteRecordRaw[] = [
+import type { RouteRecordRaw } from 'vue-router';
+
+export const syncRoutes: RouteRecordRaw[] = [
   {
     path: '/list',
     meta: {
@@ -17,7 +19,7 @@ export const syncRoutes: VueRouteRecordRaw[] = [
   },
 ];
 
-export function getRoutes(): Promise<VueRouteRecordRaw[]> {
+export function getRoutes(): Promise<RouteRecordRaw[]> {
   return new Promise((resolve) => {
     const t = setTimeout(() => {
       clearTimeout(t);

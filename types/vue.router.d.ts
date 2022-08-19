@@ -1,13 +1,9 @@
-import type { RouteRecordRaw } from 'vue-router';
+import 'vue-router';
 
-declare global {
-  interface ExtendRouteRecordRaw {
-    meta: {
-      title?: string;
-      auth?: boolean;
-      hidden?: boolean;
-    };
+declare module 'vue-router' {
+  interface RouteMeta {
+    title?: string;
+    auth?: boolean;
+    hidden?: boolean;
   }
-  type _VueRouteRecordRaw = RouteRecordRaw & ExtendRouteRecordRaw;
-  declare type VueRouteRecordRaw = TreeItem<_VueRouteRecordRaw>;
 }
