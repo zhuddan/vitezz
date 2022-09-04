@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { BackTop } from '@/components/BackTop';
   defineOptions({
     name: 'LayoutMain',
   });
@@ -6,6 +7,7 @@
 
 <template>
   <main>
+    <BackTop />
     <router-view></router-view>
   </main>
 </template>
