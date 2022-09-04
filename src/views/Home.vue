@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import Image from '@/components/Image.vue';
   import { useDicts } from '@/hooks/dict';
   import { useUserStore } from '@/store/modules/user';
   const userStore = useUserStore();
