@@ -77,29 +77,29 @@ select:-webkit-autofill {
   // vertical-align: middle;
 }
 
-
-button{
+button.btn-primary {
   background: none;
-
   color: white;
   background-color: var(--color-primary);
-  border:1px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
   font-size: 12px;
   border-radius: 4px;
   padding: 4px 8px;
-  &:hover{
+
+  &:hover {
     cursor: pointer;
-    opacity: .8;
+    opacity: 0.8;
   }
-  &:disabled{
+
+  &:disabled {
     // color: red;
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
-input{
-  padding:  4px 10px;
-  border:1px solid var(--color-primary);
+input {
+  padding: 4px 10px;
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
   box-sizing: border-box;
 }

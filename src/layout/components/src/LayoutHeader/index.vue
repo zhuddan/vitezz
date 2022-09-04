@@ -1,20 +1,17 @@
 <script setup lang="ts">
   import { AppLogo } from '@/components/Application/';
-  import { useEventListener } from '@/hooks/web/useEventListener';
   import { useUserStore } from '@/store/modules/user';
+  import { useWindowScroll } from '@vueuse/core';
   defineOptions({
     name: 'LayoutHeader',
   });
-  const scrollTop = ref(0);
   const userStore = useUserStore();
   const isLogin = computed(() => !!userStore.user);
   const userName = computed(() => userStore.user?.userName);
-  const isFixed = computed(() => scrollTop.value > 61);
+  const { y } = useWindowScroll();
+  const isFixed = computed(() => y.value > 61);
   const router = useRouter();
-  useEventListener(window, 'scroll', () => {
-    var _scrollTop = document.documentElement.scrollTop;
-    scrollTop.value = _scrollTop;
-  });
+
   async function handleLogout() {
     await userStore.logout();
     router.replace('/redirect/');
@@ -34,7 +31,7 @@
       <AppLogo />
       <div v-if="isLogin" class="user-info">
         <span>{{ userName }}</span>
-        <button @click="handleLogout">退出登录</button>
+        <button class="btn-primary" @click="handleLogout">退出登录</button>
       </div>
     </div>
   </header>

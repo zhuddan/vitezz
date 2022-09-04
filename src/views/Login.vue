@@ -54,7 +54,7 @@
         <input id="code" v-model="code" placeholder="验证码" type="text" @keydown.enter="handleLogin" />
         <img :src="codeUrl" object-fit="fill" @click="getCode" />
       </div>
-      <button :disabled="loading" class="login-button" @click="handleLogin">{{
+      <button :disabled="loading" class="login-button btn-primary" @click="handleLogin">{{
         !loading ? 'login' : 'logging...'
       }}</button>
     </div>
