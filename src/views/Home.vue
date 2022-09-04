@@ -2,7 +2,6 @@
   import { useDicts } from '@/hooks/dict';
   import { useUserStore } from '@/store/modules/user';
   import { removeToken } from '@/utils/cache';
-  import Image from '@/components/Image.vue';
   const userStore = useUserStore();
 
   const router = useRouter();

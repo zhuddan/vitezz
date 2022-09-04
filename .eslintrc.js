@@ -49,6 +49,7 @@ module.exports = {
     },
   },
   rules: {
+    'prettier/prettier': 'warn',
     // 'no-extra-semi': [],
     // '@typescript-eslint/no-extra-semi': [2, 'always'],
     // TS

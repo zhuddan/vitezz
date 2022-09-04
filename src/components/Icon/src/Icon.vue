@@ -1,11 +1,14 @@
 <script lang="ts">
-  import type { PropType, CSSProperties } from 'vue';
-  import { defineComponent, ref, watch, onMounted, nextTick, unref, computed } from 'vue';
-  import SvgIcon from './SvgIcon.vue';
   import Iconify from '@purge-icons/generated';
+
   import { isString } from '@/utils/is';
 
+  import SvgIcon from './SvgIcon.vue';
+
+  import type { CSSProperties } from 'vue';
+
   const SVG_END_WITH_FLAG = '|svg';
+
   export default defineComponent({
     name: 'Icon',
     components: { SvgIcon },
@@ -88,18 +91,11 @@
 </script>
 
 <template>
-  <SvgIcon
-    v-if="isSvgIcon"
-    :size="size"
-    :name="getSvgIcon"
-    class="anticon"
-    :class="[$attrs.class]"
-    :spin="spin"
-  />
+  <SvgIcon v-if="isSvgIcon" :size="size" :name="getSvgIcon" :class="[$attrs.class]" :spin="spin" />
   <span
     v-else
     ref="elRef"
-    class="app-iconify anticon"
+    class="app-iconify"
     :class="[$attrs.class, spin && 'app-iconify-spin']"
     :style="getWrapStyle"
   ></span>
@@ -108,7 +104,7 @@
 <style lang="scss" scoped>
   .app-iconify {
     display: inline-block;
-    // vertical-align: middle;
+    vertical-align: middle;
 
     &-spin {
       svg {

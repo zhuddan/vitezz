@@ -33,6 +33,6 @@ export function login(username: string, password: string, code: string, uuid: st
 // 获取用户详细信息
 export function getInfo() {
   return defHttp.get<ResponseResult<UserModel>>({
-    url: '/getInfo/' + Date.now(),
+    url: '/getInfo',
   });
 }

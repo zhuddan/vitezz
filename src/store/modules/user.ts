@@ -3,8 +3,6 @@ import { removeToken, setToken } from '@/utils/cache';
 import { defineStore } from 'pinia';
 
 import type { UserState } from '../typings/user';
-import { usePermissionStore } from './permission';
-import { useTestStore } from './test';
 
 export const useUserStore = defineStore({
   id: 'user',
@@ -31,10 +29,6 @@ export const useUserStore = defineStore({
       this.permissions = res.permissions;
     },
     resetAllState() {
-      const permissionStore = usePermissionStore();
-      const testStore = useTestStore();
-      permissionStore.resetState();
-      testStore.resetState();
       this.$reset();
       removeToken();
     },

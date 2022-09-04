@@ -1,12 +1,10 @@
 <script setup lang="ts">
   import { getCodeImg } from '@/api/login';
   import { useUserStore } from '@/store/modules/user';
-  import Image from '@/components/Image.vue';
-  import { IconPicker } from '@/components/Icon';
 
   const router = useRouter();
-  const username = ref('csgr222');
-  const password = ref('123456');
+  const username = ref('admin');
+  const password = ref('admin123');
   const code = ref('');
   const uuid = ref('');
   const codeUrl = ref('');
@@ -31,14 +29,11 @@
 </script>
 
 <template>
-  <div>
-    <IconPicker />
-  </div>
   <div style="overflow: hidden">
     <div class="login">
       <router-link to="/about/aaa/aaa">about</router-link>
       <div>
-        <Image :src="codeUrl" style="width: 100px; height: 30px" object-fit="fill" @click="getCode"> </Image>
+        <img :src="codeUrl" style="width: 100px; height: 30px" object-fit="fill" @click="getCode" />
         <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
       </div>
       <input id="username" v-model="username" type="text" />

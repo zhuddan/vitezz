@@ -1,6 +1,5 @@
-import type { App } from 'vue';
 import { isObject } from './is';
-
+import type { App, Component, Plugin } from 'vue';
 /**
  * Add the object as a parameter to the URL
  * @param baseUrl url
@@ -28,9 +27,8 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   return src as T;
 }
 
-export const withInstall = <T>(component: T, alias?: string) => {
+export const withInstall = <T extends Component>(component: T, alias?: string) => {
   const comp = component as any;
-  console.log(comp);
   comp.install = (app: App) => {
     app.component(comp.name || comp.displayName, component);
     if (alias) {
@@ -55,3 +53,19 @@ export function capitalize(str: string, strict = true) {
   const str2 = str.slice(1);
   return `${str1}${strict ? str2.toLocaleLowerCase() : str2}`;
 }
+
+export function sleep(t = 1000) {
+  return new Promise<void>((resolve) => {
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      resolve();
+    }, t);
+  });
+}
+
+export const createUuid = () => {
+  const temp_url = URL.createObjectURL(new Blob());
+  const uuid = temp_url.toString();
+  URL.revokeObjectURL(temp_url); //释放这个url
+  return uuid.substring(uuid.lastIndexOf('/') + 1);
+};

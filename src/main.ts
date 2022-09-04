@@ -1,9 +1,27 @@
-import { createApp } from 'vue';
 import App from './App.vue';
-import { store } from '@/store';
-import router from '@/router';
-import Icon from '@/components/Icon';
+import router, { setupRouter } from '@/router';
+import { setupStore } from '@/store';
 
-const app = createApp(App).use(store).use(router);
-app.component('Icon', Icon);
-app.mount('#app');
+import { setupRouterGuard } from '@/router/setupRouterGuard';
+
+import { registerGlobComp } from '@/components/registerGlobComp';
+
+import { initStore } from './store/initStore';
+
+function __init__() {
+  const app = createApp(App);
+  // 注册 store
+  setupStore(app);
+  // 初始化 store
+  initStore();
+  // 注册路由
+  setupRouter(app);
+  // 路由拦截
+  setupRouterGuard(router);
+  // 全局组件
+  registerGlobComp(app);
+
+  app.mount('#app');
+}
+
+__init__();
