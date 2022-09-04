@@ -59,10 +59,10 @@
   }
 
   .bounce-enter-active {
-    animation: zoomIn 0.3s;
+    animation: zoomIn 0.1s;
   }
 
   .bounce-leave-active {
-    animation: zoomIn 0.3s reverse;
+    animation: zoomIn 0.1s reverse;
   }
 </style>
