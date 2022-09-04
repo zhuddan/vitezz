@@ -1,4 +1,5 @@
 import { defHttp } from '@/utils/http';
+
 import type { UserModel } from './model/userModel';
 // 获取验证码
 export function getCodeImg() {

@@ -1,8 +1,9 @@
-import type { PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import DefineOptions from 'unplugin-vue-define-options/vite';
-import { createAutoImportPlugin } from './plugins/autoImport';
+import type { PluginOption } from 'vite';
 import purgeIcons from 'vite-plugin-purge-icons';
+
+import { createAutoImportPlugin } from './plugins/autoImport';
 import { configSvgIconsPlugin } from './plugins/svgSprite';
 import { configVisualizerConfig } from './plugins/visualizer';
 

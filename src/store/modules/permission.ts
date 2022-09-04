@@ -1,5 +1,9 @@
 import { asyncRoutes } from '@/router/routes/asyncRoutes';
 import { defineStore } from 'pinia';
+
+import { getRoutes } from '@/router/routes/syncRouters';
+import util from '@/router/util';
+
 import type { PermissionState } from '../typings/permission';
 import { sleep } from '@/utils';
 import router from '@/router';
