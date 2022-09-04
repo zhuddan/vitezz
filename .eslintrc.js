@@ -10,9 +10,9 @@ module.exports = {
         parser: '@typescript-eslint/parser',
       },
       rules: {
-        // 'no-unused-vars': 'off',
-        // 'no-undef': 'off',
-        // '@typescript-eslint/no-unused-vars': 'off',
+        'no-unused-vars': 'off',
+        'no-undef': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
       },
     },
   ],
@@ -31,7 +31,7 @@ module.exports = {
     'prettier',
     'plugin:prettier/recommended',
   ],
-  plugins: ['simple-import-sort', 'unused-imports'],
+  // plugins: ['simple-import-sort', 'unused-imports'],
   settings: {
     'import/resolver': {
       node: {
@@ -263,8 +263,8 @@ module.exports = {
 
     'quote-props': ['error', 'as-needed'],
     'import/no-unresolved': 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
+    // 'simple-import-sort/imports': 'error',
+    // 'simple-import-sort/exports': 'error',
     'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
     // 'unused-imports/no-unused-imports': 'error',
     // 'unused-imports/no-unused-vars': [
