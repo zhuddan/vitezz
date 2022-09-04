@@ -13,6 +13,8 @@
   const router = useRouter();
 
   async function handleLogout() {
+    if (!confirm('确定退出登录？')) return;
+
     await userStore.logout();
     router.replace('/redirect/');
   }

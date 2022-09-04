@@ -7,7 +7,6 @@ import { getToken } from '@/utils/cache';
 export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     const permission = usePermissionStore();
-    console.log(to.path, getToken());
     if (getToken()) {
       const userStore = useUserStore();
       if (!userStore.user) {

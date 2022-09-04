@@ -2,5 +2,6 @@ import { useUserStore } from './modules/user';
 
 export function initStore() {
   const user = useUserStore();
-  console.log(user);
+  user;
+  console.log('> init_store: ' + Date.now());
 }

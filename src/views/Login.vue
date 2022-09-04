@@ -31,6 +31,10 @@
       .then(() => {
         router.push('/');
       })
+      .catch((e) => {
+        code.value = '';
+        getCode();
+      })
       .finally(() => {
         loading.value = false;
       });
@@ -51,7 +55,7 @@
       <input id="username" v-model="username" type="text" placeholder="用户名" />
       <input id="password" v-model="password" type="text" placeholder="密码" />
       <div class="code-input clearfix">
-        <input id="code" v-model="code" placeholder="验证码" type="text" @keydown.enter="handleLogin" />
+        <input id="code" v-model="code" type="number" placeholder="验证码" @keydown.enter="handleLogin" />
         <img :src="codeUrl" object-fit="fill" @click="getCode" />
       </div>
       <button :disabled="loading" class="login-button btn-primary" @click="handleLogin">{{
