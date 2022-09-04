@@ -1,6 +1,3 @@
-/**
- * @desc 参考 https://github.com/antfu/eslint-config ，我单纯不想下包
- */
 module.exports = {
   overrides: [
     {
