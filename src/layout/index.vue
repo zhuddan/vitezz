@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { useAppConfig } from '@/hooks/config/useAppConfig';
   import { useUserStore } from '@/store/modules/user';
   import Logo from './Logo.vue';
 
-  const { VITE_APP_TITLE } = useAppConfig();
   const userStore = useUserStore();
   defineOptions({
     name: 'Layout',
