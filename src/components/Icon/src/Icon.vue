@@ -1,11 +1,10 @@
 <script lang="ts">
   import Iconify from '@purge-icons/generated';
+  import type { CSSProperties } from 'vue';
 
   import { isString } from '@/utils/is';
 
   import SvgIcon from './SvgIcon.vue';
-
-  import type { CSSProperties } from 'vue';
 
   const SVG_END_WITH_FLAG = '|svg';
 

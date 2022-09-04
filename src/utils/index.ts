@@ -1,5 +1,6 @@
-import { isObject } from './is';
 import type { App, Component, Plugin } from 'vue';
+
+import { isObject } from './is';
 /**
  * Add the object as a parameter to the URL
  * @param baseUrl url

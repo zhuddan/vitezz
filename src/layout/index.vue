@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from '@/store/modules/user';
+
   import Logo from './Logo.vue';
 
   const userStore = useUserStore();

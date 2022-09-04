@@ -1,14 +1,12 @@
-import App from './App.vue';
-import router, { setupRouter } from '@/router';
-import { setupStore } from '@/store';
-
-import { setupRouterGuard } from '@/router/setupRouterGuard';
+import '@/style/index.scss';
 
 import { registerGlobComp } from '@/components/registerGlobComp';
+import router, { setupRouter } from '@/router';
+import { setupRouterGuard } from '@/router/setupRouterGuard';
+import { setupStore } from '@/store';
 
+import App from './App.vue';
 import { initStore } from './store/initStore';
-
-import '@/style/index.scss';
 function __init__() {
   const app = createApp(App);
   // 注册 store

@@ -66,8 +66,10 @@
     margin: 200px auto 0;
     width: 300px;
   }
+
   .code-input {
     height: 60px;
+
     input {
       width: 131px;
       float: left;
@@ -75,14 +77,17 @@
       margin-right: 8px;
       margin-bottom: 0;
     }
+
     img {
       float: left;
     }
   }
+
   input {
     width: 100%;
     margin-bottom: 10px;
   }
+
   .login-button {
     width: 100%;
     font-size: 16px;
