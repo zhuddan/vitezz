@@ -11,7 +11,7 @@ export const usePermissionStore = defineStore({
   }),
   actions: {
     async addSyncRoutes() {
-      await sleep();
+      await sleep(1);
       this.routes = asyncRoutes;
       asyncRoutes.forEach((e) => {
         router.addRoute(e);

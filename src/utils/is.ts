@@ -91,3 +91,10 @@ export function isMap(val: unknown): val is Map<any, any> {
 export const isServer = typeof window === 'undefined';
 
 export const isClient = !isServer;
+
+export function isLink(path?: string): boolean {
+  if (!path) return false;
+  const reg =
+    /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+  return reg.test(path);
+}

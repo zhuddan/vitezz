@@ -1,77 +1,83 @@
 export interface UserModel {
-  systems: System[];
   permissions: string[];
   roles: string[];
-  user: User;
-  info: UserInfo;
+  user: UserInfo;
 }
 
 export interface UserInfo {
-  id: number;
+  searchValue?: any;
+  createBy: string;
+  createTime: string;
+  updateBy?: any;
+  updateTime?: any;
+  remark: string;
+  params: Params;
   userId: number;
-  unitId: number;
+  deptId: number;
   userName: string;
-  oldName: string;
-  userNameInitials: string;
-  userNameFull: string;
-  birthday: string;
-  sex: number;
-  regionCode: string;
-  nation: string;
-  nativesCode: string;
-  photoImageId: number;
-  partyCode: string;
-  address: string;
-  postCode: string;
-  studyProCodeFirst: string;
-  studyProCodeSecond: string;
-  studyProCodeThird: string;
-  position: string;
-  unitPart: string;
-  engageProCodeFirst: string;
-  engageProCodeSecond: string;
-  engageProCodeThird: string;
-  paperworkTypeCode: string;
-  paperworkNumber: string;
-  learn: string;
-  performanceYears: string;
-  jobWorkYears: string;
-  status: number;
-  sort: number;
-  gmtCreate: number;
-  gmtModified: number;
-  photoImageUrl: string;
-  phone: string;
-  email: string;
-  unitName: string;
-  schoolDept: string;
-}
-
-export interface User {
-  id: number;
-  typeId: number;
-  loginName: string;
-  loginPassword: string;
-  salt: string;
-  commonCode: string;
-  email: string;
-  phone: string;
-  status: number;
-  repeatLogin: number;
-  gmtCreate: number;
-  gmtModified: number;
-  sort: number;
   nickName: string;
+  email: string;
+  phonenumber: string;
+  sex: string;
   avatar: string;
+  password: string;
+  status: string;
+  delFlag: string;
+  loginIp: string;
+  loginDate: string;
+  dept: Dept;
+  roles: Role[];
+  roleIds?: any;
+  postIds?: any;
+  roleId?: any;
   admin: boolean;
 }
 
-export interface System {
-  createBy: string;
-  updateBy: string;
-  updateTime: string;
-  id: number;
-  title: string;
-  sort: number;
-  status: number;
+interface Role {
+  searchValue?: any;
+  createBy?: any;
+  createTime?: any;
+  updateBy?: any;
+  updateTime?: any;
+  remark?: any;
+  params: Params;
+  roleId: number;
+  roleName: string;
+  roleKey: string;
+  roleSort: string;
+  dataScope: string;
+  menuCheckStrictly: boolean;
+  deptCheckStrictly: boolean;
+  status: string;
+  delFlag?: any;
+  flag: boolean;
+  menuIds?: any;
+  deptIds?: any;
+  admin: boolean;
+}
+
+interface Dept {
+  searchValue?: any;
+  createBy?: any;
+  createTime?: any;
+  updateBy?: any;
+  updateTime?: any;
+  remark?: any;
+  params: Params;
+  deptId: number;
+  parentId: number;
+  ancestors: string;
+  deptName: string;
+  orderNum: number;
+  leader: string;
+  phone?: any;
+  email?: any;
+  status: string;
+  delFlag?: any;
+  parentName?: any;
+  children: any[];
+}
+
+interface Params {
+  '@type': string;
 }

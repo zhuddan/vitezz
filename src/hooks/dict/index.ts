@@ -1,31 +1,41 @@
-import type { ComputedRef, Ref } from 'vue';
 import { Dict } from './dict';
-import type { DictData, DictMap, DictOptions, DictTypes, DictValues, FormatDictOptions } from './typings';
-
-type DictRef<DK extends DictTypes = DictTypes> = DictMap<DK, Ref<DictData[]>>;
-
-interface DictMapRef<DK extends DictTypes = DictTypes> {
-  dict: Dict<DK>;
-  format: (
-    dictKey: DK,
-    values: string[] | string,
-    options?: Partial<FormatDictOptions>,
-  ) => typeof Dict.prototype.format;
-  load: typeof Dict.prototype.load;
-  dicts: ComputedRef<DictValues<DK>>;
-}
-type UseDictsReturn<DK extends DictTypes = DictTypes> = DictRef<DK> & DictMapRef<DK>;
+import type {
+  DictData,
+  DictOptions,
+  DictTypes,
+  DictValues,
+  FormatDictOptions,
+  OriginDictData,
+  WithBaseDictReturn,
+} from './typings';
 
 export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?: Partial<DictOptions>) {
   const dict = new Dict(keys, options);
+  function format(
+    dictKey: OriginDictData[] | DK,
+    values: string[] | string,
+    options?: Partial<FormatDictOptions>,
+  ) {
+    const data = dict.format.call(dict, dictKey, values, options);
+    if (options?.primitive) {
+      if (dictKey instanceof Array) {
+        if (values instanceof Array) {
+          return data as unknown as OriginDictData[];
+        }
+        return data as unknown as OriginDictData;
+      } else {
+        if (values instanceof Array) {
+          return data as unknown as DictData[];
+        }
+        return data as unknown as DictData;
+      }
+    }
+    return data;
+  }
 
-  const format = (dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) => {
-    return dict.format.call(dict, dictKey, values, options);
-  };
-
-  const load = (dictKey?: DK) => {
-    return dict.load.call(dict, dictKey);
-  };
+  function load(dictKey?: DK) {
+    return dict.load.call(dict, dictKey!);
+  }
 
   const dicts = computed<DictValues<DK>>(() => {
     return dict.data;
@@ -37,5 +47,5 @@ export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?:
     format,
     load,
     ...toRefs(dict.data),
-  } as UseDictsReturn<DK>;
+  } as unknown as WithBaseDictReturn<DK>;
 }

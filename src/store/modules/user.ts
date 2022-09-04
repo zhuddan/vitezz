@@ -7,7 +7,7 @@ import type { UserState } from '../typings/user';
 export const useUserStore = defineStore({
   id: 'user',
   state: (): UserState => ({
-    info: null,
+    user: null,
     roles: [],
     permissions: [],
   }),
@@ -24,7 +24,7 @@ export const useUserStore = defineStore({
     },
     async getInfo() {
       const res = await getInfo();
-      this.info = res.info;
+      this.user = res.user;
       this.roles = res.roles;
       this.permissions = res.permissions;
     },

@@ -8,6 +8,7 @@ import { registerGlobComp } from '@/components/registerGlobComp';
 
 import { initStore } from './store/initStore';
 
+import '@/style/index.scss';
 function __init__() {
   const app = createApp(App);
   // 注册 store

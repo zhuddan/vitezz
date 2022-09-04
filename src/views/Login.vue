@@ -10,11 +10,30 @@
   const codeUrl = ref('');
 
   const userStore = useUserStore();
-
+  const loading = ref(false);
   function handleLogin() {
-    userStore.login(username.value, password.value, code.value, uuid.value).then(() => {
-      router.push('/');
-    });
+    if (!username.value) {
+      alert('用户名不能为空');
+      return;
+    }
+    if (!password.value) {
+      alert('密码不能为空');
+      return;
+    }
+
+    if (!code.value) {
+      alert('验证码不能为空');
+      return;
+    }
+    loading.value = true;
+    userStore
+      .login(username.value, password.value, code.value, uuid.value)
+      .then(() => {
+        router.push('/');
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
   function getCode() {
     getCodeImg().then((res) => {
@@ -24,21 +43,20 @@
   }
 
   getCode();
-
-  const d = computed(() => {});
 </script>
 
 <template>
   <div style="overflow: hidden">
     <div class="login">
-      <router-link to="/about/aaa/aaa">about</router-link>
-      <div>
-        <img :src="codeUrl" style="width: 100px; height: 30px" object-fit="fill" @click="getCode" />
-        <input id="code" v-model="code" type="text" @keydown.enter="handleLogin" />
+      <input id="username" v-model="username" type="text" placeholder="用户名" />
+      <input id="password" v-model="password" type="text" placeholder="密码" />
+      <div class="code-input clearfix">
+        <input id="code" v-model="code" placeholder="验证码" type="text" @keydown.enter="handleLogin" />
+        <img :src="codeUrl" object-fit="fill" @click="getCode" />
       </div>
-      <input id="username" v-model="username" type="text" />
-      <input id="password" v-model="password" type="text" />
-      <button @click="handleLogin">login</button>
+      <button :disabled="loading" class="login-button" @click="handleLogin">{{
+        !loading ? 'login' : 'logging...'
+      }}</button>
     </div>
   </div>
 </template>
@@ -46,6 +64,28 @@
 <style scoped lang="scss">
   .login {
     margin: 200px auto 0;
-    width: 200px;
+    width: 300px;
+  }
+  .code-input {
+    height: 60px;
+    input {
+      width: 131px;
+      float: left;
+      margin-top: 30px;
+      margin-right: 8px;
+      margin-bottom: 0;
+    }
+    img {
+      float: left;
+    }
+  }
+  input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .login-button {
+    width: 100%;
+    font-size: 16px;
+    margin-top: 20px;
   }
 </style>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useDicts } from '@/hooks/dict';
   import { useUserStore } from '@/store/modules/user';
-  import { removeToken } from '@/utils/cache';
   const userStore = useUserStore();
 
   const router = useRouter();
@@ -9,23 +8,52 @@
     userStore.logout();
     router.push('/redirect/');
   }
-  const { sys_job_group, format, load } = useDicts(['sys_job_group'], {});
+  const { format } = useDicts(['sys_common_status'], {});
+  const format1 = ref(false);
+  const format2 = ref(false);
 </script>
 
 <template>
   <div class="home">
-    <div>
-      <p>{{ userStore.info?.userName }}</p>
+    <header>
+      {{ userStore.user?.userName }}
       <button @click="logout">logout</button>
-    </div>
-    <p> {{ sys_job_group }} </p>
-    <button @click="load()">dict.load</button>
-    <router-link to="/list">list</router-link>
-    <div>-------------------</div>
-    <p style="color: blue">
-      {{ format('sys_job_group', 'DEFAULT') }}
+    </header>
+    <p>
+      字典翻译：
+      <button :class="{ active: format1 }" @click="format1 = !format1">
+        <span v-if="format1" class="value">0</span>
+        <span v-else class="label">
+          {{ format('sys_common_status', '0') }}
+        </span>
+      </button>
+      <button :class="{ active: format2 }" @click="format2 = !format2">
+        <span v-if="format2" class="value">1</span>
+        <span v-else class="label">
+          {{ format('sys_common_status', '1') }}
+        </span>
+      </button>
     </p>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  p {
+    button {
+      background: none;
+      border: 0;
+      text-decoration: none;
+      color: hsla(160, 100%, 37%, 1);
+      transition: 0.4s;
+      min-width: 3em;
+      cursor: pointer;
+      &:hover,
+      &.active {
+        background-color: hsla(160, 100%, 37%, 0.2);
+      }
+      & + button {
+        margin-left: 10px;
+      }
+    }
+  }
+</style>

@@ -39,4 +39,6 @@ declare global {
   declare type TargetContext = '_self' | '_blank';
 
   declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;
+
+  declare const a = 1;
 }

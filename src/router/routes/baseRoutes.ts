@@ -28,6 +28,6 @@ export const baseRoutes: RouteRecordRaw[] = [
     meta: {
       title: '404 not-find',
     },
-    component: () => import('@/views/Error/404.vue'),
+    component: () => import('@/views/404.vue'),
   },
 ];
