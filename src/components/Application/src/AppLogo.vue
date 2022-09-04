@@ -5,10 +5,10 @@
 </script>
 
 <template>
-  <a class="app-logo">
+  <router-link class="app-logo" to="/">
     <img src="@/assets/logo.png" alt="" />
     <span>{{ VITE_APP_TITLE }}</span>
-  </a>
+  </router-link>
 </template>
 
 <style scoped lang="scss">
@@ -28,6 +28,10 @@
       @media screen and (min-width: 900px) {
         display: inline-block;
       }
+    }
+
+    &:hover {
+      animation: pulse 0.3s forwards;
     }
   }
 </style>

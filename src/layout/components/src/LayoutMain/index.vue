@@ -15,7 +15,6 @@
 <style scoped>
   main {
     flex: 1;
-    padding: 10px;
     overflow: hidden;
   }
 </style>

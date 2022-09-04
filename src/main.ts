@@ -1,7 +1,6 @@
 import '@/style/index.scss';
 
 import { registerGlobComp } from '@/components/registerGlobComp';
-import { useVConsole } from '@/hooks/mobile/useVConsole';
 import router, { setupRouter } from '@/router';
 import { setupRouterGuard } from '@/router/setupRouterGuard';
 import { setupStore } from '@/store';
@@ -26,5 +25,3 @@ function __init__() {
 }
 
 __init__();
-
-useVConsole();
