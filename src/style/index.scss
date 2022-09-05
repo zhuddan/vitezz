@@ -1,6 +1,9 @@
-@import './root.scss';
-@import './normalize.scss';
-@import './reset.scss';
-@import './transition.scss';
+// --bs-btn-color
+@import 'root.scss';
+@import 'reset.scss';
 @import 'animate.css';
-@import './common.scss';
+@import 'common.scss';
+
+.btn {
+  --bs-btn-color: #fff;
+}
