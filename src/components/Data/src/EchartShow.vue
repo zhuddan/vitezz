@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import a from './a.json';
   import * as echarts from 'echarts';
 
   type EChartsOption = echarts.EChartsOption;
@@ -17,7 +16,7 @@
     gt_?: number;
     data: number[];
   }
-
+  var a: number[] = [];
   const data: DataItem[] = [
     {
       name: '小于-2',
@@ -43,46 +42,30 @@
     },
   ];
 
-  for (let index = 0; index < a.length; index++) {
-    const value = a[index];
-    for (let i = 0; i < data.length; i++) {
-      const condition = data[i];
-      var { s } = test(condition, value);
-      if (s) {
-        condition.data.push(value);
-        break;
+  function render() {
+    for (let index = 0; index < a.length; index++) {
+      const value = a[index];
+      for (let i = 0; i < data.length; i++) {
+        const condition = data[i];
+        var { s } = test(condition, value);
+        if (s) {
+          condition.data.push(value);
+          break;
+        }
       }
     }
   }
 
   function test(condition: DataItem, value: number) {
     // 小于
-    console.log(value, value < condition.lt!);
     const ltRes = condition.lt != undefined ? value < condition.lt : true;
-    if (condition.lt != undefined) {
-      console.log(value, '小于', condition.lt);
-    }
-
     // 小于等于
     const lt_Res = condition.lt_ != undefined ? value <= condition.lt_ : true;
-    if (condition.lt_ != undefined) {
-      console.log(value, '小于等于', condition.lt_);
-    }
-
     // 大于
     const gtRes = condition.gt != undefined ? value > condition.gt : true;
-    if (condition.gt != undefined) {
-      console.log(value, '大于', condition.gt);
-    }
-
     // 大于等于
     const gt_Res = condition.gt_ != undefined ? value >= condition.gt_ : true;
-    if (condition.gt_ != undefined) {
-      console.log(value, '大于等于', condition.gt_);
-    }
-
     var s = ltRes && lt_Res && gtRes && gt_Res;
-    console.log([ltRes, lt_Res, gtRes, gt_Res]);
     return { s, condition };
   }
 
