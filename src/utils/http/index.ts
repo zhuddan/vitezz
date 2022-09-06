@@ -9,7 +9,7 @@ import { useAppConfig } from '@/hooks/config/useAppConfig';
 // import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import router from '@/router';
-import { useUserStore, useUserStore } from '@/store/modules/user';
+import { useUserStore } from '@/store/modules/user';
 // import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
 // import { useUserStoreWithOut } from '@/store/modules/user';
 import { deepMerge, setObjToUrlParams } from '@/utils';
