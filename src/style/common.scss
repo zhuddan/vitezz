@@ -40,17 +40,12 @@
 }
 
 .container {
-  max-width: 1200px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
-}
-
-@media (max-width: 1201px) {
-  .container {
-    padding: 0 20px !important;
-  }
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .app-container {

@@ -13,8 +13,25 @@ export const usePermissionStore = defineStore({
   }),
   actions: {
     async addSyncRoutes() {
+      const object = await import.meta.glob('../../views/pages/**/*.vue');
+      const routes = [];
+      for (const key in object) {
+        if (Object.prototype.hasOwnProperty.call(object, key)) {
+          const path = key.replace('../../views/pages', '').replace('.vue', '');
+          const item = {
+            path: path,
+            component: object[key],
+            meta: {
+              auth: false,
+            },
+          };
+          router.addRoute(item);
+          routes.push(item);
+        }
+      }
+
       await sleep(1);
-      this.routes = asyncRoutes;
+      this.routes = routes;
       asyncRoutes.forEach((e) => {
         router.addRoute(e);
       });

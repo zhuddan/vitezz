@@ -5,6 +5,7 @@ export const baseRoutes: RouteRecordRaw[] = [
     path: '/',
     meta: {
       title: '首页',
+      auth: false,
     },
     component: () => import('@/views/Home.vue'),
   },

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es2015",
-    "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
+    "moduleResolution": "node",
     "sourceMap": true,
+    "useDefineForClassFields": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -23,7 +24,6 @@
       "node_modules/@types",
       "types"
     ],
-    "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
       "~/*": ["./types/*"]
