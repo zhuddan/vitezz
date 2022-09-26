@@ -7,7 +7,7 @@
 <template>
   <router-link class="app-logo" to="/">
     <img src="@/assets/logo.png" alt="" />
-    <span>{{ VITE_APP_TITLE }}</span>
+    <span>{{ VITE_APP_TITLE.toUpperCase() }}</span>
   </router-link>
 </template>
 

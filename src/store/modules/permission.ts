@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia';
+import type { RouteRecordRaw } from 'vue-router';
 
+import BlankView from '@/components/BlankView.vue';
 import router from '@/router';
-import { asyncRoutes } from '@/router/routes/asyncRoutes';
-import { sleep } from '@/utils';
+import { capitalize, handleTree } from '@/utils';
 
 import type { PermissionState } from '../typings/permission';
-type d = () => Promise<{
+
+interface Item {
+  path: string[];
+  comp: CompPromFn;
+}
+type CompPromFn = () => Promise<{
   [key: string]: any;
 }>;
-interface dddd {
-  path: string[];
-  comp: d;
-}
+
 export const usePermissionStore = defineStore({
   id: 'permission',
   state: (): PermissionState => ({
@@ -20,29 +23,18 @@ export const usePermissionStore = defineStore({
   actions: {
     async addSyncRoutes() {
       const object = await import.meta.glob('../../views/pages/**/*.vue');
-      const routes = [];
-      const t: dddd[] = [];
+      const t: Item[] = [];
       for (const key in object) {
         if (Object.prototype.hasOwnProperty.call(object, key)) {
           const path = key.replace('../../views/pages', '').replace('.vue', '');
-          const item = {
-            path: path,
-            component: object[key],
-            meta: {
-              auth: false,
-            },
-          };
           t.push({
-            path: path.split('/'),
+            path: path.split('/').filter((e) => !!e),
             comp: object[key],
           });
-          router.addRoute(item);
-          routes.push(item);
         }
       }
-      ddddd(t);
-      await sleep(1);
-      this.routes = routes;
+      const asyncRoutes = getRouteTree(t) as unknown as RouteRecordRaw[];
+      this.routes = asyncRoutes;
       asyncRoutes.forEach((e) => {
         router.addRoute(e);
       });
@@ -51,22 +43,32 @@ export const usePermissionStore = defineStore({
 });
 
 let id = 1;
-function ddddd(list: dddd[]) {
-  const obj: { fullPath: string; element: string; id: number; parentId: number }[] = [];
-  function loop(list: dddd[]) {
+function getRouteTree(list: Item[]) {
+  const routeList: {
+    signal: string;
+    path: string;
+    id: number;
+    parentId: number;
+    component: any;
+    name: string;
+  }[] = [];
+  function loop(list: Item[]) {
     list.forEach((e) => {
       const array = e.path;
       for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        if (element) {
-          const fullPath = e.path.filter((e, i) => i <= index).join('/');
-          if (!obj.find((e) => e.fullPath == fullPath)) {
+        const realPath = array[index];
+        if (realPath) {
+          const signal = e.path.filter((e, i) => i <= index).join('/');
+          if (!routeList.find((e) => e.signal == signal)) {
             const pid = e.path.filter((e, i) => i <= index - 1).join('/');
-            obj.push({
-              fullPath,
-              element,
+            const parentId = routeList.find((e) => e.signal == pid)?.id || 0;
+            routeList.push({
+              signal,
+              path: `${parentId == 0 ? '/' : ''}${realPath}`,
               id: id++,
-              parentId: obj.find((e) => e.fullPath == pid)?.id || 0,
+              name: capitalize(realPath),
+              parentId,
+              component: index == array.length - 1 ? e.comp : BlankView,
             });
           }
         }
@@ -74,57 +76,5 @@ function ddddd(list: dddd[]) {
     });
   }
   loop(list);
-  console.log(handleTree(obj));
-}
-
-export function handleTree<T>(
-  data: T[],
-  option?: Partial<{
-    id: string;
-    parentId: string;
-    children: string;
-  }>,
-): TreeList<T> {
-  const config = {
-    id: option?.id || 'id',
-    parentId: option?.parentId || 'parentId',
-    childrenList: option?.children || 'children',
-  };
-
-  const childrenListMap = {};
-  const nodeIds = {};
-  const tree = [];
-
-  for (const d of data) {
-    const parentId = d[config.parentId];
-    if (childrenListMap[parentId] == null) {
-      childrenListMap[parentId] = [];
-    }
-    nodeIds[d[config.id]] = d;
-    childrenListMap[parentId].push(d);
-  }
-
-  for (const d of data) {
-    const parentId = d[config.parentId];
-    if (nodeIds[parentId] == null) {
-      tree.push(d);
-    }
-  }
-
-  for (const t of tree) {
-    adaptToChildrenList(t);
-  }
-
-  function adaptToChildrenList(o: T) {
-    if (childrenListMap[o[config.id]]) {
-      const key = config.childrenList;
-      o[key] = childrenListMap[o[config.id]];
-    }
-    if (o[config.childrenList]) {
-      for (const c of o[config.childrenList]) {
-        adaptToChildrenList(c);
-      }
-    }
-  }
-  return tree as TreeList<T>;
+  return handleTree(routeList);
 }

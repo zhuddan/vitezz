@@ -11,19 +11,21 @@
   const el = document.documentElement;
 
   const scrollToTop = () => {
-    const beginTime = Date.now();
-    const beginValue = el.scrollTop;
-    const frameFunc = () => {
-      if (!el) return;
-      const progress = (Date.now() - beginTime) / 500;
-      if (progress < 1) {
-        el.scrollTop = beginValue * (1 - easeInOutCubic(progress));
-        requestAnimationFrame(frameFunc);
-      } else {
-        el.scrollTop = 0;
-      }
-    };
-    requestAnimationFrame(frameFunc);
+    // const beginTime = Date.now();
+    // const beginValue = el.scrollTop;
+    // const frameFunc = () => {
+    //   if (!el) return;
+    //   const progress = (Date.now() - beginTime) / 500;
+    //   if (progress < 1) {
+    //     el.scrollTop = beginValue * (1 - easeInOutCubic(progress));
+    //     requestAnimationFrame(frameFunc);
+    //   } else {
+    //     el.scrollTop = 0;
+    //   }
+    // };
+    // requestAnimationFrame(frameFunc);
+
+    el.scrollTop = 0;
   };
   const handleScroll = () => {
     visible.value = el.scrollTop >= visibilityHeight;

@@ -70,3 +70,53 @@ export const createUuid = () => {
   URL.revokeObjectURL(temp_url); //释放这个url
   return uuid.substring(uuid.lastIndexOf('/') + 1);
 };
+
+export function handleTree<T>(
+  data: T[],
+  option?: Partial<{
+    id: string;
+    parentId: string;
+    children: string;
+  }>,
+): TreeList<T> {
+  const ID_KEY = option?.id || 'id';
+  const PARENT_ID_KEY = option?.parentId || 'parentId';
+  const CHILDREN_KEY = option?.children || 'children';
+
+  const childrenListMap = {};
+  const nodeIds = {};
+  const tree = [];
+
+  for (const d of data) {
+    const parentId = d[PARENT_ID_KEY];
+    if (childrenListMap[parentId] == null) {
+      childrenListMap[parentId] = [];
+    }
+    nodeIds[d[ID_KEY]] = d;
+    childrenListMap[parentId].push(d);
+  }
+
+  for (const d of data) {
+    const parentId = d[PARENT_ID_KEY];
+    if (nodeIds[parentId] == null) {
+      tree.push(d);
+    }
+  }
+
+  for (const t of tree) {
+    adaptToChildrenList(t);
+  }
+
+  function adaptToChildrenList(o: T) {
+    if (childrenListMap[o[ID_KEY]]) {
+      const key = CHILDREN_KEY;
+      o[key] = childrenListMap[o[ID_KEY]];
+    }
+    if (o[CHILDREN_KEY]) {
+      for (const c of o[CHILDREN_KEY]) {
+        adaptToChildrenList(c);
+      }
+    }
+  }
+  return tree as TreeList<T>;
+}
