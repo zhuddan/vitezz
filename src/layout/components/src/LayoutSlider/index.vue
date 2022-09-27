@@ -12,9 +12,9 @@
   function handleLockScroll() {
     const body = document.body;
     if (collapse.value) {
-      body.style['overflow-y'] = '';
+      body.classList.remove('overflow_y');
     } else {
-      body.style['overflow-y'] = 'hidden';
+      body.classList.add('overflow_y');
     }
   }
   watchEffect(handleLockScroll);
@@ -22,7 +22,7 @@
 
 <template>
   <nav :class="{ collapse }">
-    <div class="mask"></div>
+    <div class="mask" @click="appStore.toggleCollapse"></div>
     <aside>
       <SidebarItem :nav="routes"> </SidebarItem>
     </aside>
@@ -36,12 +36,14 @@
     position: sticky;
     top: 90px;
     display: flex;
-    max-height: calc(100vh - 90px);
+    height: calc(100vh - 90px);
     overflow: auto;
     box-sizing: border-box;
     padding: 20px 0;
     flex-direction: column;
     background-color: white;
+    z-index: 9;
+    border-right: 1px solid #cdcdcd;
   }
 
   .mask {
@@ -51,6 +53,7 @@
     left: 0;
     right: 0;
     height: calc(100vh - 90px);
+    z-index: 9;
   }
   @media screen and (max-width: 769px) {
     aside {

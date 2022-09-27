@@ -14,7 +14,8 @@
   });
 
   const getPath = (currentPath: string) => {
-    return path.join(props.parentPath, currentPath);
+    const _parentPath = props.parentPath.startsWith('/') ? props.parentPath : '/' + props.parentPath;
+    return path.join(_parentPath, currentPath);
   };
 </script>
 
@@ -26,7 +27,7 @@
           <summary>
             <strong>{{ item.name }}</strong></summary
           >
-          <SidebarItem :nav="item.children" :parent-path="item.path" />
+          <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" />
         </details>
       </template>
       <span v-else class="title">
