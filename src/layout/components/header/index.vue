@@ -35,9 +35,15 @@
       </div>
     </div>
     <div class="container breadcrumbs-container">
-      <button class="sidebar-button" :class="{ collapse }" @click="toggleCollapse">
+      <button
+        aria-label="sidebar-button"
+        class="sidebar-button"
+        :class="{ collapse }"
+        @click="toggleCollapse"
+      >
         <Icon icon="icon-park-outline:menu-unfold-one" size="20"></Icon>
       </button>
+      <span style="font-size: 12px">VUE_TEMPLATE_FOR_VITE</span>
     </div>
   </header>
 </template>
@@ -86,10 +92,16 @@
     height: 30px;
     display: flex;
     align-items: center;
+    @media screen and (max-width: 769px) {
+      .sidebar-button {
+        display: block !important;
+      }
+    }
 
     .sidebar-button {
       background: none;
       border: 0;
+      display: none;
 
       &:hover {
         cursor: pointer;

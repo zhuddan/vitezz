@@ -1,29 +1,29 @@
 <script setup lang="ts">
   import { BackTop } from '@/components/BackTop';
-  import LayoutSlider from '../LayoutSlider/index.vue';
+  import Sidebar from '../sidebar/index.vue';
   defineOptions({
-    name: 'LayoutMain',
+    name: 'LayoutContent',
   });
 </script>
 
 <template>
-  <section>
-    <LayoutSlider></LayoutSlider>
-    <BackTop />
-    <main>
+  <div class="content-wrapper">
+    <Sidebar></Sidebar>
+    <main id="content">
       <router-view></router-view>
     </main>
-  </section>
+    <BackTop />
+  </div>
 </template>
 
 <style scoped>
-  section {
+  .content-wrapper {
     flex: 1;
     display: flex;
     padding: 0 20px;
   }
 
-  main {
+  #content {
     flex: 1;
   }
 </style>

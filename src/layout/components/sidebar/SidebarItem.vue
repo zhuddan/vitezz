@@ -20,11 +20,11 @@
 </script>
 
 <template>
-  <ol>
+  <ol class="side-bar-list">
     <li v-for="(item, index) in nav" :key="index">
       <template v-if="item.children?.length">
         <details open>
-          <summary>
+          <summary class="title">
             <strong>{{ item.name }}</strong></summary
           >
           <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" />
@@ -38,7 +38,7 @@
 </template>
 
 <style lang="scss" scoped>
-  ol,
+  .side-bar-list,
   li {
     list-style: none;
     padding: 0;
@@ -56,14 +56,39 @@
   }
 
   details {
-    ol {
+    .side-bar-list {
       padding-left: 12px;
     }
   }
 
   .title {
+    height: 30px;
+    line-height: 30px;
+
     &:hover {
       color: var(--color-primary);
+    }
+  }
+
+  span {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  a {
+    padding-left: 10px;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 100%;
+
+    &.router-link-exact-active {
+      $base-color: var(--color-primary);
+      color: var(--color-primary);
+      border-left: 5px solid var(--color-primary);
+      box-sizing: border-box;
+      padding-left: 5px;
+      background-color: #6256e511;
     }
   }
 </style>

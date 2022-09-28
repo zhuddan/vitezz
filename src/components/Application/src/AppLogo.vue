@@ -23,11 +23,10 @@
 
     span {
       line-height: 60px;
-      display: none;
       color: var(--color-primary);
-      @media screen and (min-width: 900px) {
-        display: inline-block;
-      }
+      // @media screen and (min-width: 900px) {
+      //   display: inline-block;
+      // }
     }
 
     &:hover {
