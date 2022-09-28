@@ -41,7 +41,7 @@
         :class="{ collapse }"
         @click="toggleCollapse"
       >
-        <Icon icon="icon-park-outline:menu-unfold-one" size="20"></Icon>
+        <Icon icon="icon-park-outline:menu-unfold-one" size="24"></Icon>
       </button>
       <span style="font-size: 12px">VUE_TEMPLATE_FOR_VITE</span>
     </div>
@@ -102,6 +102,8 @@
       background: none;
       border: 0;
       display: none;
+      padding: 0;
+      margin-right: 10px;
 
       &:hover {
         cursor: pointer;

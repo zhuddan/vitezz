@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { getRandomColor } from '@/utils';
 
-  function getColor() {
-    return getRandomColor({ max: '666666' });
+  function getColor(): string {
+    var d = getRandomColor({ max: '666666' });
+    return d ? d : getColor();
   }
 </script>
 
