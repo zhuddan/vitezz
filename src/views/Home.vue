@@ -2,7 +2,7 @@
   import { getRandomColor } from '@/utils';
 
   function getColor() {
-    return getRandomColor({ max: 'eeeeee' });
+    return getRandomColor({ max: '666666' });
   }
 </script>
 
@@ -24,7 +24,7 @@
     width: 100%;
     border: 1px solid;
     padding: 10px;
-    grid-template-columns: 1fr 2fr minmax(200px, 1fr);
+    grid-template-columns: 1fr 2fr minmax(3em, 1fr);
     grid-template-rows: repeat(3, 100px);
     box-sizing: border-box;
     grid-row-gap: 20px;
