@@ -13,10 +13,16 @@
     },
   });
 
-  const getPath = (currentPath: string) => {
+  const emit = defineEmits(['select']);
+
+  function getPath(currentPath: string) {
     const _parentPath = props.parentPath.startsWith('/') ? props.parentPath : '/' + props.parentPath;
     return path.join(_parentPath, currentPath);
-  };
+  }
+
+  function handleSelect(e: RouteRecordRaw) {
+    emit('select', e);
+  }
 </script>
 
 <template>
@@ -25,13 +31,13 @@
       <template v-if="item.children?.length">
         <details open>
           <summary class="title">
-            <strong>{{ item.name }}</strong></summary
+            <strong>{{ item.meta?.title }}</strong></summary
           >
-          <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" />
+          <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" @select="handleSelect" />
         </details>
       </template>
       <span v-else class="title">
-        <router-link :to="getPath(item.path)">{{ item.name }}</router-link>
+        <router-link :to="getPath(item.path)" @click="handleSelect(item)">{{ item.meta?.title }}</router-link>
       </span>
     </li>
   </ol>

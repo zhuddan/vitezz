@@ -10,7 +10,8 @@
 </script>
 
 <template>
-  <div>
+  <div class="page">
+    <h1> native dialog test </h1>
     <button @click="openDialog()">open dialog</button>
     <dialog ref="dialog">
       <h1>

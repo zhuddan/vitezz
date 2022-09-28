@@ -1,14 +1,16 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-export const baseRoutes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    meta: {
-      title: '首页',
-      auth: false,
-    },
-    component: () => import('@/views/Home.vue'),
+export const homeRoutes: RouteRecordRaw = {
+  path: '/',
+  meta: {
+    title: 'Home',
+    auth: false,
   },
+  component: () => import('@/views/Home.vue'),
+};
+
+export const baseRoutes: RouteRecordRaw[] = [
+  homeRoutes,
   {
     path: '/login',
     meta: {

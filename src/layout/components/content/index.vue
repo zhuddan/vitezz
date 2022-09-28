@@ -25,5 +25,11 @@
 
   #content {
     flex: 1;
+    padding: 20px 0 20px 20px;
+  }
+  @media screen and (max-width: 769px) {
+    #content {
+      padding-left: 0;
+    }
   }
 </style>

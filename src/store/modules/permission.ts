@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import BlankView from '@/components/BlankView.vue';
 import router from '@/router';
+import { homeRoutes } from '@/router/routes/baseRoutes';
 import { capitalize, handleTree } from '@/utils';
 
 import type { PermissionState } from '../typings/permission';
@@ -34,7 +35,8 @@ export const usePermissionStore = defineStore({
         }
       }
       const asyncRoutes = getRouteTree(t) as unknown as RouteRecordRaw[];
-      this.routes = asyncRoutes;
+
+      this.routes = [homeRoutes, ...asyncRoutes];
       asyncRoutes.forEach((e) => {
         router.addRoute(e);
       });
@@ -50,7 +52,9 @@ function getRouteTree(list: Item[]) {
     id: number;
     parentId: number;
     component: any;
-    name: string;
+    meta: {
+      title: string;
+    };
   }[] = [];
   function loop(list: Item[]) {
     list.forEach((e) => {
@@ -66,7 +70,9 @@ function getRouteTree(list: Item[]) {
               signal,
               path: `${parentId == 0 ? '/' : ''}${realPath}`,
               id: id++,
-              name: capitalize(realPath),
+              meta: {
+                title: capitalize(realPath),
+              },
               parentId,
               component: index == array.length - 1 ? e.comp : BlankView,
             });

@@ -2,36 +2,44 @@
   import { usePermissionStore } from '@/store/modules/permission';
   import { useAppStore } from '@/store/modules/app';
   import SidebarItem from './SidebarItem.vue';
+  import type { RouteRecordRaw } from 'vue-router';
   defineOptions({
     name: 'Sidebar',
   });
   const permissionStore = usePermissionStore();
-  const routes = computed(() => permissionStore.routes);
   const appStore = useAppStore();
+  const routes = computed(() => permissionStore.routes);
   const collapse = computed(() => appStore.collapse);
-
   const classList = ref('');
+  let t: Nullable<TimeoutHandle> = null;
   function handleLockScroll() {
+    if (t) return;
     const body = document.body;
+    console.log(collapse);
     if (collapse.value) {
       body.classList.add('mobile_overflow_y');
-      classList.value = '';
-    } else {
-      body.classList.remove('mobile_overflow_y');
       classList.value = 'is-animating';
-      setTimeout(() => {
+      t = setTimeout(() => {
+        clearTimeout(t!);
+        t = null;
         classList.value = 'collapse';
       }, 300);
+    } else {
+      body.classList.remove('mobile_overflow_y');
+      classList.value = '';
     }
   }
-  watchEffect(handleLockScroll);
+  function select(e: RouteRecordRaw) {
+    appStore.toggleCollapse();
+  }
+  watch(collapse, handleLockScroll, { immediate: true });
 </script>
 
 <template>
   <aside id="aside-nav-wrapper" :class="classList">
     <button class="backdrop" @click="appStore.toggleCollapse"></button>
     <nav>
-      <SidebarItem :nav="routes"> </SidebarItem>
+      <SidebarItem :nav="routes" @select="select"> </SidebarItem>
     </nav>
   </aside>
 </template>
@@ -43,7 +51,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 90px;
-    height: calc(100vh - 90px);
+    max-height: calc(100vh - 90px);
 
     .backdrop {
       transition: opacity 0.3s ease;

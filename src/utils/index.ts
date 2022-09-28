@@ -120,3 +120,9 @@ export function handleTree<T>(
   }
   return tree as TreeList<T>;
 }
+
+export function getRandomColor(option?: { max?: string; min?: string }) {
+  const max = parseInt(option?.max ? option?.max : 'ffffff', 16);
+  const min = parseInt(option?.min ? option?.min : '000000', 16);
+  return '#' + Math.floor(min + Math.random() * (max - min)).toString(16);
+}
