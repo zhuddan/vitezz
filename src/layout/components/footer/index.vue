@@ -14,8 +14,8 @@
     color: #000;
     text-align: center;
     font-size: 12px;
-    height: 40px;
-    line-height: 40px;
+    height: var(--app-footer-hight);
+    line-height: var(--app-footer-hight);
     left: 0;
     width: 100%;
     bottom: 0;

@@ -16,18 +16,20 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+  @import '@/style/var.scss';
+
   .content-wrapper {
     flex: 1;
     display: flex;
-    padding: 0 20px;
+    padding: 0 var(--app-content-padding);
   }
 
   #content {
     flex: 1;
-    padding: 20px 0 20px 20px;
+    padding: var(--app-content-padding) 0 var(--app-content-padding) var(--app-content-padding);
   }
-  @media screen and (max-width: 769px) {
+  @media screen and (max-width: $screen-md) {
     #content {
       padding-left: 0;
     }

@@ -1,41 +1,66 @@
 <script setup lang="ts">
-  import { getRandomColor } from '@/utils';
+  import word from '@/libs/word.json';
 
-  function getColor(): string {
-    var d = getRandomColor({ max: '666666' });
-    return d ? d : getColor();
+  var xyz = [
+    'fade down-5 rotate-right-50% stagger',
+    'fade flip-up flip-left',
+    'fade front-3 flip-down-50%  stagger-5',
+    'stagger-2 narrow-100%',
+  ];
+  function getArrRand<T>(array: T[]) {
+    return array[Math.floor(Math.random() * (array.length - 1))] + '';
   }
+  const rand = getArrRand(xyz);
+  const words = [
+    getArrRand([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+    getArrRand([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+    getArrRand([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+    getArrRand([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+    getArrRand([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+  ];
 </script>
 
 <template>
-  <div style="width: 100%">
-    <h1> grid test </h1>
-    <div class="box">
-      <div v-for="item in 9" :key="item" class="item grid_1" :style="{ backgroundColor: getColor() }">{{
-        item
-      }}</div>
-    </div>
+  <div class="home">
+    <XyzTransitionGroup class="item-group" :xyz="rand" appear>
+      <div v-for="(i, index) in words" :key="index" class="square">
+        <div class="inner">{{ i }}</div>
+      </div>
+    </XyzTransitionGroup>
   </div>
 </template>
 
-<style scoped lang="scss">
-  .box {
-    margin-top: 0;
-    display: inline-grid;
-    width: 100%;
-    border: 1px solid;
-    padding: 10px;
-    grid-template-columns: 1fr 2fr minmax(3em, 1fr);
-    grid-template-rows: repeat(3, 100px);
+<style scoped>
+  .home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--app-content-height) - 40px);
     box-sizing: border-box;
-    grid-row-gap: 20px;
-    grid-column-gap: 20px;
+  }
 
-    .item {
-      font-size: 2em;
-      line-height: 100px;
-      text-align: center;
-      color: aliceblue;
-    }
+  .item-group {
+    --xyz-translate-y: -350%;
+    --xyz-ease: cubic-bezier(0.5, -1.5, 0.5, 1.5);
+    width: 500px;
+  }
+
+  .square {
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 5px;
+  }
+
+  .inner {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    color: #fff;
   }
 </style>

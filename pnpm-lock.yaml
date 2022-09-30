@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@animxyz/vue3': ^0.6.7
   '@iconify/iconify': ^2.2.1
   '@iconify/json': ^2.1.77
   '@purge-icons/generated': ^0.8.1
@@ -57,6 +58,7 @@ specifiers:
   vue-tsc: ^0.38.4
 
 dependencies:
+  '@animxyz/vue3': 0.6.7_vue@3.2.38
   '@iconify/iconify': 2.2.1
   '@vueuse/core': 8.9.4_vue@3.2.38
   animate.css: 4.1.1
@@ -115,6 +117,20 @@ devDependencies:
   vue-tsc: 0.38.5_typescript@4.7.4
 
 packages:
+
+  /@animxyz/core/0.6.6:
+    resolution: {integrity: sha512-NtAA/G0Gq3hzAiL6yuE/4U8IgHMPUl3MxbWUbhO443T9UCsf9rBY94P5aK79Zd+/529FeoNdDphIOcOZLsI2sA==}
+    dev: false
+
+  /@animxyz/vue3/0.6.7_vue@3.2.38:
+    resolution: {integrity: sha512-tLx4HfFcoxR5wgIMFDrmjS2mZifFRNMiwn7skPT3as9ViuCW3QdCsBIDYY2tR37GSvSUC1NhNwkkCZ1pt0C+Hg==}
+    peerDependencies:
+      vue: '>= 3'
+    dependencies:
+      '@animxyz/core': 0.6.6
+      clsx: 1.2.1
+      vue: 3.2.38
+    dev: false
 
   /@antfu/utils/0.5.2:
     resolution: {integrity: sha512-CQkeV+oJxUazwjlHD0/3ZD08QWKuGQkhnrKo3e6ly5pd48VUpXbb77q0xMU4+vc2CkJnDS02Eq/M9ugyX20XZA==}
@@ -1103,6 +1119,11 @@ packages:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
     dev: true
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
 
   /collection-visit/1.0.0:
     resolution: {integrity: sha512-lNkKvzEeMBBjUGHZ+q6z9pSJla0KWAQPvtzhEV9+iGyQYG+pBpl7xKDhxoNSOZH2hhv0v5k0y2yAM4o4SjoSkw==}

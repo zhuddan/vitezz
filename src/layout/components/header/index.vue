@@ -49,15 +49,7 @@
 </template>
 
 <style scoped lang="scss">
-  @keyframes scrollTop {
-    from {
-      top: -60px;
-    }
-
-    to {
-      top: 0;
-    }
-  }
+  @import '@/style/var.scss';
 
   .layout-header {
     background: white;
@@ -71,7 +63,7 @@
   }
 
   .layout-header_inner {
-    height: 60px;
+    height: var(--app-header-hight);
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -89,10 +81,11 @@
   .breadcrumbs-container {
     background-color: #f9f9fb;
     border-bottom: 1px solid #cdcdcd;
-    height: 30px;
+    height: var(--app-breadcrumbs-hight);
     display: flex;
     align-items: center;
-    @media screen and (max-width: 769px) {
+
+    @media screen and (max-width: $screen-md) {
       .sidebar-button {
         display: block !important;
       }

@@ -45,13 +45,18 @@
 </template>
 
 <style scoped lang="scss">
+  $width: 200px;
+  $height: calc(100vh - var(--app-header-hight) - var(--app-breadcrumbs-hight));
+  @import '@/style/var.scss';
+
   #aside-nav-wrapper {
+    font-size: var(--app-header);
     border-right: 1px solid #cdcdcd;
-    width: 200px;
+    width: $width;
     position: -webkit-sticky;
     position: sticky;
     top: 90px;
-    max-height: calc(100vh - 90px);
+    max-height: $height;
 
     .backdrop {
       transition: opacity 0.3s ease;
@@ -59,7 +64,7 @@
       background-color: rgba(0, 0, 0, 0.2);
       left: 0;
       right: 0;
-      height: calc(100vh - 90px);
+      height: $height;
       opacity: 0;
       transform: translateX(-100%);
       display: none;
@@ -71,23 +76,23 @@
       overflow: auto;
       box-sizing: border-box;
       flex-direction: column;
-      max-height: calc(100vh - 90px);
+      max-height: $height;
       position: relative;
       transform: translateX(0);
       padding: 10px;
       padding-left: 0;
-      width: 200px;
+      width: $width;
     }
   }
-
-  @media screen and (max-width: 769px) {
+  /* stylelint-disable-next-line order/order */
+  @media screen and (max-width: $screen-md) {
     #aside-nav-wrapper {
-      border: none;
+      border: none !important;
       position: fixed;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100vh - 90px);
+      height: $height;
 
       .backdrop {
         opacity: 1;
@@ -96,7 +101,7 @@
       nav {
         height: 100%;
         left: 0;
-        width: 220px;
+        width: calc($width + 20px);
         background: #fff;
         transform: translateX(0);
         transition: transform 0.3s ease;
@@ -114,7 +119,6 @@
       &:not(.collapse) {
         .backdrop {
           transform: translateX(0);
-          display: block;
         }
       }
 

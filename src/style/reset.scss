@@ -1,3 +1,5 @@
+@import './var.scss';
+
 @font-face {
   font-family: NotoSansSC;
   src: url('../assets/font/NotoSansSC-Light.otf');
@@ -25,26 +27,6 @@ article {
   img {
     max-width: 100%;
   }
-}
-
-html::-webkit-scrollbar {
-  // width: 5px;
-}
-
-/* 滚动槽 */
-html::-webkit-scrollbar-track {
-  // border-radius: 10px;
-  // background: rgb(241 241 241);
-}
-
-/* 滚动条滑块 */
-html::-webkit-scrollbar-thumb {
-  // border-radius: 10px;
-  // background: rgb(0 0 0 / 10%);
-}
-
-html::-webkit-scrollbar-thumb:window-inactive {
-  // background: rgb(0 0 0 / 20%);
 }
 
 /* 修改谷歌浏览器记住密码后改变input框颜色 */
@@ -91,7 +73,7 @@ input {
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: $screen-md) {
   body.mobile_overflow_y {
     overflow: hidden;
   }
