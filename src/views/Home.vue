@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import word from '@/libs/word.json';
-
   var xyz = [
     'fade down-5 rotate-right-50% stagger',
     'fade flip-up flip-left',
