@@ -6,7 +6,7 @@
 
 <template>
   <router-link class="app-logo" to="/">
-    <img src="@/assets/logo.png" alt="" />
+    <img height="50" width="50" src="@/assets/logo.png" alt="" />
     <span>{{ VITE_APP_TITLE.toUpperCase() }}</span>
   </router-link>
 </template>
@@ -19,6 +19,7 @@
     img {
       display: inline-block;
       height: 50px;
+      width: 50px;
     }
 
     span {
