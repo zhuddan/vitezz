@@ -3,6 +3,7 @@
   import { useAppStore } from '@/store/modules/app';
   import SidebarItem from './SidebarItem.vue';
   import type { RouteRecordRaw } from 'vue-router';
+  import { useCssVar, useWindowSize } from '@vueuse/core';
   defineOptions({
     name: 'Sidebar',
   });
@@ -10,12 +11,13 @@
   const appStore = useAppStore();
   const routes = computed(() => permissionStore.routes);
   const collapse = computed(() => appStore.collapse);
+  const app_screen_md = useCssVar('--app-screen-md');
   const classList = ref('');
+  const { width } = useWindowSize();
   let t: Nullable<TimeoutHandle> = null;
   function handleLockScroll() {
     if (t) return;
     const body = document.body;
-    console.log(collapse);
     if (collapse.value) {
       body.classList.add('mobile_overflow_y');
       classList.value = 'is-animating';
@@ -32,11 +34,18 @@
   function select(e: RouteRecordRaw) {
     appStore.toggleCollapse();
   }
+  const realVisible = computed(() => {
+    const app_screen_md_value = parseInt(app_screen_md.value);
+    if (width.value > app_screen_md_value) {
+      return !collapse.value;
+    }
+    return true;
+  });
   watch(collapse, handleLockScroll, { immediate: true });
 </script>
 
 <template>
-  <aside id="aside-nav-wrapper" :class="classList">
+  <aside v-if="realVisible" id="aside-nav-wrapper" :class="classList">
     <button class="backdrop" @click="appStore.toggleCollapse"></button>
     <nav>
       <SidebarItem :nav="routes" @select="select"> </SidebarItem>
@@ -45,7 +54,7 @@
 </template>
 
 <style scoped lang="scss">
-  $width: 200px;
+  $width: var(--app-side-bar-width);
   $height: calc(100vh - var(--app-header-hight) - var(--app-breadcrumbs-hight));
   @import '@/style/var.scss';
 
@@ -57,6 +66,7 @@
     position: sticky;
     top: 90px;
     max-height: $height;
+    z-index: 9999;
 
     .backdrop {
       transition: opacity 0.3s ease;
@@ -119,6 +129,7 @@
       &:not(.collapse) {
         .backdrop {
           transform: translateX(0);
+          display: block;
         }
       }
 

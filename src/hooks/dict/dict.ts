@@ -31,9 +31,11 @@ export function getDicts(dictType: DictTypes) {
       });
   });
 }
-// private就像protected，但不允许从子类访问成员：
 const DEFAULT_LABEL_FIELDS: DictDataKey = ['label', 'dictLabel', 'name', 'title'];
 const DEFAULT_VALUE_FIELDS: DictDataKey = ['value', 'dictValue', 'code', 'key'];
+const STATUS_FULFILLED = 'fulfilled';
+const STATUS_REJECTED = 'rejected';
+const STATUS_PENDING = 'pending';
 const defaultFormatOptions: FormatDictOptions = {
   separator: '/',
   primitive: false,
@@ -68,16 +70,15 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
 
   _status = computed<DictStatus>(() => {
     if (!this.keys.length) {
-      return 'fulfilled';
+      return STATUS_FULFILLED;
     }
-    if (this.keys.every((e) => this.dictMeta[e].status == 'fulfilled')) {
-      return 'fulfilled';
+    if (this.keys.every((e) => this.dictMeta[e].status == STATUS_FULFILLED)) {
+      return STATUS_FULFILLED;
     }
-
-    if (this.keys.some((e) => this.dictMeta[e].status == 'rejected')) {
-      return 'rejected';
+    if (this.keys.some((e) => this.dictMeta[e].status == STATUS_REJECTED)) {
+      return STATUS_REJECTED;
     }
-    return 'pending';
+    return STATUS_PENDING;
   });
 
   get status() {
@@ -137,7 +138,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   }
 
   private formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
-    if (this.dictMeta[dictKey].status != 'fulfilled') {
+    if (this.dictMeta[dictKey].status != STATUS_FULFILLED) {
       return '';
     }
     const data = this.data[dictKey];
@@ -197,7 +198,7 @@ class DictMeta extends BaseDict {
     return this.data;
   }
 
-  _status = ref<DictStatus>('pending');
+  _status = ref<DictStatus>(STATUS_PENDING);
 
   time = 0;
 
@@ -224,12 +225,12 @@ class DictMeta extends BaseDict {
   }
 
   private requestDicts(): Promise<DictData[]> {
-    this.status = 'pending';
+    this.status = STATUS_PENDING;
     this.time++;
     return new Promise((resolve, reject) => {
       return getDicts(this.name)
         .then((res) => {
-          this.status = 'fulfilled';
+          this.status = STATUS_FULFILLED;
           return compileDict(res.data, this.labelFields, this.valueFields);
         })
         .then((dictData) => {
@@ -246,7 +247,7 @@ class DictMeta extends BaseDict {
             console.error(
               `[Dict error] Attempt to repeat the request for dictionary data \`${this.name}\` for the ${this.time} times failed. Request has been abandoned.`,
             );
-            this.status = 'rejected';
+            this.status = STATUS_REJECTED;
             reject(e);
             return;
           }

@@ -14,7 +14,3 @@ export function useEventListener(target: MaybeElement, event: string, callback: 
   onMounted(() => getTarget()?.addEventListener(event, callback));
   onUnmounted(() => getTarget()?.removeEventListener(event, callback));
 }
-
-useEventListener(window, 'load', () => {
-  console.log(1);
-});

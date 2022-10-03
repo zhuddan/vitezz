@@ -12,7 +12,6 @@
     "gen:icon": "esno build/generate/icon/index.ts "
   },
   "dependencies": {
-    "@animxyz/vue3": "^0.6.7",
     "@iconify/iconify": "^2.2.1",
     "@vueuse/core": "^8.9.4",
     "animate.css": "^4.1.1",

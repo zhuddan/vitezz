@@ -2,7 +2,7 @@
   import { AppLogo } from '@/components/Application/';
   import { useUserStore } from '@/store/modules/user';
   import { useAppStore } from '@/store/modules/app';
-
+  import { useCssVar } from '@vueuse/core';
   defineOptions({
     name: 'LayoutHeader',
   });
@@ -87,14 +87,14 @@
 
     @media screen and (max-width: $screen-md) {
       .sidebar-button {
-        display: block !important;
+        // display: block !important;
       }
     }
 
     .sidebar-button {
       background: none;
       border: 0;
-      display: none;
+      // display: none;
       padding: 0;
       margin-right: 10px;
 
