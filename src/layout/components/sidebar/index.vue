@@ -3,6 +3,7 @@
   import { useAppStore } from '@/store/modules/app';
   import SidebarItem from './SidebarItem.vue';
   import { useCssVar, useWindowSize } from '@vueuse/core';
+  import { sleep } from '@/utils';
   defineOptions({
     name: 'Sidebar',
   });
@@ -14,35 +15,30 @@
   const { width } = useWindowSize();
   const isMobile = computed(() => width.value < parseInt(app_screen_md.value));
   const classes = ref('');
-  let t: Nullable<TimeoutHandle> = null;
   const show = computed(() => (isMobile.value ? true : !collapse.value));
-  function handleLockScroll() {
-    if (t) return;
+  async function handleLockScroll() {
     const body = document.body;
-    if (collapse.value) {
-      body.classList.add('full-screen-overlay');
-      classes.value = 'is-animating';
-      t = setTimeout(() => {
-        clearTimeout(t!);
-        t = null;
-        classes.value = 'collapse';
-      }, 300);
-    } else {
+    if (collapse.value || !isMobile.value) {
       body.classList.remove('full-screen-overlay');
+      classes.value = 'is-animating';
+      await sleep(300);
+      classes.value = 'collapse';
+    } else {
+      body.classList.add('full-screen-overlay');
       classes.value = '';
     }
   }
-  function select() {
+  function handleSelect() {
     isMobile.value && appStore.toggleCollapse();
   }
-  watch(collapse, handleLockScroll, { immediate: true });
+  watch([isMobile, collapse], handleLockScroll, { immediate: true });
 </script>
 
 <template>
-  <aside v-if="show" id="aside-nav-wrapper" :class="[classes, { isMobile }]">
+  <aside v-if="show" id="aside-nav-wrapper" :class="[classes, { isMobile, collapse }]">
     <button class="backdrop" @click="appStore.toggleCollapse"></button>
     <nav>
-      <SidebarItem :nav="routes" @select="select"> </SidebarItem>
+      <SidebarItem :nav="routes" @select="handleSelect"> </SidebarItem>
     </nav>
   </aside>
 </template>
@@ -63,7 +59,7 @@
     position: sticky;
     top: 90px;
     max-height: $height;
-    z-index: 9999;
+    z-index: 9;
 
     .backdrop {
       transition: opacity 0.3s ease;

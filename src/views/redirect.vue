@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   const { params, query } = useRoute();
-  const router = useRouter();
   const { path } = params;
+  const router = useRouter();
   router.replace({ path: '/' + path, query });
 </script>
 

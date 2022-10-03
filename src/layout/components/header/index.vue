@@ -85,12 +85,6 @@
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: $screen-md) {
-      .sidebar-button {
-        // display: block !important;
-      }
-    }
-
     .sidebar-button {
       background: none;
       border: 0;

@@ -1,6 +1,5 @@
 <script setup lang="ts">
   const dialog = ref<Nullable<HTMLDialogElement>>(null);
-
   function openDialog() {
     dialog.value?.showModal();
   }

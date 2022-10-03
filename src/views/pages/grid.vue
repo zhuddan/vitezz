@@ -1,19 +1,8 @@
-<script setup lang="ts">
-  import { getRandomColor } from '@/utils';
-
-  function getColor(): string {
-    var d = getRandomColor({ max: '666666' });
-    return d ? d : getColor();
-  }
-</script>
-
 <template>
   <div style="width: 100%">
     <h1> grid test </h1>
     <div class="box">
-      <div v-for="item in 9" :key="item" class="item grid_1" :style="{ backgroundColor: getColor() }">{{
-        item
-      }}</div>
+      <div v-for="item in 9" :key="item" class="item grid_1">{{ item }}</div>
     </div>
   </div>
 </template>
@@ -36,6 +25,7 @@
       line-height: 100px;
       text-align: center;
       color: aliceblue;
+      background-color: rgb(71, 142, 229);
     }
   }
 </style>
