@@ -3,9 +3,7 @@
   import b from '@/assets/images/b.jpg';
   import c from '@/assets/images/c.jpg';
   const route = useRoute();
-  const imgs = computed(() => {
-    return { a, b, c }[route.params.id as string];
-  });
+  const imgs = computed(() => ({ a, b, c }[route.params.id as string]));
 </script>
 
 <template>
