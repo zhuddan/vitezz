@@ -10,8 +10,8 @@
   const appStore = useAppStore();
   const routes = computed(() => permissionStore.routes);
   const collapse = computed(() => appStore.collapse);
-  const { width } = useWindowSize();
   const app_screen_md = useCssVar('--app-screen-md');
+  const { width } = useWindowSize();
   const isMobile = computed(() => width.value < parseInt(app_screen_md.value));
   const classes = ref('');
   let t: Nullable<TimeoutHandle> = null;
