@@ -2,7 +2,6 @@
   import { usePermissionStore } from '@/store/modules/permission';
   import { useAppStore } from '@/store/modules/app';
   import SidebarItem from './SidebarItem.vue';
-  import type { RouteRecordRaw } from 'vue-router';
   import { useCssVar, useWindowSize } from '@vueuse/core';
   defineOptions({
     name: 'Sidebar',
@@ -11,41 +10,36 @@
   const appStore = useAppStore();
   const routes = computed(() => permissionStore.routes);
   const collapse = computed(() => appStore.collapse);
-  const app_screen_md = useCssVar('--app-screen-md');
-  const classList = ref('');
   const { width } = useWindowSize();
+  const app_screen_md = useCssVar('--app-screen-md');
+  const isMobile = computed(() => width.value < parseInt(app_screen_md.value));
+  const classes = ref('');
   let t: Nullable<TimeoutHandle> = null;
+  const show = computed(() => (isMobile.value ? true : !collapse.value));
   function handleLockScroll() {
     if (t) return;
     const body = document.body;
     if (collapse.value) {
-      body.classList.add('mobile_overflow_y');
-      classList.value = 'is-animating';
+      body.classList.add('full-screen-overlay');
+      classes.value = 'is-animating';
       t = setTimeout(() => {
         clearTimeout(t!);
         t = null;
-        classList.value = 'collapse';
+        classes.value = 'collapse';
       }, 300);
     } else {
-      body.classList.remove('mobile_overflow_y');
-      classList.value = '';
+      body.classList.remove('full-screen-overlay');
+      classes.value = '';
     }
   }
-  function select(e: RouteRecordRaw) {
-    appStore.toggleCollapse();
+  function select() {
+    isMobile.value && appStore.toggleCollapse();
   }
-  const realVisible = computed(() => {
-    const app_screen_md_value = parseInt(app_screen_md.value);
-    if (width.value > app_screen_md_value) {
-      return !collapse.value;
-    }
-    return true;
-  });
   watch(collapse, handleLockScroll, { immediate: true });
 </script>
 
 <template>
-  <aside v-if="realVisible" id="aside-nav-wrapper" :class="classList">
+  <aside v-if="show" id="aside-nav-wrapper" :class="[classes, { isMobile }]">
     <button class="backdrop" @click="appStore.toggleCollapse"></button>
     <nav>
       <SidebarItem :nav="routes" @select="select"> </SidebarItem>
@@ -56,11 +50,14 @@
 <style scoped lang="scss">
   $width: var(--app-side-bar-width);
   $height: calc(100vh - var(--app-header-hight) - var(--app-breadcrumbs-hight));
+
   @import '@/style/var.scss';
 
   #aside-nav-wrapper {
     font-size: var(--app-header);
     border-right: 1px solid #cdcdcd;
+    background: white;
+    overflow-x: hidden;
     width: $width;
     position: -webkit-sticky;
     position: sticky;
