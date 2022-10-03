@@ -54,6 +54,7 @@ function getRouteTree(list: Item[]) {
     component: any;
     meta: {
       title: string;
+      hidden?: boolean;
     };
   }[] = [];
   function loop(list: Item[]) {
@@ -66,12 +67,16 @@ function getRouteTree(list: Item[]) {
           if (!routeList.find((e) => e.signal == signal)) {
             const pid = e.path.filter((e, i) => i <= index - 1).join('/');
             const parentId = routeList.find((e) => e.signal == pid)?.id || 0;
+            const __path = `${parentId == 0 ? '/' : ''}${realPath}`;
+            const routePath = __path == '_detail' ? 'detail/:id' : __path;
+            const hidden = __path == '_detail';
             routeList.push({
               signal,
-              path: `${parentId == 0 ? '/' : ''}${realPath}`,
+              path: routePath,
               id: id++,
               meta: {
                 title: capitalize(realPath),
+                hidden,
               },
               parentId,
               component: index == array.length - 1 ? e.comp : BlankView,
@@ -82,5 +87,7 @@ function getRouteTree(list: Item[]) {
     });
   }
   loop(list);
-  return handleTree(routeList);
+  return handleTree(
+    routeList.sort((a, b) => Number(b.signal.endsWith('index')) - Number(a.signal.endsWith('index'))),
+  );
 }

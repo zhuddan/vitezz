@@ -34,6 +34,7 @@ declare global {
   interface Window {
     webkitRequestAnimationFrame: Fn<FrameRequestCallback, number>;
     mozRequestAnimationFrame: Fn<FrameRequestCallback, number>;
+    process: any;
   }
 
   declare type TargetContext = '_self' | '_blank';

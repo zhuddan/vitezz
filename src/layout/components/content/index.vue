@@ -8,9 +8,9 @@
 
 <template>
   <div class="content-wrapper">
-    <Sidebar></Sidebar>
+    <Sidebar />
     <main id="content">
-      <router-view></router-view>
+      <router-view />
     </main>
     <BackTop />
   </div>
@@ -29,6 +29,7 @@
   #content {
     flex: 1;
     padding: var(--app-content-padding) 0;
+    overflow-x: hidden;
   }
 
   #aside-nav-wrapper + #content {

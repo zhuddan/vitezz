@@ -28,17 +28,21 @@
 <template>
   <ol class="side-bar-list">
     <li v-for="(item, index) in nav" :key="index">
-      <template v-if="item.children?.length">
-        <details open>
-          <summary class="title">
-            <strong>{{ item.meta?.title }}</strong></summary
-          >
-          <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" @select="handleSelect" />
-        </details>
+      <template v-if="!item.meta?.hidden">
+        <template v-if="item.children?.length">
+          <details open>
+            <summary class="title">
+              <strong>{{ item.meta?.title }}</strong></summary
+            >
+            <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" @select="handleSelect" />
+          </details>
+        </template>
+        <span v-else class="title">
+          <router-link :to="getPath(item.path)" @click="handleSelect(item)">{{
+            item.meta?.title
+          }}</router-link>
+        </span>
       </template>
-      <span v-else class="title">
-        <router-link :to="getPath(item.path)" @click="handleSelect(item)">{{ item.meta?.title }}</router-link>
-      </span>
     </li>
   </ol>
 </template>

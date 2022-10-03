@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div> home </div>
+  <div v-for="item in 100"> home </div>
 </template>
 
 <style scoped></style>
