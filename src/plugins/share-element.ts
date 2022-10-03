@@ -6,3 +6,5 @@
 //   app.use(SharedElementDirective);
 //   router.beforeEach(SharedElementRouteGuard);
 // }
+
+export {};
