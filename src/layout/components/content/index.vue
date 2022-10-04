@@ -30,6 +30,7 @@
     flex: 1;
     padding: var(--app-content-padding) 0;
     overflow-x: hidden;
+    background-color: aqua;
   }
 
   #aside-nav-wrapper + #content {

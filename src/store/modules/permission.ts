@@ -8,10 +8,25 @@ import { capitalize, handleTree } from '@/utils';
 
 import type { PermissionState } from '../typings/permission';
 
-interface Item {
+const DETAIL_PATH = 'detail_';
+interface RouteItem {
   path: string[];
   comp: CompPromFn;
 }
+
+interface AssembleRouteItem {
+  signal: string;
+  path: string;
+  id: number;
+  parentId: number;
+  component: any;
+  meta: {
+    title: string;
+    hidden?: boolean;
+    active?: string;
+  };
+}
+
 type CompPromFn = () => Promise<{
   [key: string]: any;
 }>;
@@ -24,7 +39,7 @@ export const usePermissionStore = defineStore({
   actions: {
     async addSyncRoutes() {
       const object = await import.meta.glob('../../views/pages/**/*.vue');
-      const t: Item[] = [];
+      const t: RouteItem[] = [];
       for (const key in object) {
         if (Object.prototype.hasOwnProperty.call(object, key)) {
           const path = key.replace('../../views/pages', '').replace('.vue', '');
@@ -35,7 +50,6 @@ export const usePermissionStore = defineStore({
         }
       }
       const asyncRoutes = getRouteTree(t) as unknown as RouteRecordRaw[];
-
       this.routes = [homeRoutes, ...asyncRoutes];
       asyncRoutes.forEach((e) => {
         router.addRoute(e);
@@ -45,49 +59,51 @@ export const usePermissionStore = defineStore({
 });
 
 let id = 1;
-function getRouteTree(list: Item[]) {
-  const routeList: {
-    signal: string;
-    path: string;
-    id: number;
-    parentId: number;
-    component: any;
-    meta: {
-      title: string;
-      hidden?: boolean;
-    };
-  }[] = [];
-  function loop(list: Item[]) {
-    list.forEach((e) => {
-      const array = e.path;
-      for (let index = 0; index < array.length; index++) {
-        const realPath = array[index];
-        if (realPath) {
-          const signal = e.path.filter((e, i) => i <= index).join('/');
-          if (!routeList.find((e) => e.signal == signal)) {
-            const pid = e.path.filter((e, i) => i <= index - 1).join('/');
-            const parentId = routeList.find((e) => e.signal == pid)?.id || 0;
-            const __path = `${parentId == 0 ? '/' : ''}${realPath}`;
-            const routePath = __path == '_detail' ? 'detail/:id' : __path;
-            const hidden = __path == '_detail';
-            routeList.push({
-              signal,
-              path: routePath,
-              id: id++,
-              meta: {
-                title: capitalize(realPath),
-                hidden,
-              },
-              parentId,
-              component: index == array.length - 1 ? e.comp : BlankView,
-            });
-          }
+function getRouteTree(list: RouteItem[]) {
+  const assembleRouteList = handleAssembleRoute(list);
+  const sortList = assembleRouteList.sort(
+    (a, b) => Number(b.signal.endsWith('index')) - Number(a.signal.endsWith('index')),
+  );
+  return handleTree(sortList);
+}
+
+function handleAssembleRoute(routeItemList: RouteItem[]) {
+  const assembleRouteList: AssembleRouteItem[] = [];
+  routeItemList.forEach((e) => {
+    const pathArr = e.path;
+    for (let index = 0; index < pathArr.length; index++) {
+      const realPath = pathArr[index];
+      if (realPath) {
+        const signal = pathArr.filter((e, i) => i <= index).join('/');
+        if (!assembleRouteList.find((e) => e.signal == signal)) {
+          const pid = pathArr.filter((e, i) => i <= index - 1).join('/');
+          const parentId = assembleRouteList.find((e) => e.signal == pid)?.id || 0;
+          const pathWithPrefix = `${parentId == 0 ? '/' : ''}${realPath}`;
+          const component = index == pathArr.length - 1 ? e.comp : BlankView;
+          // 处理 detail/:id
+          const isDetailPath = pathWithPrefix.startsWith(DETAIL_PATH);
+          const paramsKey = isDetailPath ? pathWithPrefix.split('_') && pathWithPrefix.split('_')[1] : '';
+          const path = isDetailPath ? `detail/:${paramsKey}` : pathWithPrefix;
+          const isHidden = isDetailPath;
+          const _pathArr = [...pathArr];
+          _pathArr.pop();
+          const activePath = isDetailPath ? '/' + _pathArr[0] + '/index' : '';
+          assembleRouteList.push({
+            signal,
+            id: id++,
+            parentId,
+            // vue router
+            path,
+            meta: {
+              title: capitalize(realPath),
+              hidden: isHidden,
+              active: activePath,
+            },
+            component,
+          });
         }
       }
-    });
-  }
-  loop(list);
-  return handleTree(
-    routeList.sort((a, b) => Number(b.signal.endsWith('index')) - Number(a.signal.endsWith('index'))),
-  );
+    }
+  });
+  return assembleRouteList;
 }

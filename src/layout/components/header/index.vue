@@ -88,7 +88,6 @@
     .sidebar-button {
       background: none;
       border: 0;
-      // display: none;
       padding: 0;
       margin-right: 10px;
 

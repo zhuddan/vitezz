@@ -14,7 +14,8 @@
   });
 
   const emit = defineEmits(['select']);
-
+  const route = useRoute();
+  const currentActive = computed(() => route.meta.active);
   function getPath(currentPath: string) {
     const _parentPath = props.parentPath.startsWith('/') ? props.parentPath : '/' + props.parentPath;
     return path.join(_parentPath, currentPath);
@@ -22,6 +23,11 @@
 
   function handleSelect(e: RouteRecordRaw) {
     emit('select', e);
+  }
+
+  function getClasses(it: RouteRecordRaw) {
+    console.log(currentActive.value);
+    return currentActive.value == getPath(it.path) ? 'is-active' : '';
   }
 </script>
 
@@ -38,9 +44,9 @@
           </details>
         </template>
         <span v-else class="title">
-          <router-link :to="getPath(item.path)" @click="handleSelect(item)">{{
-            item.meta?.title
-          }}</router-link>
+          <router-link :to="getPath(item.path)" :class="getClasses(item)" @click="handleSelect(item)">
+            {{ item.meta?.title }}
+          </router-link>
         </span>
       </template>
     </li>
@@ -92,7 +98,8 @@
     display: inline-block;
     width: 100%;
 
-    &.router-link-exact-active {
+    &.router-link-exact-active,
+    &.is-active {
       $base-color: var(--color-primary);
       color: var(--color-primary);
       border-left: 5px solid var(--color-primary);

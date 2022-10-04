@@ -52,7 +52,6 @@
   #aside-nav-wrapper {
     font-size: var(--app-header);
     border-right: 1px solid #cdcdcd;
-    background: white;
     overflow-x: hidden;
     width: $width;
     position: -webkit-sticky;
@@ -85,6 +84,7 @@
       padding: 10px;
       padding-left: 0;
       width: $width;
+      background: white;
     }
   }
   /* stylelint-disable-next-line order/order */
