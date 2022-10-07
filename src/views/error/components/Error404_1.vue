@@ -1,13 +1,13 @@
-<script setup lang="ts">
-  import { useRandomArray } from '@/hooks/utils/random';
-  import Error404_1 from './components/Error404_1.vue';
-  import Error404_2 from './components/Error404_2.vue';
-  import Error404_3 from './components/Error404_3.vue';
-  const components = [Error404_1, Error404_2, Error404_3];
-</script>
-
 <template>
-  <component :is="useRandomArray(components)" />
+  <div class="container">
+    <h1 data-t="404" class="h1">404</h1>
+    <div style="text-align: center">
+      <p
+        >页面不见了！请检查你的网址是否正确，或者
+        <router-link class="btn-primary" to="/">返回首页</router-link></p
+      >
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -15,12 +15,10 @@
     overflow: hidden;
     position: relative;
     height: var(--app-content-inner-height);
-  }
-
-  img {
-    max-width: 120px;
-    display: block;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
   }
 
   h1 {
@@ -28,7 +26,7 @@
     width: 100%;
     font-size: 6rem;
     animation: shake 1s ease-in-out infinite alternate;
-    margin: 0 auto 0;
+    margin: 60px auto 0;
     color: var(--color-primary);
   }
 
