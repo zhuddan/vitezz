@@ -26,7 +26,6 @@
   }
 
   function getClasses(it: RouteRecordRaw) {
-    console.log(currentActive.value);
     return currentActive.value == getPath(it.path) ? 'is-active' : '';
   }
 </script>

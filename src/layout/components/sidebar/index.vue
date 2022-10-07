@@ -2,23 +2,23 @@
   import { usePermissionStore } from '@/store/modules/permission';
   import { useAppStore } from '@/store/modules/app';
   import SidebarItem from './SidebarItem.vue';
-  import { useCssVar, useWindowSize } from '@vueuse/core';
   import { sleep } from '@/utils';
+  import { useAppBreakpoints } from '@/hooks/web/useAppBreakpoints';
+
   defineOptions({
     name: 'Sidebar',
   });
+
   const permissionStore = usePermissionStore();
   const appStore = useAppStore();
   const routes = computed(() => permissionStore.routes);
   const collapse = computed(() => appStore.collapse);
-  const app_screen_md = useCssVar('--app-screen-md');
-  const { width } = useWindowSize();
-  const isMobile = computed(() => width.value < parseInt(app_screen_md.value));
+  const { md } = useAppBreakpoints();
   const classes = ref('');
-  const show = computed(() => (isMobile.value ? true : !collapse.value));
+  const show = computed(() => (md.value ? true : !collapse.value));
   async function handleLockScroll() {
     const body = document.body;
-    if (collapse.value || !isMobile.value) {
+    if (collapse.value || !md.value) {
       body.classList.remove('full-screen-overlay');
       classes.value = 'is-animating';
       await sleep(300);
@@ -29,9 +29,9 @@
     }
   }
   function handleSelect() {
-    isMobile.value && appStore.toggleCollapse();
+    md.value && appStore.toggleCollapse();
   }
-  watch([isMobile, collapse], handleLockScroll, { immediate: true });
+  watch([md, collapse], handleLockScroll, { immediate: true });
 </script>
 
 <template>
@@ -58,6 +58,7 @@
     position: sticky;
     top: 90px;
     max-height: $height;
+    box-sizing: border-box;
     z-index: 9;
 
     .backdrop {
@@ -76,15 +77,16 @@
     nav {
       display: flex;
       overflow: auto;
-      box-sizing: border-box;
       flex-direction: column;
       max-height: $height;
       position: relative;
       transform: translateX(0);
       padding: 10px;
-      padding-left: 0;
+      box-sizing: border-box;
+      padding-left: var(--app-content-padding);
       width: $width;
       background: white;
+      height: 100%;
     }
   }
   /* stylelint-disable-next-line order/order */
@@ -102,13 +104,9 @@
       }
 
       nav {
-        height: 100%;
         left: 0;
-        width: calc($width + 20px);
-        background: #fff;
         transform: translateX(0);
         transition: transform 0.3s ease;
-        padding-left: 20px;
       }
 
       &.collapse {

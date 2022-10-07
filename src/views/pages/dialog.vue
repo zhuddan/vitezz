@@ -1,9 +1,12 @@
 <script setup lang="ts">
   const dialog = ref<Nullable<HTMLDialogElement>>(null);
+  const body = document.body;
   function openDialog() {
+    body.classList.add('full-screen-overlay');
     dialog.value?.showModal();
   }
   function closeDialog() {
+    body.classList.remove('full-screen-overlay');
     dialog.value?.close();
   }
 </script>

@@ -13,8 +13,8 @@
 <style scoped>
   img {
     width: 100%;
-    object-fit: cover;
-    max-height: 500px;
+    object-fit: contain;
+    max-height: var(--app-content-inner-height);
     display: block;
   }
 </style>

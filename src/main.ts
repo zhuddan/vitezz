@@ -8,11 +8,7 @@ import { setupStore } from '@/store';
 import App from './App.vue';
 import { registerPlugins } from './plugins';
 import { initStore } from './store/initStore';
-window.process = {
-  env: {
-    NODE_ENV: 'production',
-  },
-};
+
 function __init__() {
   const app = createApp(App);
   // 注册 store

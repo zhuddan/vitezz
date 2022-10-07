@@ -11,7 +11,7 @@
     margin-top: 0;
     display: grid;
     width: 100%;
-    border: 1px solid;
+    border: 1px solid #cdcdcd;
     padding: 10px;
     grid-template-columns: 1fr 1fr minmax(300px, 1fr);
     grid-template-rows: 1fr 1fr;
@@ -25,7 +25,7 @@
       font-size: 2em;
       text-align: center;
       color: aliceblue;
-      background-color: rgb(71, 142, 229);
+      background-color: var(--color-primary);
       box-sizing: border-box;
       display: flex;
       align-items: center;

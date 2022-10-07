@@ -2,7 +2,6 @@
   import { AppLogo } from '@/components/Application/';
   import { useUserStore } from '@/store/modules/user';
   import { useAppStore } from '@/store/modules/app';
-  import { useCssVar } from '@vueuse/core';
   defineOptions({
     name: 'LayoutHeader',
   });

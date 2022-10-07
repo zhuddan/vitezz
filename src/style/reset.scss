@@ -73,8 +73,6 @@ input {
   box-sizing: border-box;
 }
 
-@media screen and (max-width: $screen-md) {
-  body.full-screen-overlay {
-    overflow: hidden;
-  }
+body.full-screen-overlay {
+  overflow: hidden;
 }
