@@ -54,8 +54,4 @@
     flex: 1;
     overflow: auto;
   }
-
-  dialog::backdrop {
-    // background: rgba(255, 0, 0, 0.207);
-  }
 </style>
