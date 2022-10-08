@@ -34,21 +34,32 @@ export class ChannelCollection<T extends string = string> {
 }
 
 export class Channel {
-  handlers: Fn[] = [];
+  handlers: {
+    handler: Fn;
+    once?: boolean;
+  }[] = [];
 
-  subscribe(handler: Fn) {
-    this.handlers.push(handler);
+  subscribe(handler: Fn, once = false) {
+    this.handlers.push({
+      handler: handler,
+      once,
+    });
   }
 
   unsubscribe(fn: Fn) {
-    const index = this.handlers.findIndex((e) => e == fn);
+    const index = this.handlers.findIndex((e) => e.handler == fn);
     this.handlers.splice(index, 1);
   }
 
   emit(...args: any[]) {
-    this.handlers.forEach((handler) => {
+    const onceHandlers: Fn[] = [];
+    this.handlers.forEach(({ handler, once }) => {
       handler(...args);
+      if (once) {
+        onceHandlers.push(handler);
+      }
     });
+    onceHandlers.forEach((e) => this.unsubscribe(e));
   }
 
   stop() {
