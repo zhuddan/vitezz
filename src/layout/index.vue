@@ -2,6 +2,17 @@
   import LayoutHeader from './components/header/index.vue';
   import LayoutContent from './components/content/index.vue';
   import LayoutFooter from './components/footer/index.vue';
+
+  interface sssss {
+    name: string;
+    age: number;
+  }
+  defineProps({
+    person: {
+      required: true,
+      type: Object as PropType<sssss>,
+    },
+  });
   defineOptions({
     name: 'Layout',
   });

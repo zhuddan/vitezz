@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "target": "es2015",
     "module": "esnext",
     "strict": true,
@@ -27,7 +27,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "~/*": ["./types/*"]
-    },
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -39,6 +39,6 @@
     "types/**/*.tsx",
     "types/**/*.vue",
     "build/**/*.ts",
-    "build/**/*.d.ts",
+    "build/**/*.d.ts"
   ]
 }

@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  <Layout> </Layout>
+  <Layout :person="{ age: 1, name: 's' }" />
 </template>

@@ -30,8 +30,8 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:prettier/recommended',
+    // 'prettier',
+    // 'plugin:prettier/recommended',
   ],
   plugins: ['simple-import-sort', 'unused-imports'],
   settings: {
@@ -52,7 +52,7 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': 'warn',
+    // 'prettier/prettier': 'warn',
     // 'no-extra-semi': [],
     // '@typescript-eslint/no-extra-semi': [2, 'always'],
     // TS
