@@ -44,8 +44,8 @@ export const usePermissionStore = defineStore({
         if (Object.prototype.hasOwnProperty.call(object, key)) {
           const path = key.replace('../../views/pages', '').replace('.vue', '');
           t.push({
-            path: path.split('/').filter((e) => !!e),
-            comp: object[key],
+            path: path.split('/').filter(e => !!e),
+            comp: object[key] as any,
           });
         }
       }
@@ -75,9 +75,9 @@ function handleAssembleRoute(routeItemList: RouteItem[]) {
       const realPath = pathArr[index];
       if (realPath) {
         const signal = pathArr.filter((e, i) => i <= index).join('/');
-        if (!assembleRouteList.find((e) => e.signal == signal)) {
+        if (!assembleRouteList.find(e => e.signal == signal)) {
           const pid = pathArr.filter((e, i) => i <= index - 1).join('/');
-          const parentId = assembleRouteList.find((e) => e.signal == pid)?.id || 0;
+          const parentId = assembleRouteList.find(e => e.signal == pid)?.id || 0;
           const pathWithPrefix = `${parentId == 0 ? '/' : ''}${realPath}`;
           const component = index == pathArr.length - 1 ? e.comp : BlankView;
           // 处理 detail/:id
@@ -87,7 +87,7 @@ function handleAssembleRoute(routeItemList: RouteItem[]) {
           const isHidden = isDetailPath;
           const _pathArr = [...pathArr];
           _pathArr.pop();
-          const activePath = isDetailPath ? '/' + _pathArr[0] + '/index' : '';
+          const activePath = isDetailPath ? `/${_pathArr[0]}/index` : '';
           assembleRouteList.push({
             signal,
             id: id++,
