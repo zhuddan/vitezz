@@ -14,7 +14,7 @@ export function useSlotsVisible<S extends string = string>(...arg: S[]) {
     () => {
       for (let index = 0; index < arg.length; index++) {
         const key = arg[index];
-        slotVisible[key + 'Visible'] = Object.prototype.hasOwnProperty.call(slots, key) as any;
+        slotVisible[`${key}Visible`] = Object.prototype.hasOwnProperty.call(slots, key) as any;
       }
     },
     {

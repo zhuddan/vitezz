@@ -25,7 +25,8 @@ export function getDicts(dictType: DictTypes) {
           reject(
             `[Dictionary error] Get dictionary data \`${dictType}\` with null.Please check your dictionary key with \`${dictType}\`.`,
           );
-        } else {
+        }
+        else {
           resolve(res);
         }
       });
@@ -69,15 +70,15 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   dictMeta = {} as DictMap<DK, DictMeta>;
 
   _status = computed<DictStatus>(() => {
-    if (!this.keys.length) {
+    if (!this.keys.length) 
       return STATUS_FULFILLED;
-    }
-    if (this.keys.every((e) => this.dictMeta[e].status == STATUS_FULFILLED)) {
+    
+    if (this.keys.every(e => this.dictMeta[e].status == STATUS_FULFILLED)) 
       return STATUS_FULFILLED;
-    }
-    if (this.keys.some((e) => this.dictMeta[e].status == STATUS_REJECTED)) {
+    
+    if (this.keys.some(e => this.dictMeta[e].status == STATUS_REJECTED)) 
       return STATUS_REJECTED;
-    }
+    
     return STATUS_PENDING;
   });
 
@@ -120,7 +121,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
         resolve(data);
         return;
       }
-      Promise.all(this.keys.map((e) => this.dictMeta[e].load())).then((res) => {
+      Promise.all(this.keys.map(e => this.dictMeta[e].load())).then((res) => {
         resolve(res);
       });
     });
@@ -129,18 +130,18 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   format(dictKey: OriginDictData[] | DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
     const res = computed(() => {
       if (values == undefined || values == null) return '';
-      if (isString(dictKey)) {
+      if (isString(dictKey)) 
         return this.formatByDictKey(dictKey, values, options);
-      }
+      
       return this.formatByDictData(unref(dictKey), values, options);
     });
     return unref(res);
   }
 
   private formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
-    if (this.dictMeta[dictKey].status != STATUS_FULFILLED) {
+    if (this.dictMeta[dictKey].status != STATUS_FULFILLED) 
       return '';
-    }
+    
     const data = this.data[dictKey];
     return this.handleFormat(data, values, options);
   }
@@ -159,22 +160,22 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     options?: Partial<FormatDictOptions>,
   ) {
     const opt = Object.assign({}, defaultFormatOptions, options || {});
-    if (isArray(values)) {
-      return values.map((e) => this.formatValue(data, e, opt)).join(opt.separator);
-    } else {
+    if (isArray(values)) 
+      return values.map(e => this.formatValue(data, e, opt)).join(opt.separator);
+    else 
       return this.formatValue(data, values, opt);
-    }
+    
   }
 
   private formatValue(data: Array<OriginDictData | DictData>, value: string, options: FormatDictOptions) {
-    const res = data.find((e) => e[getDictField(e, ...this.valueFields)] == value) || {};
+    const res = data.find(e => e[getDictField(e, ...this.valueFields)] == value) || {};
     if (!res) {
       console.warn(`[Dict format warning]: Can not find the dictionary with value ${value} in data: `, data);
       return '';
     }
-    if (options.primitive) {
+    if (options.primitive) 
       return res;
-    }
+    
     return res?.[getDictField(res, ...this.labelFields)];
   }
 }
@@ -188,9 +189,9 @@ class DictMeta extends BaseDict {
   }
 
   private init() {
-    if (!this.options.isLazy) {
+    if (!this.options.isLazy) 
       this.load();
-    }
+    
   }
 
   async load() {
@@ -254,8 +255,8 @@ class DictMeta extends BaseDict {
           const t = setTimeout(() => {
             clearTimeout(t);
             this.requestDicts()
-              .then((res) => resolve(res))
-              .catch((e) => reject(e));
+              .then(res => resolve(res))
+              .catch(e => reject(e));
           }, this.options.retryTimeout);
         });
     });
@@ -263,7 +264,7 @@ class DictMeta extends BaseDict {
 }
 
 function compileDict(list: OriginDictData[], labelFields: DictDataKey, valueFields: DictDataKey): DictData[] {
-  return list.map((e) => convertDict(e, labelFields, valueFields));
+  return list.map(e => convertDict(e, labelFields, valueFields));
 }
 
 function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields: DictDataKey) {
@@ -276,9 +277,9 @@ function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields
 }
 
 function getDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
-  const res = fields.find((f) => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
-  if (!res) {
+  const res = fields.find(f => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
+  if (!res) 
     console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
-  }
+  
   return res;
 }

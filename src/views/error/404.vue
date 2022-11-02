@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { useRandomArray } from '@/hooks/utils/random';
-  import Error404_1 from './components/Error404_1.vue';
-  import Error404_2 from './components/Error404_2.vue';
-  import Error404_3 from './components/Error404_3.vue';
-  const components = useRandomArray([Error404_1, Error404_2, Error404_3]);
+import { useRandomArray } from '@/hooks/utils/random';
+import Error404_1 from './components/Error404_1.vue';
+import Error404_2 from './components/Error404_2.vue';
+import Error404_3 from './components/Error404_3.vue';
+const components = useRandomArray([Error404_1, Error404_2, Error404_3]);
 </script>
 
 <template>

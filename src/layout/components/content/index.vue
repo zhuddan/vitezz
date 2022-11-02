@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import { BackTop } from '@/components/BackTop';
-  import { useAppStore } from '@/store/modules/app';
-  import Sidebar from '../sidebar/index.vue';
-  const appStore = useAppStore();
-  const collapse = computed(() => appStore.collapse);
+import { BackTop } from '@/components/BackTop';
+import { useAppStore } from '@/store/modules/app';
+import Sidebar from '../sidebar/index.vue';
+const appStore = useAppStore();
+const collapse = computed(() => appStore.collapse);
 
-  defineOptions({
-    name: 'LayoutContent',
-  });
+defineOptions({
+  name: 'LayoutContent',
+});
 </script>
 
 <template>

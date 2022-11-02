@@ -41,13 +41,13 @@ export class Channel {
 
   subscribe(handler: Fn, once = false) {
     this.handlers.push({
-      handler: handler,
+      handler,
       once,
     });
   }
 
   unsubscribe(fn: Fn) {
-    const index = this.handlers.findIndex((e) => e.handler == fn);
+    const index = this.handlers.findIndex(e => e.handler == fn);
     this.handlers.splice(index, 1);
   }
 
@@ -55,11 +55,11 @@ export class Channel {
     const onceHandlers: Fn[] = [];
     this.handlers.forEach(({ handler, once }) => {
       handler(...args);
-      if (once) {
+      if (once) 
         onceHandlers.push(handler);
-      }
+      
     });
-    onceHandlers.forEach((e) => this.unsubscribe(e));
+    onceHandlers.forEach(e => this.unsubscribe(e));
   }
 
   stop() {
@@ -75,17 +75,17 @@ export function useChannel(
   callback?: Fn,
 ) {
   function getFn() {
-    if (typeof key == 'string') {
+    if (typeof key == 'string') 
       return callback!;
-    }
+    
     return key!;
   }
   function getChannel() {
     return channelOrChannelCollection instanceof Channel
       ? channelOrChannelCollection
       : typeof key == 'string'
-      ? channelOrChannelCollection.channel[key]
-      : null;
+        ? channelOrChannelCollection.channel[key]
+        : null;
   }
   onMounted(() => getChannel()?.subscribe(getFn()));
   onUnmounted(() => getChannel()?.unsubscribe(getFn()));

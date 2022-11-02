@@ -1,44 +1,45 @@
 <script setup lang="ts">
-  import { usePermissionStore } from '@/store/modules/permission';
-  import { useAppStore } from '@/store/modules/app';
-  import SidebarItem from './SidebarItem.vue';
-  import { sleep } from '@/utils';
-  import { useAppBreakpoints } from '@/hooks/web/useAppBreakpoints';
+import { usePermissionStore } from '@/store/modules/permission';
+import { useAppStore } from '@/store/modules/app';
+import SidebarItem from './SidebarItem.vue';
+import { sleep } from '@/utils';
+import { useAppBreakpoints } from '@/hooks/web/useAppBreakpoints';
 
-  defineOptions({
-    name: 'Sidebar',
-  });
+defineOptions({
+  name: 'Sidebar',
+});
 
-  const permissionStore = usePermissionStore();
-  const appStore = useAppStore();
-  const routes = computed(() => permissionStore.routes);
-  const collapse = computed(() => appStore.collapse);
-  const { md } = useAppBreakpoints();
-  const classes = ref('');
-  const show = computed(() => (md.value ? true : !collapse.value));
-  async function handleLockScroll() {
-    const body = document.body;
-    if (collapse.value || !md.value) {
-      body.classList.remove('full-screen-overlay');
-      classes.value = 'is-animating';
-      await sleep(300);
-      classes.value = 'collapse';
-    } else {
-      body.classList.add('full-screen-overlay');
-      classes.value = '';
-    }
+const permissionStore = usePermissionStore();
+const appStore = useAppStore();
+const routes = computed(() => permissionStore.routes);
+const collapse = computed(() => appStore.collapse);
+const { md } = useAppBreakpoints();
+const classes = ref('');
+const show = computed(() => (md.value ? true : !collapse.value));
+async function handleLockScroll() {
+  const body = document.body;
+  if (collapse.value || !md.value) {
+    body.classList.remove('full-screen-overlay');
+    classes.value = 'is-animating';
+    await sleep(300);
+    classes.value = 'collapse';
   }
-  function handleSelect() {
-    md.value && appStore.toggleCollapse();
+  else {
+    body.classList.add('full-screen-overlay');
+    classes.value = '';
   }
-  watch([md, collapse], handleLockScroll, { immediate: true });
+}
+function handleSelect() {
+  md.value && appStore.toggleCollapse();
+}
+watch([md, collapse], handleLockScroll, { immediate: true });
 </script>
 
 <template>
   <aside v-if="show" id="aside-nav-wrapper" :class="[classes]">
-    <button class="backdrop" @click="appStore.toggleCollapse"></button>
+    <button class="backdrop" @click="appStore.toggleCollapse" />
     <nav>
-      <SidebarItem :nav="routes" @select="handleSelect"> </SidebarItem>
+      <SidebarItem :nav="routes" @select="handleSelect" />
     </nav>
   </aside>
 </template>

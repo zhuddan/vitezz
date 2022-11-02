@@ -1,7 +1,9 @@
 <template>
   <div style="width: 100%">
     <div class="box">
-      <div v-for="item in 4" :key="item" class="item grid_1" :class="`grid_${item}`">{{ item }}</div>
+      <div v-for="item in 4" :key="item" class="item grid_1" :class="`grid_${item}`">
+        {{ item }}
+      </div>
     </div>
   </div>
 </template>

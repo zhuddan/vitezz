@@ -1,27 +1,27 @@
 <script setup lang="ts">
-  import { AppLogo } from '@/components/Application/';
-  import { useUserStore } from '@/store/modules/user';
-  import { useAppStore } from '@/store/modules/app';
-  defineOptions({
-    name: 'LayoutHeader',
-  });
-  const appStore = useAppStore();
-  const userStore = useUserStore();
-  const isLogin = computed(() => !!userStore.user);
-  const userName = computed(() => userStore.user?.userName);
+import { AppLogo } from '@/components/Application/';
+import { useUserStore } from '@/store/modules/user';
+import { useAppStore } from '@/store/modules/app';
+defineOptions({
+  name: 'LayoutHeader',
+});
+const appStore = useAppStore();
+const userStore = useUserStore();
+const isLogin = computed(() => !!userStore.user);
+const userName = computed(() => userStore.user?.userName);
 
-  function toggleCollapse() {
-    appStore.toggleCollapse();
-  }
-  const router = useRouter();
+function toggleCollapse() {
+  appStore.toggleCollapse();
+}
+const router = useRouter();
 
-  async function handleLogout() {
-    if (!confirm('确定退出登录？')) return;
-    await userStore.logout();
-    router.replace('/redirect/');
-  }
+async function handleLogout() {
+  if (!confirm('确定退出登录？')) return;
+  await userStore.logout();
+  router.replace('/redirect/');
+}
 
-  const collapse = computed(() => appStore.collapse);
+const collapse = computed(() => appStore.collapse);
 </script>
 
 <template>
@@ -30,7 +30,9 @@
       <AppLogo />
       <div v-if="isLogin" class="user-info">
         <span>{{ userName }}</span>
-        <button class="btn-primary" @click="handleLogout">退出登录</button>
+        <button class="btn-primary" @click="handleLogout">
+          退出登录
+        </button>
       </div>
     </div>
     <div class="container breadcrumbs-container">
@@ -40,7 +42,7 @@
         :class="{ collapse }"
         @click="toggleCollapse"
       >
-        <Icon icon="icon-park-outline:menu-unfold-one" size="24"></Icon>
+        <Icon icon="icon-park-outline:menu-unfold-one" size="24" />
       </button>
       <span style="font-size: 12px">VUE_TEMPLATE_FOR_VITE</span>
     </div>

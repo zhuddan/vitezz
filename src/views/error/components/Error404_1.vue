@@ -1,11 +1,15 @@
 <template>
   <div class="container">
-    <h1 data-t="404" class="h1">404</h1>
+    <h1 data-t="404" class="h1">
+      404
+    </h1>
     <div style="text-align: center">
-      <p
-        >页面不见了！请检查你的网址是否正确，或者
-        <router-link class="btn-primary" to="/">返回首页</router-link></p
-      >
+      <p>
+        页面不见了！请检查你的网址是否正确，或者
+        <router-link class="btn-primary" to="/">
+          返回首页
+        </router-link>
+      </p>
     </div>
   </div>
 </template>

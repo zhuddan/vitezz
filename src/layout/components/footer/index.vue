@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  defineOptions({
-    name: 'LayoutFooter',
-  });
+defineOptions({
+  name: 'LayoutFooter',
+});
 </script>
 
 <template>

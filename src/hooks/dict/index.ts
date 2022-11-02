@@ -19,14 +19,15 @@ export function useDicts<DK extends DictTypes = DictTypes>(keys: DK[], options?:
     const data = dict.format.call(dict, dictKey, values, options);
     if (options?.primitive) {
       if (dictKey instanceof Array) {
-        if (values instanceof Array) {
+        if (values instanceof Array) 
           return data as unknown as OriginDictData[];
-        }
+        
         return data as unknown as OriginDictData;
-      } else {
-        if (values instanceof Array) {
+      }
+      else {
+        if (values instanceof Array) 
           return data as unknown as DictData[];
-        }
+        
         return data as unknown as DictData;
       }
     }

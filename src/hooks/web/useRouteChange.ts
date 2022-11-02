@@ -9,9 +9,9 @@ export function useRouteChange(_path: string, fn?: (type: string) => any | void)
   watch(
     type,
     (type) => {
-      if (path.value.startsWith(_path)) {
+      if (path.value.startsWith(_path)) 
         fn?.(type);
-      }
+      
     },
     {
       immediate: true,

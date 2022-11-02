@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <img src="@/assets/404/1.png" alt="" />
+    <img src="@/assets/404/1.png" alt="">
     <div class="inner">
-      <p
-        >页面不见了！请检查你的网址是否正确，或者
-        <router-link class="btn-primary" to="/">返回首页</router-link></p
-      >
+      <p>
+        页面不见了！请检查你的网址是否正确，或者
+        <router-link class="btn-primary" to="/">
+          返回首页
+        </router-link>
+      </p>
     </div>
   </div>
 </template>

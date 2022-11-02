@@ -1,84 +1,85 @@
 <script setup lang="ts">
-  import type { IconsType } from '../data/index';
-  import { IconCollections } from '../data/index';
-  import Icon from './Icon.vue';
-  const activeIcons = ref<IconsType>('element-plus');
-  const baseIcons = computed(() => {
-    return IconCollections[activeIcons.value];
-  });
-  const keywords = ref('');
-  const icons = computed(() => {
-    if (!keywords.value) {
-      return baseIcons.value.icons;
-    }
-    return baseIcons.value.icons.filter((e) => e.includes(keywords.value));
-  });
-  const pageSize = ref(20);
-  const pageNum = ref(1);
-  const pages = computed(() => {
-    return Math.ceil(icons.value.length / pageSize.value);
-  });
-  const data = computed(() => {
-    return icons.value.slice((pageNum.value - 1) * pageSize.value, pageNum.value * pageSize.value);
-  });
+import type { IconsType } from '../data/index';
+import { IconCollections } from '../data/index';
+import Icon from './Icon.vue';
+const activeIcons = ref<IconsType>('element-plus');
+const baseIcons = computed(() => {
+  return IconCollections[activeIcons.value];
+});
+const keywords = ref('');
+const icons = computed(() => {
+  if (!keywords.value) 
+    return baseIcons.value.icons;
+    
+  return baseIcons.value.icons.filter(e => e.includes(keywords.value));
+});
+const pageSize = ref(20);
+const pageNum = ref(1);
+const pages = computed(() => {
+  return Math.ceil(icons.value.length / pageSize.value);
+});
+const data = computed(() => {
+  return icons.value.slice((pageNum.value - 1) * pageSize.value, pageNum.value * pageSize.value);
+});
 
-  const range = computed(() => {
-    const p = pageNum.value;
-    let range = [p - 1, p, p + 1];
-    if (range[0] == 0) {
-      range.shift();
-      if (pages.value >= p + 2) {
-        range.push(p + 2);
-      }
-    }
-    return range;
-  });
+const range = computed(() => {
+  const p = pageNum.value;
+  const range = [p - 1, p, p + 1];
+  if (range[0] == 0) {
+    range.shift();
+    if (pages.value >= p + 2) 
+      range.push(p + 2);
+      
+  }
+  return range;
+});
 
-  function onNext() {
-    if (pageNum.value < pages.value) {
-      pageNum.value++;
-    }
-  }
-  function onPrev() {
-    if (pageNum.value > 1) {
-      pageNum.value--;
-    }
-  }
-  function onJump(v: number) {
-    if (pageNum.value != v) {
-      pageNum.value = v;
-    }
-  }
+function onNext() {
+  if (pageNum.value < pages.value) 
+    pageNum.value++;
+    
+}
+function onPrev() {
+  if (pageNum.value > 1) 
+    pageNum.value--;
+    
+}
+function onJump(v: number) {
+  if (pageNum.value != v) 
+    pageNum.value = v;
+    
+}
 
-  function toggleIcons(key: IconsType) {
-    if (activeIcons.value != key) {
-      activeIcons.value = key;
-      keywords.value = '';
-      pageNum.value = 1;
-    }
+function toggleIcons(key: IconsType) {
+  if (activeIcons.value != key) {
+    activeIcons.value = key;
+    keywords.value = '';
+    pageNum.value = 1;
   }
+}
 </script>
 
 <template>
   <div>
     <div class="search-box">
-      <input v-model="keywords" />
+      <input v-model="keywords">
       <span
         v-for="(item, key) in IconCollections"
         :key="key"
         :class="{ active: activeIcons === key }"
         @click="toggleIcons(key)"
-        >{{ key }}</span
-      >
+      >{{ key }}</span>
     </div>
     <ul>
       <li v-for="(item, index) in data" :key="index">
-        <Icon class="icon" :icon="`${baseIcons.prefix}:${item}`" size="30"></Icon>
+        <Icon class="icon" :icon="`${baseIcons.prefix}:${item}`" size="30" />
         <span class="name">{{ item }}</span>
       </li>
     </ul>
     <div v-if="pages > 1" class="page-control">
-      <button @click="onPrev"><Icon icon="ant-design:left-outlined"></Icon></button>
+      <button @click="onPrev">
+        <Icon icon="ant-design:left-outlined" />
+      </button>
       <div class="pages">
         <template v-for="(item, index) in pages" :key="index">
           <span
@@ -87,11 +88,12 @@
               active: item === pageNum,
             }"
             @click="onJump(item)"
-            >{{ item }}</span
-          >
+          >{{ item }}</span>
         </template>
       </div>
-      <button @click="onNext"><Icon icon="ant-design:right-outlined"></Icon></button>
+      <button @click="onNext">
+        <Icon icon="ant-design:right-outlined" />
+      </button>
     </div>
   </div>
 </template>

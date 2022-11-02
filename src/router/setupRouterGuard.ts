@@ -13,12 +13,13 @@ export function setupRouterGuard(router: Router) {
         path: to.path,
         replace: true,
       });
-    } else {
-      if (to.path == '/login') {
+    }
+    else {
+      if (to.path == '/login') 
         next('/');
-      } else {
+      else 
         next();
-      }
+      
     }
     // if (to.meta.auth != false) {
     //   if (getToken()) {

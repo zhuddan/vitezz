@@ -13,18 +13,18 @@ import { isObject } from './is';
  */
 export function setObjToUrlParams(baseUrl: string, obj: any): string {
   let parameters = '';
-  for (const key in obj) {
-    parameters += key + '=' + encodeURIComponent(obj[key]) + '&';
-  }
+  for (const key in obj) 
+    parameters += `${key}=${encodeURIComponent(obj[key])}&`;
+  
   parameters = parameters.replace(/&$/, '');
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
 }
 
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   let key: string;
-  for (key in target) {
+  for (key in target) 
     src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
-  }
+  
   return src as T;
 }
 
@@ -32,9 +32,9 @@ export const withInstall = <T extends Component>(component: T, alias?: string) =
   const comp = component as any;
   comp.install = (app: App) => {
     app.component(comp.name || comp.displayName, component);
-    if (alias) {
+    if (alias) 
       app.config.globalProperties[alias] = component;
-    }
+    
   };
   return component as T & Plugin;
 };
@@ -67,7 +67,7 @@ export function sleep(t = 1000) {
 export const createUuid = () => {
   const temp_url = URL.createObjectURL(new Blob());
   const uuid = temp_url.toString();
-  URL.revokeObjectURL(temp_url); //释放这个url
+  URL.revokeObjectURL(temp_url); // 释放这个url
   return uuid.substring(uuid.lastIndexOf('/') + 1);
 };
 
@@ -89,23 +89,22 @@ export function handleTree<T>(
 
   for (const d of data) {
     const parentId = d[PARENT_ID_KEY];
-    if (childrenListMap[parentId] == null) {
+    if (childrenListMap[parentId] == null) 
       childrenListMap[parentId] = [];
-    }
+    
     nodeIds[d[ID_KEY]] = d;
     childrenListMap[parentId].push(d);
   }
 
   for (const d of data) {
     const parentId = d[PARENT_ID_KEY];
-    if (nodeIds[parentId] == null) {
+    if (nodeIds[parentId] == null) 
       tree.push(d);
-    }
+    
   }
 
-  for (const t of tree) {
+  for (const t of tree) 
     adaptToChildrenList(t);
-  }
 
   function adaptToChildrenList(o: T) {
     if (childrenListMap[o[ID_KEY]]) {
@@ -113,9 +112,9 @@ export function handleTree<T>(
       o[key] = childrenListMap[o[ID_KEY]];
     }
     if (o[CHILDREN_KEY]) {
-      for (const c of o[CHILDREN_KEY]) {
+      for (const c of o[CHILDREN_KEY]) 
         adaptToChildrenList(c);
-      }
+      
     }
   }
   return tree as TreeList<T>;

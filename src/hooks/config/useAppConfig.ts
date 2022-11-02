@@ -18,17 +18,20 @@ export function useAppConfig(): AppConfigType {
       const value = metaEnv[key];
       if (key == 'VITE_APP_PORT') {
         env[key] = Number(value) || undefined;
-      } else if (value == undefined || value == null || value == 'undefined' || value == 'null') {
+      }
+      else if (value == undefined || value == null || value == 'undefined' || value == 'null') {
         env[key] = '';
-      } else if (typeof value == 'string') {
-        if (value.toLocaleLowerCase() == 'true') {
+      }
+      else if (typeof value == 'string') {
+        if (value.toLocaleLowerCase() == 'true') 
           env[key] = true;
-        } else if (value.toLocaleLowerCase() == 'false') {
+        else if (value.toLocaleLowerCase() == 'false') 
           env[key] = false;
-        } else {
+        else 
           env[key] = value;
-        }
-      } else {
+        
+      }
+      else {
         env[key] = value;
       }
     }

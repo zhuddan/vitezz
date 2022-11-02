@@ -1,33 +1,33 @@
 <script setup lang="ts">
-  import path from 'path-browserify';
-  import type { RouteRecordRaw } from 'vue-router';
+import path from 'path-browserify';
+import type { RouteRecordRaw } from 'vue-router';
 
-  const props = defineProps({
-    nav: {
-      type: Array as PropType<RouteRecordRaw[]>,
-      default: () => [],
-    },
-    parentPath: {
-      type: String,
-      default: '',
-    },
-  });
+const props = defineProps({
+  nav: {
+    type: Array as PropType<RouteRecordRaw[]>,
+    default: () => [],
+  },
+  parentPath: {
+    type: String,
+    default: '',
+  },
+});
 
-  const emit = defineEmits(['select']);
-  const route = useRoute();
-  const currentActive = computed(() => route.meta.active);
-  function getPath(currentPath: string) {
-    const _parentPath = props.parentPath.startsWith('/') ? props.parentPath : '/' + props.parentPath;
-    return path.join(_parentPath, currentPath);
-  }
+const emit = defineEmits(['select']);
+const route = useRoute();
+const currentActive = computed(() => route.meta.active);
+function getPath(currentPath: string) {
+  const _parentPath = props.parentPath.startsWith('/') ? props.parentPath : `/${props.parentPath}`;
+  return path.join(_parentPath, currentPath);
+}
 
-  function handleSelect(e: RouteRecordRaw) {
-    emit('select', e);
-  }
+function handleSelect(e: RouteRecordRaw) {
+  emit('select', e);
+}
 
-  function getClasses(it: RouteRecordRaw) {
-    return currentActive.value == getPath(it.path) ? 'is-active' : '';
-  }
+function getClasses(it: RouteRecordRaw) {
+  return currentActive.value == getPath(it.path) ? 'is-active' : '';
+}
 </script>
 
 <template>
@@ -37,8 +37,8 @@
         <template v-if="item.children?.length">
           <details open>
             <summary class="title">
-              <strong>{{ item.meta?.title }}</strong></summary
-            >
+              <strong>{{ item.meta?.title }}</strong>
+            </summary>
             <SidebarItem :nav="item.children" :parent-path="getPath(item.path)" @select="handleSelect" />
           </details>
         </template>

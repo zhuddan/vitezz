@@ -4,18 +4,18 @@
   <ul>
     <li>
       <router-link to="/share/detail/a">
-        <img width="150" height="150" src="@/assets/images/a.jpg" alt="" />
+        <img width="150" height="150" src="@/assets/images/a.jpg" alt="">
       </router-link>
     </li>
     <li>
       <router-link to="/share/detail/b">
-        <img width="150" height="150" src="@/assets/images/b.jpg" alt=""
-      /></router-link>
+        <img width="150" height="150" src="@/assets/images/b.jpg" alt="">
+      </router-link>
     </li>
     <li>
       <router-link to="/share/detail/c">
-        <img width="150" height="150" src="@/assets/images/c.jpg" alt=""
-      /></router-link>
+        <img width="150" height="150" src="@/assets/images/c.jpg" alt="">
+      </router-link>
     </li>
   </ul>
 </template>

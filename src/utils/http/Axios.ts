@@ -45,9 +45,9 @@ export class VAxios {
    * @description: Reconfigure axios
    */
   configAxios(config: CreateAxiosOptions) {
-    if (!this.axiosInstance) {
+    if (!this.axiosInstance) 
       return;
-    }
+    
     this.createAxios(config);
   }
 
@@ -55,9 +55,9 @@ export class VAxios {
    * @description: Set general header
    */
   setHeader(headers: any): void {
-    if (!this.axiosInstance) {
+    if (!this.axiosInstance) 
       return;
-    }
+    
     Object.assign(this.axiosInstance.defaults.headers, headers);
   }
 
@@ -66,11 +66,11 @@ export class VAxios {
    */
   private setupInterceptors() {
     const transform = this.getTransform();
-    if (!transform) {
+    if (!transform) 
       return;
-    }
-    const { requestInterceptors, requestInterceptorsCatch, responseInterceptors, responseInterceptorsCatch } =
-      transform;
+    
+    const { requestInterceptors, requestInterceptorsCatch, responseInterceptors, responseInterceptorsCatch }
+      = transform;
 
     const axiosCanceler = new AxiosCanceler();
 
@@ -79,34 +79,34 @@ export class VAxios {
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
       // @ts-expect-error ....
       const { ignoreCancelToken } = config.requestOptions;
-      const ignoreCancel =
-        ignoreCancelToken !== undefined ? ignoreCancelToken : this.options.requestOptions?.ignoreCancelToken;
+      const ignoreCancel
+        = ignoreCancelToken !== undefined ? ignoreCancelToken : this.options.requestOptions?.ignoreCancelToken;
 
       !ignoreCancel && axiosCanceler.addPending(config);
-      if (requestInterceptors && isFunction(requestInterceptors)) {
+      if (requestInterceptors && isFunction(requestInterceptors)) 
         config = requestInterceptors(config, this.options);
-      }
+      
       return config;
     }, undefined);
 
     // Request interceptor error capture
-    requestInterceptorsCatch &&
-      isFunction(requestInterceptorsCatch) &&
-      this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch);
+    requestInterceptorsCatch
+      && isFunction(requestInterceptorsCatch)
+      && this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch);
 
     // Response result interceptor processing
     this.axiosInstance.interceptors.response.use((res: AxiosResponse<any>) => {
       res && axiosCanceler.removePending(res.config);
-      if (responseInterceptors && isFunction(responseInterceptors)) {
+      if (responseInterceptors && isFunction(responseInterceptors)) 
         res = responseInterceptors(res);
-      }
+      
       return res;
     }, undefined);
 
     // Response result interceptor error capture
-    responseInterceptorsCatch &&
-      isFunction(responseInterceptorsCatch) &&
-      this.axiosInstance.interceptors.response.use(undefined, (error) => {
+    responseInterceptorsCatch
+      && isFunction(responseInterceptorsCatch)
+      && this.axiosInstance.interceptors.response.use(undefined, (error) => {
         // @ts-expect-error ...
         return responseInterceptorsCatch(this.axiosInstance, error);
       });
@@ -119,11 +119,10 @@ export class VAxios {
     const formData = new window.FormData();
     const customFilename = params.name || 'file';
 
-    if (params.filename) {
+    if (params.filename) 
       formData.append(customFilename, params.file, params.filename);
-    } else {
+    else 
       formData.append(customFilename, params.file);
-    }
 
     if (params.data) {
       Object.keys(params.data).forEach((key) => {
@@ -156,12 +155,11 @@ export class VAxios {
     const contentType = headers?.['Content-Type'] || headers?.['content-type'];
 
     if (
-      contentType !== ContentTypeEnum.FORM_URLENCODED ||
-      !Reflect.has(config, 'data') ||
-      config.method?.toUpperCase() === RequestEnum.GET
-    ) {
+      contentType !== ContentTypeEnum.FORM_URLENCODED
+      || !Reflect.has(config, 'data')
+      || config.method?.toUpperCase() === RequestEnum.GET
+    ) 
       return config;
-    }
 
     return {
       ...config,
@@ -194,9 +192,9 @@ export class VAxios {
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
     const { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
-    if (beforeRequestHook && isFunction(beforeRequestHook)) {
+    if (beforeRequestHook && isFunction(beforeRequestHook)) 
       conf = beforeRequestHook(conf, opt);
-    }
+    
     conf.requestOptions = opt;
 
     conf = this.supportFormData(conf);
@@ -209,7 +207,8 @@ export class VAxios {
             try {
               const ret = transformRequestHook(res, opt);
               resolve(ret);
-            } catch (err) {
+            }
+            catch (err) {
               reject(err || new Error('request error!'));
             }
             return;

@@ -31,9 +31,9 @@ class WebCache {
   }
 
   formatKey(key: string): string {
-    if (key.indexOf(this.VALUE_PREFIX) == 0) {
+    if (key.indexOf(this.VALUE_PREFIX) == 0) 
       return key.replace(this.VALUE_PREFIX, '') as CacheEnumsKey;
-    }
+    
     return key;
   }
 
@@ -44,9 +44,9 @@ class WebCache {
   }
 
   formatTime(data: Partial<Time> | number): number {
-    if (isNumber(data)) {
+    if (isNumber(data)) 
       return data;
-    }
+    
     const { day, hour, minutes, second } = data;
     const dataDay = (day ? day * 24 : 0) * 60 * 60 * 24;
     const dataHours = (hour || 0) * 60 * 60;
@@ -57,18 +57,19 @@ class WebCache {
 
   getExpires(time?: Partial<Time> | number): number {
     let expires = this.defaultExpires;
-    if (time == -1) {
+    if (time == -1) 
       expires = Number.MAX_SAFE_INTEGER;
-    } else if (time || isObject(time)) {
+    else if (time || isObject(time)) 
       expires = this.formatTime(time);
-    }
+    
     return new Date().getTime() + expires;
   }
 
   stringifyJson(data: any): string {
     try {
       return JSON.stringify(data);
-    } catch (error) {
+    }
+    catch (error) {
       throw new Error(error as any);
     }
   }
@@ -76,7 +77,8 @@ class WebCache {
   parseJson(data: string): object {
     try {
       return JSON.parse(data);
-    } catch (error) {
+    }
+    catch (error) {
       throw new Error(error as any);
     }
   }
