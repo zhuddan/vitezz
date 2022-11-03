@@ -70,15 +70,15 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   dictMeta = {} as DictMap<DK, DictMeta>;
 
   _status = computed<DictStatus>(() => {
-    if (!this.keys.length) 
+    if (!this.keys.length)
       return STATUS_FULFILLED;
-    
-    if (this.keys.every(e => this.dictMeta[e].status == STATUS_FULFILLED)) 
+
+    if (this.keys.every(e => this.dictMeta[e].status == STATUS_FULFILLED))
       return STATUS_FULFILLED;
-    
-    if (this.keys.some(e => this.dictMeta[e].status == STATUS_REJECTED)) 
+
+    if (this.keys.some(e => this.dictMeta[e].status == STATUS_REJECTED))
       return STATUS_REJECTED;
-    
+
     return STATUS_PENDING;
   });
 
@@ -130,18 +130,18 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
   format(dictKey: OriginDictData[] | DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
     const res = computed(() => {
       if (values == undefined || values == null) return '';
-      if (isString(dictKey)) 
+      if (isString(dictKey))
         return this.formatByDictKey(dictKey, values, options);
-      
+
       return this.formatByDictData(unref(dictKey), values, options);
     });
     return unref(res);
   }
 
   private formatByDictKey(dictKey: DK, values: string[] | string, options?: Partial<FormatDictOptions>) {
-    if (this.dictMeta[dictKey].status != STATUS_FULFILLED) 
+    if (this.dictMeta[dictKey].status != STATUS_FULFILLED)
       return '';
-    
+
     const data = this.data[dictKey];
     return this.handleFormat(data, values, options);
   }
@@ -160,11 +160,10 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
     options?: Partial<FormatDictOptions>,
   ) {
     const opt = Object.assign({}, defaultFormatOptions, options || {});
-    if (isArray(values)) 
+    if (isArray(values))
       return values.map(e => this.formatValue(data, e, opt)).join(opt.separator);
-    else 
+    else
       return this.formatValue(data, values, opt);
-    
   }
 
   private formatValue(data: Array<OriginDictData | DictData>, value: string, options: FormatDictOptions) {
@@ -173,9 +172,9 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
       console.warn(`[Dict format warning]: Can not find the dictionary with value ${value} in data: `, data);
       return '';
     }
-    if (options.primitive) 
+    if (options.primitive)
       return res;
-    
+
     return res?.[getDictField(res, ...this.labelFields)];
   }
 }
@@ -189,9 +188,8 @@ class DictMeta extends BaseDict {
   }
 
   private init() {
-    if (!this.options.isLazy) 
+    if (!this.options.isLazy)
       this.load();
-    
   }
 
   async load() {
@@ -278,8 +276,8 @@ function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields
 
 function getDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
   const res = fields.find(f => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
-  if (!res) 
+  if (!res)
     console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
-  
+
   return res;
 }

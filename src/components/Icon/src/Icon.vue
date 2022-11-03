@@ -70,7 +70,7 @@ export default defineComponent({
     const getWrapStyle = computed((): CSSProperties => {
       const { size, color } = props;
       let fs = size;
-      if (isString(size)) 
+      if (isString(size))
         fs = parseInt(size, 10);
 
       return {

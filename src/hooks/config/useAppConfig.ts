@@ -23,13 +23,12 @@ export function useAppConfig(): AppConfigType {
         env[key] = '';
       }
       else if (typeof value == 'string') {
-        if (value.toLocaleLowerCase() == 'true') 
+        if (value.toLocaleLowerCase() == 'true')
           env[key] = true;
-        else if (value.toLocaleLowerCase() == 'false') 
+        else if (value.toLocaleLowerCase() == 'false')
           env[key] = false;
-        else 
+        else
           env[key] = value;
-        
       }
       else {
         env[key] = value;

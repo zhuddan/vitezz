@@ -8,9 +8,9 @@ const baseIcons = computed(() => {
 });
 const keywords = ref('');
 const icons = computed(() => {
-  if (!keywords.value) 
+  if (!keywords.value)
     return baseIcons.value.icons;
-    
+
   return baseIcons.value.icons.filter(e => e.includes(keywords.value));
 });
 const pageSize = ref(20);
@@ -27,27 +27,23 @@ const range = computed(() => {
   const range = [p - 1, p, p + 1];
   if (range[0] == 0) {
     range.shift();
-    if (pages.value >= p + 2) 
+    if (pages.value >= p + 2)
       range.push(p + 2);
-      
   }
   return range;
 });
 
 function onNext() {
-  if (pageNum.value < pages.value) 
+  if (pageNum.value < pages.value)
     pageNum.value++;
-    
 }
 function onPrev() {
-  if (pageNum.value > 1) 
+  if (pageNum.value > 1)
     pageNum.value--;
-    
 }
 function onJump(v: number) {
-  if (pageNum.value != v) 
+  if (pageNum.value != v)
     pageNum.value = v;
-    
 }
 
 function toggleIcons(key: IconsType) {

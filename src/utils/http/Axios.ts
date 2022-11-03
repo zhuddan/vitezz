@@ -45,9 +45,9 @@ export class VAxios {
    * @description: Reconfigure axios
    */
   configAxios(config: CreateAxiosOptions) {
-    if (!this.axiosInstance) 
+    if (!this.axiosInstance)
       return;
-    
+
     this.createAxios(config);
   }
 
@@ -55,9 +55,9 @@ export class VAxios {
    * @description: Set general header
    */
   setHeader(headers: any): void {
-    if (!this.axiosInstance) 
+    if (!this.axiosInstance)
       return;
-    
+
     Object.assign(this.axiosInstance.defaults.headers, headers);
   }
 
@@ -66,9 +66,9 @@ export class VAxios {
    */
   private setupInterceptors() {
     const transform = this.getTransform();
-    if (!transform) 
+    if (!transform)
       return;
-    
+
     const { requestInterceptors, requestInterceptorsCatch, responseInterceptors, responseInterceptorsCatch }
       = transform;
 
@@ -83,9 +83,9 @@ export class VAxios {
         = ignoreCancelToken !== undefined ? ignoreCancelToken : this.options.requestOptions?.ignoreCancelToken;
 
       !ignoreCancel && axiosCanceler.addPending(config);
-      if (requestInterceptors && isFunction(requestInterceptors)) 
+      if (requestInterceptors && isFunction(requestInterceptors))
         config = requestInterceptors(config, this.options);
-      
+
       return config;
     }, undefined);
 
@@ -97,9 +97,9 @@ export class VAxios {
     // Response result interceptor processing
     this.axiosInstance.interceptors.response.use((res: AxiosResponse<any>) => {
       res && axiosCanceler.removePending(res.config);
-      if (responseInterceptors && isFunction(responseInterceptors)) 
+      if (responseInterceptors && isFunction(responseInterceptors))
         res = responseInterceptors(res);
-      
+
       return res;
     }, undefined);
 
@@ -119,9 +119,9 @@ export class VAxios {
     const formData = new window.FormData();
     const customFilename = params.name || 'file';
 
-    if (params.filename) 
+    if (params.filename)
       formData.append(customFilename, params.file, params.filename);
-    else 
+    else
       formData.append(customFilename, params.file);
 
     if (params.data) {
@@ -158,7 +158,7 @@ export class VAxios {
       contentType !== ContentTypeEnum.FORM_URLENCODED
       || !Reflect.has(config, 'data')
       || config.method?.toUpperCase() === RequestEnum.GET
-    ) 
+    )
       return config;
 
     return {
@@ -192,9 +192,9 @@ export class VAxios {
     const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
     const { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
-    if (beforeRequestHook && isFunction(beforeRequestHook)) 
+    if (beforeRequestHook && isFunction(beforeRequestHook))
       conf = beforeRequestHook(conf, opt);
-    
+
     conf.requestOptions = opt;
 
     conf = this.supportFormData(conf);

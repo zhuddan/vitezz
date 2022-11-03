@@ -55,9 +55,8 @@ export class Channel {
     const onceHandlers: Fn[] = [];
     this.handlers.forEach(({ handler, once }) => {
       handler(...args);
-      if (once) 
+      if (once)
         onceHandlers.push(handler);
-      
     });
     onceHandlers.forEach(e => this.unsubscribe(e));
   }
@@ -75,9 +74,9 @@ export function useChannel(
   callback?: Fn,
 ) {
   function getFn() {
-    if (typeof key == 'string') 
+    if (typeof key == 'string')
       return callback!;
-    
+
     return key!;
   }
   function getChannel() {

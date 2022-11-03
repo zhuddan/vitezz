@@ -4,9 +4,9 @@ import { useAppConfig } from '../config/useAppConfig';
 
 export function useStaticUrl(staticUrl: string) {
   const { VITE_APP_STATIC_URL, VITE_APP_API_URL } = useAppConfig();
-  if (isLink(staticUrl)) 
+  if (isLink(staticUrl))
     return staticUrl;
-  
+
   const STATIC_URL = VITE_APP_STATIC_URL ? VITE_APP_STATIC_URL : VITE_APP_API_URL;
   return `${STATIC_URL}${staticUrl}`;
 }

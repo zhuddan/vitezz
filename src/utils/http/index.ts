@@ -37,14 +37,14 @@ const transform: AxiosTransform = {
     // const { t } = useI18n();
     const { isTransformResponse, isReturnNativeResponse } = options;
     // 是否返回原生响应头 比如：需要获取响应头时使用该属性
-    if (isReturnNativeResponse) 
+    if (isReturnNativeResponse)
       return res;
-    
+
     // 不进行任何处理，直接返回
     // 用于页面代码可能需要直接获取code，data，message这些信息时开启
-    if (!isTransformResponse) 
+    if (!isTransformResponse)
       return res.data;
-    
+
     // 错误的时候返回
 
     const { data } = res;
@@ -57,7 +57,7 @@ const transform: AxiosTransform = {
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
-    if (hasSuccess) 
+    if (hasSuccess)
       return data;
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
@@ -72,18 +72,17 @@ const transform: AxiosTransform = {
         });
         break;
       default:
-        if (msg) 
+        if (msg)
           errorMsg = msg;
-        else 
+        else
           errorMsg = '未知错误';
-        
     }
 
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
-    if (options.errorMessageMode === 'modal') 
+    if (options.errorMessageMode === 'modal')
       modalError(errorMsg);
-    else if (options.errorMessageMode === 'message') 
+    else if (options.errorMessageMode === 'message')
       msgError(errorMsg);
 
     throw new Error(errorMsg || '请求出错，请稍候重试');
@@ -93,12 +92,12 @@ const transform: AxiosTransform = {
   beforeRequestHook: (config, options) => {
     const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true, urlPrefix } = options;
 
-    if (joinPrefix) 
+    if (joinPrefix)
       config.url = `${urlPrefix}${config.url}`;
 
-    if (apiUrl && isString(apiUrl)) 
+    if (apiUrl && isString(apiUrl))
       config.url = `${apiUrl}${config.url}`;
-    
+
     const params = config.params || {};
     const data = config.data || false;
     formatDate && data && !isString(data) && formatRequestDate(data);
@@ -125,9 +124,8 @@ const transform: AxiosTransform = {
           config.data = params;
           config.params = undefined;
         }
-        if (joinParamsToUrl) 
+        if (joinParamsToUrl)
           config.url = setObjToUrlParams(config.url as string, Object.assign({}, config.params, config.data));
-        
       }
       else {
         // 兼容restful风格
@@ -172,18 +170,18 @@ const transform: AxiosTransform = {
     let errMessage = '';
 
     try {
-      if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) 
+      if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1)
         errMessage = '接口请求超时,请刷新页面重试!';
-      
-      if (err?.includes('Network Error')) 
+
+      if (err?.includes('Network Error'))
         errMessage = '网络异常，请检查您的网络连接是否正常!';
 
       if (errMessage) {
-        if (errorMessageMode === 'modal') 
+        if (errorMessageMode === 'modal')
           modalError(errMessage);
-        else if (errorMessageMode === 'message') 
+        else if (errorMessageMode === 'message')
           msgError(errMessage);
-        
+
         return Promise.reject(error);
       }
     }
