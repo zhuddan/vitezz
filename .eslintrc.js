@@ -58,6 +58,11 @@ module.exports = {
   },
   rules: {
     // Common
+    'import/no-unresolved': 0,
+    'import/named': 1,
+    'import/namespace': 'off',
+    'import/default': 2,
+    'import/export': 2,
     semi: [2, 'always'],
     curly: ['error', 'multi-or-nest', 'consistent'],
     'quote-props': ['error', 'as-needed'],
@@ -160,7 +165,6 @@ module.exports = {
     'eslint-comments/disable-enable-pair': 'off',
     'import/no-named-as-default-member': 'off',
     'import/no-named-as-default': 'off',
-    'import/namespace': 'off',
     'n/no-callback-literal': 'off',
 
     'sort-imports': [
