@@ -88,11 +88,11 @@ function handleAssembleRoute(routeItemList: RouteItem[]) {
           const _pathArr = [...pathArr];
           _pathArr.pop();
           const activePath = isDetailPath ? `/${_pathArr[0]}/index` : '';
-          assembleRouteList.push({
+
+          const result = {
             signal,
             id: id++,
             parentId,
-            // vue router
             path,
             meta: {
               title: capitalize(realPath),
@@ -100,7 +100,10 @@ function handleAssembleRoute(routeItemList: RouteItem[]) {
               active: activePath,
             },
             component,
-          });
+            name: signal.replace(/\_/g, ''),
+          };
+          assembleRouteList.push(result);
+          console.log(result);
         }
       }
     }

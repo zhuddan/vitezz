@@ -100,6 +100,10 @@ module.exports = {
     ],
     'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 1 }],
     'no-dupe-keys': 'error',
+    // 填充块
+    'padded-blocks': ['error', { blocks: 'never', switches: 'never', classes: 'never' }],
+    // 无追尾空格
+    'no-trailing-spaces': 'error',
     // es6
     'no-var': 'error',
     'prefer-const': [
@@ -142,6 +146,7 @@ module.exports = {
         balanced: true,
       },
     }],
+    'space-in-parens': ['error', 'never'],
     // best-practice
     'array-callback-return': 'error',
     'block-scoped-var': 'error',
@@ -159,7 +164,7 @@ module.exports = {
     'require-await': 'off',
     'no-return-assign': 'off',
     'operator-linebreak': ['error', 'before'],
- 
+
     'no-use-before-define': 'off',
 
     'eslint-comments/disable-enable-pair': 'off',

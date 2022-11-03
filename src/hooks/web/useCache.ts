@@ -7,11 +7,11 @@ type _CacheEnums = typeof CacheEnums;
 
 export type CacheEnumsKey = keyof _CacheEnums;
 
-interface Time {
-  day: number;
-  hour: number;
-  minutes: number;
-  second: number;
+interface WebCacheTime {
+  day?: number;
+  hour?: number;
+  minutes?: number;
+  second?: number;
 }
 
 interface WebCacheData {
@@ -20,7 +20,7 @@ interface WebCacheData {
 }
 
 class WebCache {
-  defaultExpires = 86400 * 1000 * 7;
+  defaultExpires = 864e5 * 7;
 
   get VALUE_PREFIX() {
     return `${projectName}_${projectVersion}_`;
@@ -37,28 +37,29 @@ class WebCache {
     return key;
   }
 
-  constructor(time?: number | Time) {
+  constructor(time?: number | WebCacheTime) {
     if (!time) return;
     const t = isObject(time) ? this.formatTime(time) : time;
     this.defaultExpires = t;
   }
 
-  formatTime(data: Partial<Time> | number): number {
+  formatTime(data: Partial<WebCacheTime> | number): number {
     if (isNumber(data)) 
       return data;
     
     const { day, hour, minutes, second } = data;
-    const dataDay = (day ? day * 24 : 0) * 60 * 60 * 24;
-    const dataHours = (hour || 0) * 60 * 60;
-    const dataMinutes = (minutes || 0) * 60;
-    const dataSeconds = (second || 0) * 60;
+    const dataDay = (day ? day * 24 : 0) * 864e2;// 秒
+    const dataHours = (hour || 0) * 60 * 60;// 秒
+    const dataMinutes = (minutes || 0) * 60;// 秒
+    const dataSeconds = (second || 0) * 60;// 秒
     return (dataDay + dataHours + dataMinutes + dataSeconds) * 1000;
   }
 
-  getExpires(time?: Partial<Time> | number): number {
+  getExpires(time?: Partial<WebCacheTime> | number): number {
     let expires = this.defaultExpires;
     if (time == -1) 
       expires = Number.MAX_SAFE_INTEGER;
+
     else if (time || isObject(time)) 
       expires = this.formatTime(time);
     
@@ -83,7 +84,7 @@ class WebCache {
     }
   }
 
-  set(key: CacheEnumsKey, value: any, options?: Partial<Time> | number) {
+  set(key: CacheEnumsKey, value: any, options?: Partial<WebCacheTime> | number) {
     const _key = this.assembleKey(key);
     const data = this.stringifyJson({
       value,
