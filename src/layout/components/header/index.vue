@@ -44,7 +44,7 @@ const collapse = computed(() => appStore.collapse);
       >
         <Icon icon="icon-park-outline:menu-unfold-one" size="24" />
       </button>
-      <span style="font-size: 12px">vitez</span>
+      <span style="font-size: 12px">vitezz</span>
     </div>
   </header>
 </template>
