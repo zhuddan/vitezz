@@ -5,7 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <footer>copyright © vue_template_for_vite</footer>
+  <footer>copyright © vitez</footer>
 </template>
 
 <style scoped>
