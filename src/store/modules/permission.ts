@@ -103,7 +103,6 @@ function handleAssembleRoute(routeItemList: RouteItem[]) {
             name: signal.replace(/\_/g, ''),
           };
           assembleRouteList.push(result);
-          console.log(result);
         }
       }
     }
