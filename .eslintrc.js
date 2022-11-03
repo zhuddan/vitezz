@@ -59,7 +59,7 @@ module.exports = {
   rules: {
     // Common
     'import/no-unresolved': 0,
-    'import/named': 1,
+    'import/named': 0,
     'import/namespace': 'off',
     'import/default': 2,
     'import/export': 2,
