@@ -37,7 +37,7 @@ watch([md, collapse], handleLockScroll, { immediate: true });
 
 <template>
   <aside v-if="show" id="aside-nav-wrapper" :class="[classes]">
-    <button class="backdrop" @click="appStore.toggleCollapse" />
+    <button class="backdrop" @click="appStore.toggleCollapse"></button>
     <nav>
       <SidebarItem :nav="routes" @select="handleSelect" />
     </nav>

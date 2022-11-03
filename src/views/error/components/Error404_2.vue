@@ -5,7 +5,7 @@
       autoplay
       loop
       src="https://bnetcmsus-a.akamaihd.net/cms/gallery/c6/C6KLQ8BWWSKR1496179646097.webm"
-    />
+    ></video>
 
     <div class="inner">
       <h2>404 - 找不到页面</h2>

@@ -97,7 +97,7 @@ export default defineComponent({
     class="app-iconify"
     :class="[$attrs.class, spin && 'app-iconify-spin']"
     :style="getWrapStyle"
-  />
+  ></span>
 </template>
 
 <style lang="scss" scoped>
