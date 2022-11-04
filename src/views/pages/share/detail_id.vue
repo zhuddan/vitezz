@@ -3,58 +3,20 @@ import a from '@/assets/images/a.jpg';
 import b from '@/assets/images/b.jpg';
 import c from '@/assets/images/c.jpg';
 import { useRouteParams } from '@/hooks/web/route/useRouteParams';
-
-const route = useRoute();
-const router = useRouter();
-const all = ['a', 'b', 'c'];
-const id = useRouteParams('id');
-console.log(id);
-watch(id, ()=>{
-  console.log(id);
-});
-
-// const index = computed({
-//   get() {
-//     return all.findIndex(e=>e == route.params.id);
-//   },
-//   set(id) {
-//     router.push(`/share/detail/${all[id]}`);
-//   },
-// });
-
-// function next() {
-//   if (index.value < 2) {
-//     index.value++;
-//     return;
-//   }
-//   index.value = 0;
-// }
-
-function prev() {
-  // if (index.value > 0) {
-  //   index.value--;
-  //   return;
-  // }
-  // index.value = 2;
-  id.value = 'c';
-
-  console.log([]);
-}
-
-const imgs = computed(() => ({ a, b, c }[route.params.id as string]));
-
-// useRouteChange('/share/detail/', 'params.id', (e)=>{
-//   console.log(e);
-// });
+import { useCycleList } from '@vueuse/core';
+const id = useRouteParams<string>('id');
+const { prev, next, state } = useCycleList<string>(['a', 'b', 'c'], { initialValue: id.value });
+const imgs = computed(() => ({ a, b, c }[id.value]));
+watch(state, ()=>(id.value != state.value) ? id.value = state.value : '');
 </script>
 
 <template>
   <div class="detail-box">
-    <button class="left" @click="prev">
+    <button class="left" @click="prev()">
       <Icon size="40" icon="ep:arrow-left" />
     </button>
     <img :src="imgs" alt="">
-    <button class="right">
+    <button class="right" @click="next()">
       <Icon size="40" icon="ep:arrow-right" />
     </button>
   </div>

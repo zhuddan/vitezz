@@ -1,20 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import a from '@/assets/images/a.jpg';
+import b from '@/assets/images/b.jpg';
+import c from '@/assets/images/c.jpg';
+const list = {
+  a, b, c,
+};
+</script>
 
 <template>
   <ul>
-    <li>
-      <router-link to="/share/detail/a">
-        <img width="150" height="150" src="@/assets/images/a.jpg" alt="">
-      </router-link>
-    </li>
-    <li>
-      <router-link to="/share/detail/b">
-        <img width="150" height="150" src="@/assets/images/b.jpg" alt="">
-      </router-link>
-    </li>
-    <li>
-      <router-link to="/share/detail/c">
-        <img width="150" height="150" src="@/assets/images/c.jpg" alt="">
+    <li v-for="(it, key) in list" :key="key">
+      <router-link :to="`/share/detail/${key}`">
+        <img width="150" height="150" :src="it" alt="">
       </router-link>
     </li>
   </ul>
