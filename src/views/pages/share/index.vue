@@ -2,9 +2,13 @@
 import a from '@/assets/images/a.jpg';
 import b from '@/assets/images/b.jpg';
 import c from '@/assets/images/c.jpg';
+import { useRandom } from '@/hooks/math/useRandom';
 const list = {
   a, b, c,
 };
+
+const s = useRandom(['a', '2']);
+console.log(s);
 </script>
 
 <template>
