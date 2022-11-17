@@ -136,6 +136,7 @@ module.exports = {
     'prefer-template': 'error',
     'template-curly-spacing': 'error',
     'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+    'arrow-spacing': ['error', { before: true, after: true }],
     'generator-star-spacing': 'off',
     'spaced-comment': ['error', 'always', {
       line: {

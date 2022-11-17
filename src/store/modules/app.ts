@@ -16,6 +16,6 @@ export const useAppStore = defineStore({
     },
   },
   getters: {
-    isCollapse: state=>state.collapse,
+    isCollapse: state => state.collapse,
   },
 });

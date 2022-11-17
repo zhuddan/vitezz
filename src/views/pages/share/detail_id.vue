@@ -7,7 +7,7 @@ import { useCycleList } from '@vueuse/core';
 const id = useRouteParams<string>('id');
 const { prev, next, state } = useCycleList<string>(['a', 'b', 'c'], { initialValue: id.value });
 const imgs = computed(() => ({ a, b, c }[id.value]));
-watch(state, ()=>(id.value != state.value) ? id.value = state.value : '');
+watch(state, () => (id.value != state.value) ? id.value = state.value : '');
 </script>
 
 <template>

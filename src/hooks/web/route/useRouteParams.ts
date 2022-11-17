@@ -24,7 +24,7 @@ export function useRouteParams<T extends string | string[]>(
       return data;
     },
     set(v) {
-      nextTick(()=>{
+      nextTick(() => {
         router[unref(mode)]({ ...route, params: { ...route.params, [name]: v } });
       });
     },
