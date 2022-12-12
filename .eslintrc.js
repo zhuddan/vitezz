@@ -81,6 +81,7 @@ module.exports = {
     'no-cond-assign': ['error', 'always'],
     'func-call-spacing': ['off', 'never'],
     'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+    'no-whitespace-before-property': 'error',
     // indent: ['error', 2, { SwitchCase: 1, VariableDeclarator: 1, outerIIFEBody: 1 }],
     // indent: ['error', 2, { SwitchCase: 1, VariableDeclarator: 1, outerIIFEBody: 1 }],
     indent: 'off',
