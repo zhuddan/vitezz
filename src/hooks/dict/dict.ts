@@ -180,7 +180,7 @@ export class Dict<DK extends DictTypes = DictTypes> extends BaseDict {
 }
 
 class DictMeta extends BaseDict {
-  name;
+  name: DictTypes;
   constructor(name: DictTypes, options?: Partial<DictOptions>) {
     super(options);
     this.name = name;
