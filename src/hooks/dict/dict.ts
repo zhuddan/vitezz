@@ -276,7 +276,8 @@ function convertDict(data: OriginDictData, labelFields: DictDataKey, valueFields
 
 function getDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
   const res = fields.find(f => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
-  if (!res)
+
+  if (!res && Object.keys(dict).length)
     console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
 
   return res;

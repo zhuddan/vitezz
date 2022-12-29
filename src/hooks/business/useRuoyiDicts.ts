@@ -1,3 +1,6 @@
+import type { Ref } from 'vue';
+import type { DictData } from './typings';
+import type { DictBaseOptions } from './RuoyiDicts';
 import { Dict } from './RuoyiDicts';
 
 export type DictTypes =
@@ -12,18 +15,20 @@ export type DictTypes =
 | 'sys_oper_type' // 操作类型
 | 'sys_common_status'; // 系统状态
 
-export function useRuoyiDicts<DT extends string = DictTypes>(dts: DT[]) {
-  const dict = new Dict<DT>(dts);
-
-  const res = {
-    dict,
-    d: toRefs(dict.data.value),
+export function useRuoyiDicts<DT extends DictTypes = DictTypes>(dts: DT[], options: Partial<DictBaseOptions> = {}) {
+  const dict = new Dict<DT>(dts, options);
+  const format = dict.format.bind(dict);
+  const load = dict.load.bind(dict);
+  const useRuoyiDictsReturn = {
+    format,
+    load,
+    ...toRefs(dict.data.value),
   };
 
-  console.log(res);
-  // return res as unknown as {
-  //   [key in DT]: DictData;
-  // } & {
-  //   dict: Dict<DT>;
-  // };
+  return useRuoyiDictsReturn as unknown as {
+    [key in DT]: Ref<DictData[]>;
+  } & {
+    format: typeof format;
+    load: typeof load;
+  };
 }

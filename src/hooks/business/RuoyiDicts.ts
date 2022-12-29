@@ -1,38 +1,30 @@
 import { defHttp } from '@/utils/http';
 import { merge } from 'lodash-es';
 import type { Ref } from 'vue';
+import type { DictData, DictKeys, DictValues, MaybeRef, OriginDictData } from './typings';
 
-export interface _OriginDictData {
-  // value
-  id: string;
-  dictCode: number;
-  dictValue: string;
-  // label
-  dictLabel: string;
-  // name
-  dictType: string;
-  // other
-  cssClass: string;
-  listClass: string;
-  isDefault: string;
-  status: string;
-  default: boolean;
-
-  // other label
-  title: string;
-  name: string;
-  label: string;
-  // other value
-  value: string | number;
-  code: string | number;
-  key: string | number;
-
+export interface DictBaseOptions {
+  labelFields: DictKeys;
+  valueFields: DictKeys;
+  isLazy: boolean;
 }
-type OriginDictData = Partial<_OriginDictData>;
+export interface FormatDictOptions {
+  symbol?: string;
+  isRaw?: boolean;
+}
 
-type DictKeys = Array<keyof _OriginDictData>;
+const defaultRuoyiDictsOptions: DictBaseOptions = {
+  labelFields: ['label', 'dictLabel', 'name', 'title'],
+  valueFields: ['value', 'dictValue', 'code', 'key'],
+  isLazy: false,
+};
 
-export function getDicts<DT extends string = string>(dictType: DT) {
+const defaultFormatDictOptions: Required<FormatDictOptions> = {
+  symbol: '/',
+  isRaw: false,
+};
+
+function getDicts<DT extends string = string>(dictType: DT) {
   return new Promise<ResponseData<OriginDictData[]>>((resolve, reject) => {
     defHttp
       .get<ResponseData<OriginDictData[]>>({
@@ -50,24 +42,6 @@ export function getDicts<DT extends string = string>(dictType: DT) {
       });
   });
 }
-
-export interface DictData {
-  value: string;
-  label: string;
-  raw: Partial<_OriginDictData>;
-}
-
-interface DictBaseOptions {
-  labelFields: DictKeys;
-  valueFields: DictKeys;
-  isLazy: boolean;
-}
-
-const defaultRuoyiDictsOptions: DictBaseOptions = {
-  labelFields: ['label', 'dictLabel', 'name', 'title'],
-  valueFields: ['value', 'dictValue', 'code', 'key'],
-  isLazy: false,
-};
 export class DictBase {
   options: DictBaseOptions;
 
@@ -79,11 +53,18 @@ export class DictBase {
     return this.options.valueFields;
   }
 
+  getField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
+    const res = fields.find(f => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
+    if (!res)
+      console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
+
+    return res;
+  }
+
   constructor(options: Partial<DictBaseOptions> = {}) {
     this.options = merge(defaultRuoyiDictsOptions, options);
   }
 }
-export type DictValues<T extends string> = Record<T, DictData[]>;
 
 export class Dict<DT extends string = string> extends DictBase {
   dictTypes: DT[];
@@ -95,7 +76,7 @@ export class Dict<DT extends string = string> extends DictBase {
       for (const _key in this.dictMeta) {
         const key = _key as DT;
         if (Object.prototype.hasOwnProperty.call(this.dictMeta, key))
-          this._data[key] = this.dictMeta[key]._data as any;
+          this._data[key] = this.dictMeta[key].data as any;
       }
       return this._data as DictValues<DT>;
     });
@@ -112,22 +93,45 @@ export class Dict<DT extends string = string> extends DictBase {
       this.dictMeta[dt] = new DictMeta<DT>(dt, this.options);
     });
   }
+
+  load(): void;
+  load(...args: DT[]): void;
+  load(...args: DT[]) {
+    const loadList = args.length ? args : this.dictTypes;
+
+    return Promise.all(loadList.map((dt) => {
+      return this.dictMeta[dt]?.load();
+    }));
+  }
+
+  format(dOt: DT | MaybeRef<DictData[]>, val: string[], opt: { isRaw: true; symbol?: string }): DictData[];
+  format(dOt: DT | MaybeRef<DictData[]>, val: string, opt: { isRaw: true; symbol?: string }): DictData;
+  format(dOt: DT | MaybeRef<DictData[]>, val: string | string[], opt?: { isRaw?: false; symbol?: string }): string;
+  format(dictDataOrType: DT | MaybeRef<DictData[]>, values: string | string[], options: FormatDictOptions = {}) {
+    const formatResult = computed(() => {
+      const data = typeof dictDataOrType == 'string' ? unref(this.dictMeta[dictDataOrType].data) : unref(dictDataOrType);
+      const _options: Required<FormatDictOptions> = merge(defaultFormatDictOptions, options);
+      const _values = values instanceof Array ? values : [values];
+      const dictDataResult = _values.map((e) => {
+        const _dictData = data.find((item) => {
+          console.log({ item });
+          return item[this.getField(item, ...this.valueFields)] == e;
+        }) || {};
+        return _dictData as DictData;
+      });
+      console.log(data, dictDataResult);
+
+      if (_options.isRaw)
+        return typeof values == 'string' ? dictDataResult[0] : dictDataResult;
+      return dictDataResult.map(e => e?.label).join(_options.symbol);
+    });
+    return unref(formatResult);
+  }
 }
 
 export class DictMeta<DT extends string = string> extends DictBase {
   dictType: DT;
-  _data: Ref<DictData[]> = ref([]);
-  set data(data) {
-    this._data.value = data;
-  }
-
-  get data() {
-    return this._data.value;
-  }
-
-  get primitiveData() {
-    return this._data;
-  }
+  data: Ref<DictData[]> = ref([]);
 
   constructor(dictType: DT, options: Partial<DictBaseOptions> = {}) {
     super(options);
@@ -136,18 +140,19 @@ export class DictMeta<DT extends string = string> extends DictBase {
   }
 
   init() {
+    console.log(this.options.isLazy);
     if (!this.options.isLazy) this.load();
   }
 
   async load() {
-    this.data = await this.requestDicts();
+    return this.data.value = await this.requestDicts();
   }
 
   private requestDicts(): Promise<DictData[]> {
     return new Promise((resolve, reject) => {
       return getDicts(this.dictType)
         .then((res) => {
-          return compileDict(res.data, this.labelFields, this.valueFields);
+          return this.compileDict(res.data);
         })
         .then((dictData) => {
           resolve(dictData);
@@ -157,26 +162,15 @@ export class DictMeta<DT extends string = string> extends DictBase {
         });
     });
   }
+
+  compileDict(list: OriginDictData[]): DictData[] {
+    return list.map((data) => {
+      const res = { raw: data } as unknown as DictData;
+      const labelField = this.getField(data, ...this.labelFields);
+      const valueField = this.getField(data, ...this.valueFields);
+      res.label = data[labelField] as string;
+      res.value = data[valueField] as string;
+      return res;
+    });
+  }
 }
-
-function compileDict(list: OriginDictData[], labelFields: DictKeys, valueFields: DictKeys): DictData[] {
-  return list.map(e => convertDict(e, labelFields, valueFields));
-}
-
-function convertDict(data: OriginDictData, labelFields: DictKeys, valueFields: DictKeys) {
-  const res = { raw: data } as unknown as DictData;
-  const labelField = getDictField(data, ...labelFields);
-  const valueField = getDictField(data, ...valueFields);
-  res.label = data[labelField] as string;
-  res.value = data[valueField] as string;
-  return res;
-}
-
-function getDictField(dict: Partial<OriginDictData>, ...fields: Array<keyof OriginDictData>) {
-  const res = fields.find(f => Object.prototype.hasOwnProperty.call(dict, f)) as keyof OriginDictData;
-  if (!res)
-    console.warn(`[Dict get field error]: Object cannot find key \`${fields.join(',')}\` in `, dict);
-
-  return res;
-}
-
