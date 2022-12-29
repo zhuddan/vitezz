@@ -98,7 +98,6 @@ export class Dict<DT extends string = string> extends DictBase {
   load(...args: DT[]): void;
   load(...args: DT[]) {
     const loadList = args.length ? args : this.dictTypes;
-
     return Promise.all(loadList.map((dt) => {
       return this.dictMeta[dt]?.load();
     }));
@@ -107,23 +106,31 @@ export class Dict<DT extends string = string> extends DictBase {
   format(dOt: DT | MaybeRef<DictData[]>, val: string[], opt: { isRaw: true; symbol?: string }): DictData[];
   format(dOt: DT | MaybeRef<DictData[]>, val: string, opt: { isRaw: true; symbol?: string }): DictData;
   format(dOt: DT | MaybeRef<DictData[]>, val: string | string[], opt?: { isRaw?: false; symbol?: string }): string;
-  format(dictDataOrType: DT | MaybeRef<DictData[]>, values: string | string[], options: FormatDictOptions = {}) {
+  format(dOt: DT | MaybeRef<DictData[]>, val: string | string[], opt: FormatDictOptions = {}) {
     const formatResult = computed(() => {
-      const data = typeof dictDataOrType == 'string' ? unref(this.dictMeta[dictDataOrType].data) : unref(dictDataOrType);
-      const _options: Required<FormatDictOptions> = merge(defaultFormatDictOptions, options);
-      const _values = values instanceof Array ? values : [values];
-      const dictDataResult = _values.map((e) => {
-        const _dictData = data.find((item) => {
-          console.log({ item });
-          return item[this.getField(item, ...this.valueFields)] == e;
-        }) || {};
-        return _dictData as DictData;
-      });
-      console.log(data, dictDataResult);
+      // 当前需要翻译的字典数据 (如果 dictDataOrType 是 DT 则通过 this.dictMeta[dictDataOrType].data 获取)
+      const dictDataList = typeof dOt == 'string' ? unref(this.dictMeta[dOt].data) : unref(dOt);
+      // 处理参数
+      const formatOptions: Required<FormatDictOptions> = merge(defaultFormatDictOptions, opt);
+      // 把需要翻译的值处理为数据方便操作
+      const values = val instanceof Array ? val : [val];
+      // debug
+      const legalValues = dictDataList.map(e => e.value);
+      // 遍历 values 进行翻译
+      const dictDataResult = values.map((e) => {
+        // 因为 Dict 实例化 dictMeta 已经把 labelFields valueFields 封装给了 dictMeta.data
+        // 所以直接取 dictMeta.data[].value(下面.label同理)
+        const dictDataItem = dictDataList.find(item => item?.value == e) || null;
+        if (dictDataItem == null && legalValues.length)
+          console.warn(legalValues);
 
-      if (_options.isRaw)
-        return typeof values == 'string' ? dictDataResult[0] : dictDataResult;
-      return dictDataResult.map(e => e?.label).join(_options.symbol);
+        return dictDataItem as DictData;
+      });
+
+      if (formatOptions.isRaw)
+        // 如果 format(dictKey, '1', { isRaw: true }) 则返回第一项( dictDataResult[0] 而不是 dictDataResult)
+        return typeof val == 'string' ? dictDataResult[0] : dictDataResult;
+      return dictDataResult.map(e => e?.label).join(formatOptions.symbol);
     });
     return unref(formatResult);
   }
