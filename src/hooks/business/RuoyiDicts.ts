@@ -131,9 +131,9 @@ export class Dict<DT extends string = string> extends DictBase {
         const dictDataItem = dictDataList.find((item: T | DictData) => item?.[formatOptions.valueField] == e) || null;
         if (Dict.debug && dictDataItem == null && legalValues.length) {
           if (typeof dOt == 'string')
-            console.warn(`[字典翻译] 字典key{${dOt}}期望的字典合法值为：${legalValues}, 但传入的值为"${e}";`);
+            console.warn(`[Dict.format] The legal value expected by the dictionary key ${dOt} are: ${legalValues}, but got "${e}".`);
           else
-            console.warn(`[字典翻译] 自定义字典${JSON.stringify(dOt)}翻译期望的字典合法值为：${legalValues}, 但传入的值为"${e}";`);
+            console.warn(`[Dict.format] The legal value expected by the custom dictionary ${JSON.stringify(dOt)} are: ${legalValues},  but got "${e}".`);
         }
         return dictDataItem as DictData;
       });
