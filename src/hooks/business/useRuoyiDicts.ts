@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import type { DictData } from './typings';
+import type { DictData, DictDataListRecord } from './typings';
 import type { DictBaseOptions } from './RuoyiDicts';
 import { Dict } from './RuoyiDicts';
 
@@ -16,19 +16,25 @@ export type DictTypes =
 | 'sys_common_status'; // 系统状态
 
 export function useRuoyiDicts<DT extends DictTypes = DictTypes>(dts: DT[], options: Partial<DictBaseOptions> = {}) {
+  Dict.debug = true;
   const dict = new Dict<DT>(dts, options);
   const format = dict.format.bind(dict);
   const load = dict.load.bind(dict);
+
+  const dicts = computed (() => dict.data.value);
   const useRuoyiDictsReturn = {
     format,
     load,
+    dicts,
     ...toRefs(dict.data.value),
   };
 
-  return useRuoyiDictsReturn as unknown as {
-    [key in DT]: Ref<DictData[]>;
+  type UseRuoyiDictsReturn = {
+    [key in DT]: Ref<DictData[]>
   } & {
+    dicts: DictDataListRecord<DT>;
     format: typeof format;
     load: typeof load;
   };
+  return useRuoyiDictsReturn as unknown as UseRuoyiDictsReturn;
 }

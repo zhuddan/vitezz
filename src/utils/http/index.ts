@@ -68,7 +68,7 @@ const transform: AxiosTransform = {
       case ResultEnum.TIMEOUT:
         errorMsg = '登录超时,请重新登录!';
         userStore.logout().then(() => {
-          router.replace('/redirect/');
+          router.replace('/login');
         });
         break;
       default:

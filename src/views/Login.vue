@@ -21,7 +21,7 @@ function handleLogin() {
     return;
   }
 
-  if (!code.value) {
+  if (!(`${code.value}`)) {
     alert('验证码不能为空');
     return;
   }

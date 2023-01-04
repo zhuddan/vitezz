@@ -15,10 +15,10 @@ export function setupRouterGuard(router: Router) {
       });
     }
     else {
-      if (to.path == '/login')
-        next('/');
-      else
-        next();
+      // if (to.path == '/login')
+      //   next('/');
+      // else
+      next();
     }
     // if (to.meta.auth != false) {
     //   if (getToken()) {

@@ -38,4 +38,8 @@ export interface DictData {
   raw: Partial<_OriginDictData>;
 }
 
-export type DictValues<T extends string> = Record<T, DictData[]>;
+export type DictDataLike = Record<string, any>;
+
+export type DictDataListRecord<T extends string> = Record<T, DictData[]>;
+
+export type DictValue = string | number;

@@ -1,16 +1,18 @@
 import { defHttp } from '@/utils/http';
 import { merge } from 'lodash-es';
 import type { Ref } from 'vue';
-import type { DictData, DictKeys, DictValues, MaybeRef, OriginDictData } from './typings';
+import type { DictDataLike as DL, DictValue as DV, DictData, DictDataListRecord, DictKeys, MaybeRef, OriginDictData } from './typings';
 
 export interface DictBaseOptions {
   labelFields: DictKeys;
   valueFields: DictKeys;
   isLazy: boolean;
 }
-export interface FormatDictOptions {
+export interface FormatDictOptions<T extends DL = DL> {
   symbol?: string;
   isRaw?: boolean;
+  labelField?: keyof T;
+  valueField?: keyof T;
 }
 
 const defaultRuoyiDictsOptions: DictBaseOptions = {
@@ -22,6 +24,8 @@ const defaultRuoyiDictsOptions: DictBaseOptions = {
 const defaultFormatDictOptions: Required<FormatDictOptions> = {
   symbol: '/',
   isRaw: false,
+  valueField: 'value',
+  labelField: 'label',
 };
 
 function getDicts<DT extends string = string>(dictType: DT) {
@@ -62,14 +66,15 @@ export class DictBase {
   }
 
   constructor(options: Partial<DictBaseOptions> = {}) {
-    this.options = merge(defaultRuoyiDictsOptions, options);
+    this.options = merge({ ...defaultRuoyiDictsOptions }, options);
   }
 }
 
 export class Dict<DT extends string = string> extends DictBase {
   dictTypes: DT[];
   dictMeta = {} as Record<DT, DictMeta>;
-  _data = reactive<DictValues<DT>>({} as DictValues<DT>);
+  static debug = false;
+  _data = reactive<DictDataListRecord<DT>>({} as DictDataListRecord<DT>);
 
   get data() {
     return computed(() => {
@@ -78,7 +83,7 @@ export class Dict<DT extends string = string> extends DictBase {
         if (Object.prototype.hasOwnProperty.call(this.dictMeta, key))
           this._data[key] = this.dictMeta[key].data as any;
       }
-      return this._data as DictValues<DT>;
+      return this._data as DictDataListRecord<DT>;
     });
   }
 
@@ -103,34 +108,40 @@ export class Dict<DT extends string = string> extends DictBase {
     }));
   }
 
-  format(dOt: DT | MaybeRef<DictData[]>, val: string[], opt: { isRaw: true; symbol?: string }): DictData[];
-  format(dOt: DT | MaybeRef<DictData[]>, val: string, opt: { isRaw: true; symbol?: string }): DictData;
-  format(dOt: DT | MaybeRef<DictData[]>, val: string | string[], opt?: { isRaw?: false; symbol?: string }): string;
-  format(dOt: DT | MaybeRef<DictData[]>, val: string | string[], opt: FormatDictOptions = {}) {
+  format(dOt: DT, val: DV[], opt: { isRaw: true; labelField?: string; valueField?: string }): DictData[];
+  format(dOt: DT, val: DV, opt: { isRaw: true; labelField?: string; valueField?: string }): DictData;
+  format(dOt: DT, val: DV | DV[], opt?: { symbol?: string; labelField?: string; valueField?: string }): string;
+
+  format<T extends DL = DL>(dOt: MaybeRef<T[]>, val: DV[], opt: { isRaw: true; labelField?: keyof T; valueField?: keyof T }): T[];
+  format<T extends DL = DL>(dOt: MaybeRef<T[]>, val: DV, opt: { isRaw: true; labelField?: keyof T; valueField?: keyof T }): T;
+  format<T extends DL = DL>(dOt: MaybeRef<T[]>, val: DV | DV[], opt?: { symbol?: string; labelField?: keyof T; valueField?: keyof T }): string;
+
+  format<T extends DL = DL>(dOt: DT | MaybeRef<T[]>, val: DV | DV[], opt: FormatDictOptions<T> = {}) {
     const formatResult = computed(() => {
       // 当前需要翻译的字典数据 (如果 dictDataOrType 是 DT 则通过 this.dictMeta[dictDataOrType].data 获取)
-      const dictDataList = typeof dOt == 'string' ? unref(this.dictMeta[dOt].data) : unref(dOt);
+      const dictDataList = (typeof dOt == 'string' ? unref(this.dictMeta[dOt].data) : unref(dOt)) as Array<T | DictData>;
       // 处理参数
-      const formatOptions: Required<FormatDictOptions> = merge(defaultFormatDictOptions, opt);
+      const formatOptions: Required<FormatDictOptions> = merge({ ...defaultFormatDictOptions }, opt);
       // 把需要翻译的值处理为数据方便操作
       const values = val instanceof Array ? val : [val];
       // debug
-      const legalValues = dictDataList.map(e => e.value);
+      const legalValues = dictDataList.map(e => `"${e?.[formatOptions.valueField]}"`).join(',');
       // 遍历 values 进行翻译
       const dictDataResult = values.map((e) => {
-        // 因为 Dict 实例化 dictMeta 已经把 labelFields valueFields 封装给了 dictMeta.data
-        // 所以直接取 dictMeta.data[].value(下面.label同理)
-        const dictDataItem = dictDataList.find(item => item?.value == e) || null;
-        if (dictDataItem == null && legalValues.length)
-          console.warn(legalValues);
-
+        const dictDataItem = dictDataList.find((item: T | DictData) => item?.[formatOptions.valueField] == e) || null;
+        if (Dict.debug && dictDataItem == null && legalValues.length) {
+          if (typeof dOt == 'string')
+            console.warn(`[字典翻译] 字典key{${dOt}}期望的字典合法值为：${legalValues}, 但传入的值为"${e}";`);
+          else
+            console.warn(`[字典翻译] 自定义字典${JSON.stringify(dOt)}翻译期望的字典合法值为：${legalValues}, 但传入的值为"${e}";`);
+        }
         return dictDataItem as DictData;
       });
 
       if (formatOptions.isRaw)
         // 如果 format(dictKey, '1', { isRaw: true }) 则返回第一项( dictDataResult[0] 而不是 dictDataResult)
         return typeof val == 'string' ? dictDataResult[0] : dictDataResult;
-      return dictDataResult.map(e => e?.label).join(formatOptions.symbol);
+      return dictDataResult.map(e => e?.[formatOptions.labelField]).join(formatOptions.symbol);
     });
     return unref(formatResult);
   }
@@ -147,7 +158,6 @@ export class DictMeta<DT extends string = string> extends DictBase {
   }
 
   init() {
-    console.log(this.options.isLazy);
     if (!this.options.isLazy) this.load();
   }
 
