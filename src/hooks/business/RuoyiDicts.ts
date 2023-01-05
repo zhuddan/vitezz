@@ -44,7 +44,7 @@ function getDicts<DT extends string = string>(dictType: DT) {
           resolve(res);
         }
       }).catch((e) => {
-        console.log(e);
+        reject(e);
       });
   });
 }
