@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
 const { sys_common_status, format, load } = useRuoyiDicts(
-  ['sys_job_group', 'sys_yes_no', 'sys_common_status'],
-  {
-    isLazy: true,
-  });
+  ['sys_job_group', 'sys_yes_no', 'sys_common_status', 'sys_common_status'],
+);
 
 const baseFormat = computed(() => format(sys_common_status, '1'));
 const customDict = [
@@ -18,7 +16,6 @@ const customDictFormat = format(customDict, 1, {
   labelField: 'customLabel',
 });
 const stringFormat = computed(() => format('sys_yes_no', ['Y', 'N']));
-setTimeout(load, 1000);
 </script>
 
 <template>

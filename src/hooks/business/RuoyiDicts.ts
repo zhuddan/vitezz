@@ -43,6 +43,8 @@ function getDicts<DT extends string = string>(dictType: DT) {
         else {
           resolve(res);
         }
+      }).catch((e) => {
+        console.log(e);
       });
   });
 }

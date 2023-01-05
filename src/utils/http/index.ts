@@ -232,7 +232,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           //  是否加入时间戳
           joinTime: true,
           // 忽略重复请求
-          ignoreCancelToken: true,
+          ignoreCancelToken: false,
           // 是否携带token
           withToken: true,
           // headers 携带 token 的 key
