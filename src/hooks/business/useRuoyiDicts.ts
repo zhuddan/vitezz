@@ -16,8 +16,10 @@ export type DictTypes =
 | 'sys_common_status'; // 系统状态
 
 export function useRuoyiDicts<DT extends DictTypes = DictTypes>(dts: DT[], options: Partial<DictBaseOptions> = {}) {
-  Dict.debug = true;
   const dict = new Dict<DT>(dts, options);
+  // debug
+  Dict.debug = true;
+
   const format = dict.format.bind(dict);
   const load = dict.load.bind(dict);
 
