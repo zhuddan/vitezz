@@ -19,7 +19,6 @@ const customDictFormat = format(customDict, 1, {
   labelField: 'customLabel',
 });
 const stringFormat = computed(() => format('sys_yes_no', ['Y', 'N'], { symbol: '🧨🧨🧨🧨' }));
-// axios.get('/')
 </script>
 
 <template>

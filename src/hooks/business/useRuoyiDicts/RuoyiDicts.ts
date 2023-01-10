@@ -168,17 +168,15 @@ export class DictMeta<DT extends string = string> extends DictBase {
   }
 
   private requestDicts(): Promise<DictData[]> {
-    return new Promise((resolve, reject) => {
-      return getDicts(this.dictType)
-        .then((res) => {
-          return this.compileDict(res.data);
-        })
-        .then((dictData) => {
-          resolve(dictData);
-        })
-        .catch((e) => {
-          reject(e);
-        });
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await getDicts(this.dictType);
+        const dictData = this.compileDict(res.data);
+        resolve(dictData);
+      }
+      catch (e) {
+        reject(e);
+      }
     });
   }
 
