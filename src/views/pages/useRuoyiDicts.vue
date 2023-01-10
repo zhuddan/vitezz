@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
-import { useRuoyiList } from '@/hooks/business/useRuoyiList';
 import { defHttp } from '@/utils/http';
 import axios from 'axios';
 const { sys_common_status, format } = useRuoyiDicts(
