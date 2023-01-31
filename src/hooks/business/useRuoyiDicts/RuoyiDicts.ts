@@ -1,7 +1,7 @@
 import { defHttp } from '@/utils/http';
 import { merge } from 'lodash-es';
 import type { Ref } from 'vue';
-import type { DictDataLike as DL, DictValue as DV, DictData, DictDataListRecord, DictKeys, MaybeRef, OriginDictData } from './typings';
+import type { DictDataLike as DL, DictValue as DV, DictData, DictDataListRecord, DictKeys, OriginDictData } from './typings';
 
 export interface DictBaseOptions {
   labelFields: DictKeys;

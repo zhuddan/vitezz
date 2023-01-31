@@ -1,40 +1,15 @@
 <script setup lang="ts">
-import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
-import { useRuoyiList } from '@/hooks/business/useRuoyiList';
-import { defHttp } from '@/utils/http';
-import axios from 'axios';
-const { sys_common_status, format } = useRuoyiDicts(
-  ['sys_job_group', 'sys_yes_no', 'sys_common_status', 'sys_common_status'],
-);
 
-const baseFormat = computed(() => format(sys_common_status, '1'));
-const customDict = [
-  {
-    customLabel: 'zd',
-    customValue: 1,
-  },
-];
-const customDictFormat = format(customDict, 1, {
-  valueField: 'customValue',
-  labelField: 'customLabel',
-});
-const stringFormat = computed(() => format('sys_yes_no', ['Y', 'N'], { symbol: '🧨🧨🧨🧨' }));
-// axios.get('/')
 </script>
 
 <template>
   <div>
-    <h3>useRuoyiDicts </h3>
-    <p>
-      baseFormat: {{ baseFormat }}
-    </p>
-    <p>
-      customDictFormat: {{ customDictFormat }}
-    </p>
-    <p>
-      stringFormat: {{ stringFormat }}
-    </p>
+    <router-link to="/form1">
+      form1
+    </router-link>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

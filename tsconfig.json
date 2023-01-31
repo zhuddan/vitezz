@@ -18,7 +18,10 @@
       "esnext",
       "dom"
     ],
-    "types": ["unplugin-vue-define-options"],
+    "types": [
+      "unplugin-vue-define-options",
+      "element-plus/global"
+    ],
     "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types",
