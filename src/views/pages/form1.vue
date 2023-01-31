@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import SchemaForm, { useForm } from '@/components/SchemaForm';
 import { useVModel } from '@vueuse/core';
-import type { FormItemRule } from 'element-plus';
 import Icon from '@/components/Icon';
 import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
 const props = defineProps({
