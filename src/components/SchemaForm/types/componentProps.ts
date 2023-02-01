@@ -343,7 +343,8 @@ export interface Options {
   disabled?: boolean;
 }
 
-export type WithOptions<T> = T & { options: MaybeRef<Options[]> };
+// TreeList for cascader
+export type WithOptions<T> = T & { options: MaybeRef<Options[] | TreeList<Options>> };
 
 export type ComponentProps = Partial<WithOptions<
   | InputType

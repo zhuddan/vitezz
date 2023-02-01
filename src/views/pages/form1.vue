@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import SchemaForm, { useForm } from '@/components/SchemaForm';
-import { useVModel } from '@vueuse/core';
 import Icon from '@/components/Icon';
 import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
-const props = defineProps({
-  test: {
-    type: String,
-  },
-});
-const t = useVModel(props, 'test');
-const data = ref({
+import { HighLight } from '@/components/HighLight';
+
+const form1 = ref({
   name: '蔡徐坤',
   sex: '0',
   age: 2.5,
   grade: 3,
   like: ['sing', 'dance', 'rap'],
+  address: [],
 });
 
-const rules = ref<FormRules<typeof data.value>>({
+type Form1Type = typeof form1.value;
+
+const rules = ref<FormRules<Form1Type>>({
   name: [{
     required: true,
     message: '姓名不能为空',
@@ -40,8 +38,8 @@ const rules = ref<FormRules<typeof data.value>>({
   }],
 });
 
-const { sys_user_sex } = useRuoyiDicts(['sys_user_sex']);
-const l = ref(false);
+const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_common_status']);
+const loading = ref(false);
 
 const [register, { resetFields, validate }] = useForm({
   size: 'default',
@@ -53,7 +51,7 @@ const [register, { resetFields, validate }] = useForm({
   rolProps: {
     gutter: 20,
   },
-  model: data,
+  model: form1,
   schemas: [
     {
       component: 'Input',
@@ -74,25 +72,16 @@ const [register, { resetFields, validate }] = useForm({
       label: '性别',
       componentProps: {
         options: sys_user_sex,
+        onChange(v) {
+          console.log('sex change:', v);
+        },
       },
     },
-    {
-      component: 'Select',
-      field: 'grade',
-      label: '考试成绩',
-      componentProps: {
-        options: [
-          { label: 'A', value: 3 },
-          { label: 'B', value: 2 },
-          { label: 'C', value: 1 },
-        ],
-        loading: true,
-      },
-    },
+
     {
       component: 'CheckboxGroup',
       field: 'like',
-      label: '考试成绩',
+      label: '特长',
       componentProps: {
         multiple: true,
         options: [
@@ -103,7 +92,55 @@ const [register, { resetFields, validate }] = useForm({
         ],
       },
     },
-
+    {
+      component: 'Select',
+      field: 'grade',
+      label: '推荐等级',
+      componentProps: {
+        options: [
+          { label: 'A', value: 3 },
+          { label: 'B', value: 2 },
+          { label: 'C', value: 1 },
+        ],
+      },
+    },
+    {
+      component: 'Cascader',
+      field: 'address',
+      label: '地址',
+      componentProps: {
+        clearable: true,
+        options: [
+          {
+            label: '云南', value: 'yn',
+            children: [
+              {
+                label: '昆明市', value: 'yn',
+                children: [
+                  {
+                    label: '五华区', value: 'wh',
+                  },
+                  {
+                    label: '盘龙区', value: 'pl',
+                  },
+                ],
+              },
+              {
+                label: '玉溪市', value: 'yx',
+                children: [
+                  {
+                    label: '红塔区', value: 'ht',
+                  },
+                  {
+                    label: '江川区', value: 'jc',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
   ],
   actions: [
     {
@@ -113,25 +150,26 @@ const [register, { resetFields, validate }] = useForm({
       icon: h(Icon, {
         icon: 'ep:check',
       }),
-      loading: l,
+      loading,
       plain: true,
     },
   ],
 });
 
 function handleResetFields() {
+
 }
 
 function handleSubmit(e: any) {
-  l.value = true;
-  console.log(e);
+  loading.value = true;
   setTimeout(() => {
-    l.value = false;
+    loading.value = false;
   }, (500));
 }
 </script>
 
 <template>
+  <HighLight :code="form1" language="json" />
   <SchemaForm @register="register" @submit="handleSubmit" />
 </template>
 
