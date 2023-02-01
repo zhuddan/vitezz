@@ -89,8 +89,6 @@ watch(
     immediate: true,
   },
 );
-
-console.log(navigator.clipboard);
 </script>
 
 <template>

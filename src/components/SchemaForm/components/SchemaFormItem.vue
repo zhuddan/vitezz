@@ -102,7 +102,12 @@ const style = computed(() => {
     :is="props.formProps.inline ? 'div' : ElCol"
     :class="{ inline_col: props.formProps.inline }"
   >
-    <ElFormItem v-bind="getBindValue">
+    <ElFormItem
+      v-bind="{
+        ...getBindValue,
+        model: undefined,
+      }"
+    >
       <template v-if="labelIsVNode" #label>
         <LabelComp />
       </template>
@@ -112,7 +117,9 @@ const style = computed(() => {
         :name="props.schema.slot"
       ></slot>
       <component
-        v-bind="compAttr"
+        v-bind="{
+          ...compAttr,
+        }"
         :is="renderComponent()"
         v-else
         v-model="model[props.schema.field]"

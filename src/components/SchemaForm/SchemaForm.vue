@@ -129,7 +129,18 @@ onMounted(() => {
 
 <template>
   <ElConfigProvider :locale="zhCn">
-    <ElForm ref="formRef" :model="getModel" v-bind="getBindValue">
+    <ElForm
+      ref="formRef"
+      :model="getModel"
+      v-bind="{
+        ...getBindValue,
+        schemas: undefined,
+        actions: undefined,
+        rolProps: undefined,
+        colProps: undefined,
+        useScrollToErrorField: undefined,
+      }"
+    >
       <component
         :is="getBindValue.inline ? 'div' : ElRow"
         v-bind="getBindValue.rolProps"
