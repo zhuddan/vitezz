@@ -40,7 +40,7 @@ const rules = ref<FormRules<Form1Type>>({
 
 const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_common_status']);
 const loading = ref(false);
-
+const inline = ref(false);
 const [register, { resetFields, validate }] = useForm({
   size: 'default',
   labelPosition: 'top',
@@ -52,6 +52,7 @@ const [register, { resetFields, validate }] = useForm({
     gutter: 20,
   },
   model: form1,
+  inline,
   schemas: [
     {
       component: 'Input',
@@ -170,6 +171,12 @@ function handleSubmit(e: any) {
 
 <template>
   <HighLight :code="form1" language="json" />
+
+  <div>
+    <button @click="inline = !inline">
+      {{ inline ? 'inline' : 'block' }}
+    </button>
+  </div>
   <SchemaForm @register="register" @submit="handleSubmit" />
 </template>
 

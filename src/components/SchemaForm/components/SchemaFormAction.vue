@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import { ElButton, ElCol, ElFormItem, useAttrs } from 'element-plus';
+import { schemaFormContextKey } from '../token';
 
-import type { ActionsType, FormProps } from '../types';
+import type { FormActionButton } from '../types';
 
-const props = defineProps<{
-  formProps: Partial<FormProps<any>>;
-}>();
 const emit = defineEmits(['action']);
+
+const formContext = inject(schemaFormContextKey);
+
 const colBindValue = computed(() => {
-  return props.formProps.colProps;
+  return formContext?.colProps;
 });
 
 const attrs = useAttrs();
@@ -16,13 +17,11 @@ const attrs = useAttrs();
 const getBindValue = computed(() => {
   return {
     ...attrs,
-    ...props,
-    prop: '',
   };
 });
-function getBtnBindValue(btn: ActionsType) {
+function getBtnBindValue(btn: FormActionButton) {
   const bindValue = {};
-  const ps = [
+  [
     'icon',
     'type',
     'size',
@@ -43,16 +42,15 @@ function getBtnBindValue(btn: ActionsType) {
   };
 }
 const buttons = computed(() => {
-  return unref(getBindValue.value.formProps.actions)?.map(e => getBtnBindValue(e)) || [];
+  return unref(formContext?.actions)?.map(e => getBtnBindValue(e)) || [];
 });
 </script>
 
 <template>
   <component
-    v-bind="colBindValue"
-    :is="props.formProps.inline ? 'div' : ElCol"
-    v-if="buttons && buttons.length"
-    :class="{ inline_col: props.formProps.inline }"
+    :is="formContext?.inline ? 'div' : ElCol"
+    v-bind="formContext?.inline ? {} : colBindValue"
+    :class="{ 'display-inline-block': formContext?.inline }"
   >
     <ElFormItem v-bind="getBindValue" label="">
       <ElButton

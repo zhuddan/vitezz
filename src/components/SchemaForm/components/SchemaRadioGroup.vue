@@ -13,10 +13,6 @@ const props = defineProps({
     type: String as PropType<RadioType>,
     default: 'Radio',
   },
-  formProps: {
-    type: Object as PropType<FormProps<any>>,
-    default: () => ({}),
-  },
 });
 const comp = computed(() => (props.compType === 'Radio' ? ElRadio : ElRadioButton));
 const attrs = useAttrs();

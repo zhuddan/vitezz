@@ -5,27 +5,27 @@ import { ElCol, ElFormItem } from 'element-plus';
 import { isString } from '@/utils/is';
 
 import { componentMap } from '../componentMap';
-import type { FormProps, FormSchema } from '../types';
+import type { FormSchema } from '../types';
+import { schemaFormContextKey } from '../token';
 const props = defineProps<{
   schema: FormSchema;
-  formProps: Partial<FormProps<any>>;
   formModel: Object;
 }>();
 
 const emits = defineEmits(['update:formModel']);
 
-const slots = useSlots();
+const formContext = inject(schemaFormContextKey);
 
+const slots = useSlots();
 const model = useVModel(props, 'formModel', emits);
 const attrs = useAttrs();
 
 const getValues = computed(() => {
-  const { formProps, formModel, schema } = props;
+  const { formModel, schema } = props;
   return {
     schema,
     model: formModel,
     field: schema.field,
-    formProps,
   };
 });
 
@@ -64,7 +64,6 @@ const getBindValue = computed(() => {
 });
 const compAttr = computed(() => {
   return {
-    formProps: props.formProps,
     ...(props.schema.componentProps || {}),
   };
 });
@@ -79,28 +78,20 @@ const LabelComp = computed(() => {
 });
 
 const colBindValue = computed(() => {
+  if (formContext?.colProps)
+    return formContext?.colProps;
   if (props.schema.colProps)
     return props.schema.colProps;
-  else
-    return props.formProps.colProps;
+  return undefined;
 });
-const style = computed(() => {
-  if (props.formProps.inline) {
-    return {};
-  }
-  else {
-    return {
-      width: '100%',
-    };
-  }
-});
+const style = computed(() => formContext?.inline ? undefined : { width: '100%' });
 </script>
 
 <template>
   <component
-    v-bind="colBindValue"
-    :is="props.formProps.inline ? 'div' : ElCol"
-    :class="{ inline_col: props.formProps.inline }"
+    :is="formContext?.inline ? 'div' : ElCol"
+    v-bind="formContext?.inline ? {} : colBindValue"
+    :class="{ 'display-inline-block': formContext?.inline }"
   >
     <ElFormItem
       v-bind="{

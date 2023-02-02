@@ -79,13 +79,13 @@ export interface FormSchema<T = any> {
 export interface FormProps<T extends object> {
   useScrollToErrorField: Boolean;
   // 表单操作
-  actions: MaybeRef<ActionsType[]>;
+  actions: FormActionButton[];
   // 表单数据对象
-  model?: MaybeRef<Partial<T>>;
+  model?: Partial<T>;
   // 字段 schemas
-  schemas: MaybeRef<FormSchema<T>[]>;
+  schemas: FormSchema<T>[];
   // 表单验证规则
-  rules?: MaybeRef<FormRules<T>>;
+  rules?: FormRules<T>;
   // 行内表单模式
   inline?: boolean;
   // 表单域标签的位置， 当设置为 left 或 right 时，则也需要设置 label-width 属性
@@ -114,9 +114,9 @@ export interface FormProps<T extends object> {
   rolProps?: Partial<RolEx>;
 }
 
-export interface FormActionType {
+export interface FormAction {
   // 设置表单属性
-  setProps: (props: Partial<FormProps<any>>) => void;
+  setProps: (props: Partial<MaybeRefRecordWrap<FormProps<any>>>) => void;
   // 对整个表单作验证
   validate: (callback?: (valid: any) => void) => void;
   // 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
@@ -129,9 +129,10 @@ export interface FormActionType {
   scrollToField: (prop: string) => void;
 }
 
-export interface ActionsType {
+export interface FormActionButton {
   text: string;
   action: string;
+  colProps?: Partial<ColEx>;
 
   icon?: VNode | string;
   type?: MaybeRef<'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | ''>;

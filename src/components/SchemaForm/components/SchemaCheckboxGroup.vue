@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ElCheckbox, ElCheckboxButton, ElCheckboxGroup } from 'element-plus';
-import type { FormProps } from '../types';
 import type { CheckboxType, Options } from '../types/componentProps';
 
 const props = defineProps({
@@ -12,11 +11,8 @@ const props = defineProps({
     type: String as PropType<CheckboxType>,
     default: 'Checkbox',
   },
-  formProps: {
-    type: Object as PropType<FormProps<any>>,
-    default: () => ({}),
-  },
 });
+
 const comp = computed(() => (props.compType === 'CheckboxButton' ? ElCheckboxButton : ElCheckbox));
 const attrs = useAttrs();
 const getBindValue = computed(() => {

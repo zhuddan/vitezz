@@ -21,6 +21,10 @@ declare global {
 
   declare type MaybeRef<T> = T | Ref<T> ;
 
+  declare type MaybeRefRecordWrap<T> = {
+    [P in keyof T]: MaybeRef<T[P]>;
+  };
+
   // common
 
   declare interface Fn<T = any, R = T> {

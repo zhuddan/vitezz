@@ -1,11 +1,11 @@
 import type { Ref } from 'vue';
 import { nextTick, unref } from 'vue';
 
-import type { FormActionType, FormProps } from '../types';
+import type { FormAction, FormProps } from '../types';
 
 export interface UseFormActionContext {
   propsRef: Ref<Partial<FormProps<any>>>;
-  formElRef: Ref<FormActionType>;
+  formElRef: Ref<FormAction>;
 }
 
 export function useFormEvents({ formElRef }: UseFormActionContext) {

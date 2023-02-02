@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue';
-import type { FormActionType, FormProps, FormSchema } from './types';
+import type { FormAction, FormProps, FormSchema } from './types';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import { ElConfigProvider, ElForm, ElRow } from 'element-plus';
 import { cloneDeep } from 'lodash-es';
@@ -9,6 +9,7 @@ import SchemaFormAction from './components/SchemaFormAction.vue';
 import SchemaFormItem from './components/SchemaFormItem.vue';
 import { useFormEvents } from './hooks/useFormEvents';
 import { formProps } from './props';
+import { schemaFormContextKey } from './token';
 
 const props = defineProps(formProps);
 const emit = defineEmits([
@@ -20,7 +21,7 @@ const emit = defineEmits([
   'validateError',
 ]);
 const attrs = useAttrs();
-const formRef = ref<Nullable<FormActionType>>();
+const formRef = ref<Nullable<FormAction>>();
 const propsRef = ref<Partial<FormProps<any>>>({});
 const schemaRef = ref<FormSchema<any>[]>([]);
 const getBindValue = computed<Recordable>(() => ({
@@ -48,14 +49,14 @@ const getSchema = computed(() => {
 });
 const formEvents = useFormEvents({
   propsRef,
-  formElRef: formRef as Ref<FormActionType>,
+  formElRef: formRef as Ref<FormAction>,
 });
-function setProps(formProps: Partial<FormProps<any>>) {
+function setProps(newFormProps: Partial<MaybeRefRecordWrap<FormProps<any>>>) {
   const defaultFormProps = cloneDeep(props) as unknown as FormProps<any>;
   (propsRef.value as FormProps<any>) = {
     ...defaultFormProps,
     ...propsRef.value,
-    ...formProps,
+    ...newFormProps,
   } as FormProps<any>;
 }
 
@@ -79,7 +80,7 @@ watch(
   },
 );
 
-const formAction: Partial<FormActionType> = {
+const formAction: Partial<FormAction> = {
   setProps,
   ...formEvents,
 };
@@ -120,11 +121,22 @@ onMounted(() => {
   emit('register', formAction);
 });
 
-// const s = useLocale();
+const _props = reactive({});
 
-// console.log(s);
+function setContentProps(values: Recordable) {
+  for (const key in values) {
+    if (Object.prototype.hasOwnProperty.call(values, key)) {
+      const value = values[key];
+      _props[key] = value;
+    }
+  }
+}
+watch(getBindValue, setContentProps, { immediate: true, deep: true });
 
-// el-config-provider
+provide(schemaFormContextKey, reactive({
+  ...toRefs(_props),
+  ...formAction,
+}) as any);
 </script>
 
 <template>
@@ -143,15 +155,14 @@ onMounted(() => {
     >
       <component
         :is="getBindValue.inline ? 'div' : ElRow"
-        v-bind="getBindValue.rolProps"
-        :class="{ inline_col: inline }"
+        v-bind="getBindValue.inline ? {} : getBindValue.rolProps"
+        :class="{ 'display-inline-block': getBindValue.inline }"
       >
         <SchemaFormItem
           v-for="(schema, index) in getSchema"
           :key="index"
           :form-model="getModel"
           :schema="schema"
-          :form-props="getBindValue"
         >
           <template v-for="item in Object.keys($slots)" #[item]="data">
             <slot :name="item" v-bind="data || {}"></slot>
@@ -162,7 +173,7 @@ onMounted(() => {
         :is="getBindValue.inline ? 'div' : ElRow"
         v-if="getBindValue.actions"
         v-bind="getBindValue.baseRolProps"
-        :class="{ inline_col: inline }"
+        :class="{ 'display-inline-block': getBindValue.inline }"
       >
         <SchemaFormAction
           :form-props="getBindValue"
@@ -174,7 +185,7 @@ onMounted(() => {
 </template>
 
 <style>
-  .inline_col {
+  .display-inline-block {
     display: inline-block;
   }
 </style>

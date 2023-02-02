@@ -1,4 +1,4 @@
-import type { ActionsType, ColEx, FormSchema, LabelPositionType, RolEx, SizeType } from './types';
+import type { ColEx, FormActionButton, FormSchema, LabelPositionType, RolEx, SizeType } from './types';
 export const formProps = {
   schemas: {
     type: Array as PropType<FormSchema[]>,
@@ -13,7 +13,7 @@ export const formProps = {
     default: () => ({}),
   },
   actions: {
-    type: Array as PropType<ActionsType[]>,
+    type: Array as PropType<FormActionButton[]>,
     default: () => [
       {
         type: 'primary',

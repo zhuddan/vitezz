@@ -1,12 +1,12 @@
 import { useAppConfig } from '@/hooks/config/useAppConfig';
 
-import type { FormActionType, FormProps } from '../types';
+import type { FormAction, FormProps } from '../types';
 
-type UseFormReturn = [(instance: FormActionType) => void, FormActionType];
+type UseFormReturn = [(instance: FormAction) => void, FormAction];
 
-export default function useForm<T extends object>(props?: Partial<FormProps<T>>): UseFormReturn {
+export default function useForm<T extends object>(props?: Partial<MaybeRefRecordWrap<FormProps<T>>>): UseFormReturn {
   const settings = useAppConfig();
-  const formAction = ref<Nullable<FormActionType>>(null);
+  const formAction = ref<Nullable<FormAction>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
   const isProdMode = settings.MODE == 'production';
   async function getForm() {
@@ -17,10 +17,10 @@ export default function useForm<T extends object>(props?: Partial<FormProps<T>>)
       );
     }
     await nextTick();
-    return form as FormActionType;
+    return form as FormAction;
   }
 
-  function register(instance: FormActionType) {
+  function register(instance: FormAction) {
     if (isProdMode) {
       // 开发环境下，组件卸载后释放内存
       onUnmounted(() => {
@@ -51,10 +51,10 @@ export default function useForm<T extends object>(props?: Partial<FormProps<T>>)
     );
   }
 
-  const methods: FormActionType = {
-    async setProps(formProps: Partial<FormProps<T>>) {
+  const methods: FormAction = {
+    async setProps(newFormProps: Partial<MaybeRefRecordWrap<FormProps<T>>>) {
       const form = await getForm();
-      form.setProps(formProps);
+      form.setProps(newFormProps);
     },
     async validate(callback?: (valid: any) => void) {
       const form = await getForm();

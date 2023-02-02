@@ -7,13 +7,8 @@ const props = defineProps({
     type: Array as PropType<Options[]>,
     default: () => [],
   },
-  formProps: {
-    type: Object as PropType<FormProps<any>>,
-    default: () => ({}),
-  },
 });
 const attrs = useAttrs();
-// const { realOptions } = useDictsOptions(props);
 
 const getBindValue = computed(() => {
   return {
