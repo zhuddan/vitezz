@@ -5,12 +5,14 @@ import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
 import { HighLight } from '@/components/HighLight';
 
 const form1 = ref({
-  name: '蔡徐坤',
+  name: '我是真爱坤',
   sex: '0',
-  age: 2.5,
-  grade: 3,
+  age: 18,
+  grade: 'A',
+  birthday: '2000-08-08',
   like: ['sing', 'dance', 'rap'],
   address: [],
+  color: '#ffccff',
 });
 
 type Form1Type = typeof form1.value;
@@ -38,15 +40,23 @@ const rules = ref<FormRules<Form1Type>>({
   }],
 });
 
+const f = ref<any>('Input');
+const type1 = ref('button');
+
 const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_common_status']);
 const loading = ref(false);
 const inline = ref(false);
+
 const [register, { resetFields, validate }] = useForm({
-  size: 'default',
+  scrollToError: true,
+  size: 'large',
   labelPosition: 'top',
   rules,
   colProps: {
-    span: 12,
+    span: 24,
+    sm: 12,
+    md: 6,
+    lg: 4,
   },
   rolProps: {
     gutter: 20,
@@ -55,9 +65,20 @@ const [register, { resetFields, validate }] = useForm({
   inline,
   schemas: [
     {
-      component: 'Input',
+      component: f,
       field: 'name',
       label: '姓名',
+      componentProps: {
+        type: type1,
+        inputStyle: {
+          color: 'red',
+        },
+      },
+    },
+    {
+      component: 'DatePicker',
+      field: 'birthday',
+      label: '生日',
     },
     {
       component: 'InputNumber',
@@ -67,41 +88,66 @@ const [register, { resetFields, validate }] = useForm({
         controlsPosition: 'right',
       },
     },
-    {
-      component: 'RadioGroup',
-      field: 'sex',
-      label: '性别',
-      componentProps: {
-        options: sys_user_sex,
-        onChange(v) {
-          console.log('sex change:', v);
-        },
-      },
-    },
 
-    {
-      component: 'CheckboxGroup',
-      field: 'like',
-      label: '特长',
-      componentProps: {
-        multiple: true,
-        options: [
-          { label: '唱', value: 'sing' },
-          { label: '跳', value: 'dance' },
-          { label: 'rap', value: 'rap' },
-          { label: '篮球', value: 'basketball' },
-        ],
-      },
-    },
     {
       component: 'Select',
       field: 'grade',
       label: '推荐等级',
       componentProps: {
         options: [
-          { label: 'A', value: 3 },
-          { label: 'B', value: 2 },
-          { label: 'C', value: 1 },
+          { label: 'A', value: 'A' },
+        ],
+      },
+      // componentProps: {
+      //   options: [
+      //     { label: 'A', value: 'A' },
+      //     { label: 'B', value: 'B' },
+      //     { label: 'C', value: 'C' },
+      //   ],
+      // },
+    },
+    {
+      component: 'RadioGroup',
+      field: 'sex',
+      label: '性别',
+      componentProps: {
+        // componentType: 'RadioButton',
+
+        options: [
+          {
+            label: '男',
+            value: '0',
+            // size:'l'
+            optionProps: {
+              border: true,
+            },
+          },
+          {
+
+            label: '女',
+            value: '1',
+          },
+          {
+            label: '未知',
+            value: '2',
+          },
+        ],
+        onChange(v) {
+          console.log('sex change:', v);
+        },
+      },
+    },
+    {
+      component: 'CheckboxGroup',
+      field: 'like',
+      label: '特长',
+      componentProps: {
+        min: 1,
+        options: [
+          { label: '唱', value: 'sing', optionProps: { size: 'small' } },
+          { label: '跳', value: 'dance' },
+          { label: 'rap', value: 'rap' },
+          { label: '篮球', value: 'basketball' },
         ],
       },
     },
@@ -141,6 +187,11 @@ const [register, { resetFields, validate }] = useForm({
           },
         ],
       },
+    },
+    {
+      component: 'ColorPicker',
+      label: '颜色',
+      field: 'color',
     },
   ],
   actions: [

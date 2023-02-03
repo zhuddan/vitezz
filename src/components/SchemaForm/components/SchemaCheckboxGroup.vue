@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import { ElCheckbox, ElCheckboxButton, ElCheckboxGroup } from 'element-plus';
-import type { CheckboxType, Options } from '../types/componentProps';
+import type { CheckboxGroupComponentType, CheckboxGroupOption } from '../types/components/checkbox';
 
 const props = defineProps({
   options: {
-    type: Array as PropType<Options[]>,
+    type: Array as PropType<CheckboxGroupOption[]>,
     default: () => [],
   },
-  compType: {
-    type: String as PropType<CheckboxType>,
+  componentType: {
+    type: String as PropType<CheckboxGroupComponentType>,
     default: 'Checkbox',
   },
 });
 
-const comp = computed(() => (props.compType === 'CheckboxButton' ? ElCheckboxButton : ElCheckbox));
+const componentType = computed(() => (props.componentType === 'CheckboxButton' ? ElCheckboxButton : ElCheckbox));
 const attrs = useAttrs();
 const getBindValue = computed(() => {
   return {
@@ -26,7 +26,15 @@ const getBindValue = computed(() => {
 <template>
   <ElCheckboxGroup v-bind="getBindValue">
     <template v-for="item in options" :key="item.value">
-      <component :is="comp" :label="item.value">
+      <!-- <component :is="comp" :label="item.value">
+        {{ item.label }}
+      </component> -->
+
+      <component
+        :is="componentType"
+        :label="item.value"
+        v-bind="item.optionProps"
+      >
         {{ item.label }}
       </component>
     </template>

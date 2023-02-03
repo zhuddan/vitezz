@@ -1,4 +1,22 @@
 import type { Component } from 'vue';
+
+export type ComponentType =
+  | 'Input'
+  | 'InputNumber'
+  | 'Select'
+  | 'RadioGroup'
+  | 'CheckboxGroup'
+  | 'Cascader'
+  | 'DatePicker'
+  | 'TimePicker'
+  | 'TimeSelect'
+  | 'Switch'
+  | 'Upload'
+  | 'Slider'
+  | 'Rate'
+  | 'Divider'
+  | 'ColorPicker';
+
 export type SizeType = 'large' | 'default' | 'small';
 type DateType =
   | 'year'
@@ -346,6 +364,21 @@ export interface Options {
 // TreeList for cascader
 export type WithOptions<T> = T & { options: MaybeRef<Options[] | TreeList<Options>> };
 
+export interface WithComponentType<C extends ComponentType, T> {
+  component: C;
+  // 子组件 属性
+  componentProps?: T;
+}
+
+export type AllComponentProps = WithComponentType<'Input', InputType> | WithComponentType<'RadioGroup', RadioGroup>;
+
+// const _allComponentProps: AllComponentProps = {
+//   component: 'Input',
+//   componentProps: {
+//     fill: '',
+//   },
+// };
+// _allComponentProps;
 export type ComponentProps = Partial<WithOptions<
   | InputType
   | InputNumber

@@ -5,11 +5,13 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import { ElConfigProvider, ElForm, ElRow } from 'element-plus';
 import { cloneDeep } from 'lodash-es';
 import { isObject } from '@/utils/is';
-import SchemaFormAction from './components/SchemaFormAction.vue';
-import SchemaFormItem from './components/SchemaFormItem.vue';
+
 import { useFormEvents } from './hooks/useFormEvents';
 import { formProps } from './props';
 import { schemaFormContextKey } from './token';
+
+import SchemaFormAction from './components/SchemaFormAction.vue';
+import SchemaFormItem from './components/SchemaFormItem.vue';
 
 const props = defineProps(formProps);
 const emit = defineEmits([
@@ -20,6 +22,7 @@ const emit = defineEmits([
   'action',
   'validateError',
 ]);
+
 const attrs = useAttrs();
 const formRef = ref<Nullable<FormAction>>();
 const propsRef = ref<Partial<FormProps<any>>>({});
@@ -48,7 +51,7 @@ const getSchema = computed(() => {
   return schemas;
 });
 const formEvents = useFormEvents({
-  propsRef,
+  emit,
   formElRef: formRef as Ref<FormAction>,
 });
 function setProps(newFormProps: Partial<MaybeRefRecordWrap<FormProps<any>>>) {
@@ -92,14 +95,14 @@ function onActionSubmit() {
       emit('submit', toRaw(getModel.value));
     })
     .catch((err) => {
-      emit('validateError', err);
-      //  滚动到未验证通过的字段
-      if (getBindValue.value.useScrollToErrorField) {
-        if (isObject(err)) {
-          const errFields = Object.keys(err);
-          errFields.length && formEvents.scrollToField(errFields[0]);
-        }
-      }
+      // emit('validateError', err);
+      // //  滚动到未验证通过的字段
+      // if (getBindValue.value.useScrollToErrorField) {
+      //   if (isObject(err)) {
+      //     const errFields = Object.keys(err);
+      //     errFields.length && formEvents.scrollToField(errFields[0]);
+      //   }
+      // }
     });
 }
 

@@ -1,6 +1,7 @@
 import type { VNode } from 'vue';
 
-import type { ComponentProps } from './componentProps';
+// import type { ComponentProps } from './componentProps';
+import type { FullComponentProps } from './components';
 export type ComponentType =
   | 'Input'
   | 'InputNumber'
@@ -15,7 +16,8 @@ export type ComponentType =
   | 'Upload'
   | 'Slider'
   | 'Rate'
-  | 'Divider';
+  | 'Divider'
+  | 'ColorPicker';
 
 type ColSpanType = number;
 export type LabelPositionType = 'left' | 'right' | 'top';
@@ -56,15 +58,15 @@ export interface ColEx {
   tag?: string;
 }
 
-export interface FormSchema<T = any> {
+export type FormSchema<T = any> = {
   // 字段属性名
   field: T extends object ? keyof T : string;
   // 标签上显示的自定义内容
   label: string | VNode;
-  // 组件
-  component: ComponentType;
-  // 子组件 属性
-  componentProps?: ComponentProps;
+  // // 组件
+  // component: ComponentType;
+  // // // 子组件 属性
+  // componentProps?: ComponentProps;
 
   // 子组件
   render?: VNode;
@@ -74,10 +76,10 @@ export interface FormSchema<T = any> {
   colProps?: Partial<ColEx>;
   //
   rules?: MaybeRef<Arrayable<FormItemRule>>;
-}
+} & FullComponentProps;
 
 export interface FormProps<T extends object> {
-  useScrollToErrorField: Boolean;
+  scrollToError: Boolean;
   // 表单操作
   actions: FormActionButton[];
   // 表单数据对象

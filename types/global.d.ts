@@ -8,6 +8,8 @@ declare global {
     process: any;
   }
 
+  declare type TargetContext = '_self' | '_blank';
+
   declare interface VEvent extends Event {
     target: HTMLInputElement;
   }
@@ -19,6 +21,10 @@ declare global {
   // vue
   declare type PropType<T> = VuePropType<T>;
 
+  declare type EmitType = (event: string, ...args: any[]) => void;
+
+  declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;
+
   declare type MaybeRef<T> = T | Ref<T> ;
 
   declare type MaybeRefRecordWrap<T> = {
@@ -26,7 +32,6 @@ declare global {
   };
 
   // common
-
   declare interface Fn<T = any, R = T> {
     (...arg: T[]): R;
   }
@@ -41,12 +46,6 @@ declare global {
   };
 
   declare type TreeList<T> = TreeItem<T>[];
-
-  type callback = Fn<DOMHighResTimeStamp, void>;
-
-  declare type TargetContext = '_self' | '_blank';
-
-  declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;
 
   declare type Nullable<T> = T | null;
 

@@ -1,20 +1,18 @@
 <script lang="ts" setup>
 import { ElRadio, ElRadioButton, ElRadioGroup, useAttrs } from 'element-plus';
-
-import type { FormProps } from '../types';
-import type { Options, RadioType } from '../types/componentProps';
+import type { RadioComponentType, RadioGroupOption } from '../types/components/radioGroup';
 
 const props = defineProps({
   options: {
-    type: Array as PropType<Options[]>,
+    type: Array as PropType<RadioGroupOption[]>,
     default: () => [],
   },
-  compType: {
-    type: String as PropType<RadioType>,
+  componentType: {
+    type: String as PropType<RadioComponentType>,
     default: 'Radio',
   },
 });
-const comp = computed(() => (props.compType === 'Radio' ? ElRadio : ElRadioButton));
+const componentType = computed(() => (props.componentType === 'Radio' ? ElRadio : ElRadioButton));
 const attrs = useAttrs();
 const getBindValue = computed(() => {
   return {
@@ -27,7 +25,11 @@ const getBindValue = computed(() => {
 <template>
   <ElRadioGroup v-bind="getBindValue">
     <template v-for="item in options" :key="item.value">
-      <component :is="comp" :label="item.value">
+      <component
+        :is="componentType"
+        :label="item.value"
+        v-bind="item.optionProps"
+      >
         {{ item.label }}
       </component>
     </template>

@@ -1,5 +1,6 @@
 import {
   ElCascader,
+  ElColorPicker,
   ElDatePicker,
   ElDivider,
   ElInput,
@@ -34,6 +35,7 @@ componentMap.set('Divider', ElDivider);
 componentMap.set('Select', SchemaSelect);
 componentMap.set('RadioGroup', SchemaRadioGroup);
 componentMap.set('CheckboxGroup', SchemaCheckboxGroup);
+componentMap.set('ColorPicker', ElColorPicker);
 
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);
