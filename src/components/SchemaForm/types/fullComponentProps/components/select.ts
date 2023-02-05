@@ -1,7 +1,6 @@
 import type { AssembleComponent, Effect, IconType, WithOption } from '../../util';
 
-interface OptionProps {
-}
+interface OptionProps { }
 
 export type SelectOption = WithOption<OptionProps>;
 

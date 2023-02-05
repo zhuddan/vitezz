@@ -12,26 +12,32 @@ import type { Switch } from './components/switch';
 import type { TimePicker } from './components/timePicker';
 import type { TimeSelect } from './components/timeSelect';
 import type { Upload } from './components/upload';
-
-export type FullComponentProps = Input |
-// InputNumber |
-// RadioGroup |
-// CheckboxGroup |
-Select
-// DatePicker |
-// Cascader |
-// ColorPicker |
-// TimePicker |
-// TimeSelect |
-// Switch |
-// Slider |
-// Divider |
-// Upload
+import type { ComponentType } from '../util';
+import type { Rate } from './components/rate';
+export type FullComponentProps =
+ Input
+ | InputNumber
+ | RadioGroup
+ | CheckboxGroup
+ | Select
+ | DatePicker
+ | Cascader
+ | ColorPicker
+ | TimePicker
+ | TimeSelect
+ | Switch
+ | Slider
+ | Divider
+ | Upload
+ | Rate
 ;
 
-const s: FullComponentProps = {
-  component: 'Input',
+// test
+export const d = ref<ComponentType>('Input');
+export const ddd: FullComponentProps['component'] = 'TimeSelect';
+export const f: FullComponentProps = {
+  component: ddd,
   componentProps: {
-    onRemoveTag: () => {},
+
   },
 };

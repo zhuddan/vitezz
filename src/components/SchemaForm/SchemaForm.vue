@@ -54,7 +54,7 @@ const formEvents = useFormEvents({
   emit,
   formElRef: formRef as Ref<FormAction>,
 });
-function setProps(newFormProps: Partial<MaybeRefRecordWrap<FormProps<any>>>) {
+function setProps(newFormProps: Partial<MaybeRecordRef<FormProps<any>>>) {
   const defaultFormProps = cloneDeep(props) as unknown as FormProps<any>;
   (propsRef.value as FormProps<any>) = {
     ...defaultFormProps,
@@ -163,7 +163,7 @@ provide(schemaFormContextKey, reactive({
       >
         <SchemaFormItem
           v-for="(schema, index) in getSchema"
-          :key="index"
+          :key="`${String(schema.field)}_${index}`"
           :form-model="getModel"
           :schema="schema"
         >

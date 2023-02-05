@@ -27,7 +27,7 @@ declare global {
 
   declare type MaybeRef<T> = T | Ref<T> ;
 
-  declare type MaybeRefRecordWrap<T> = {
+  declare type MaybeRecordRef<T> = {
     [P in keyof T]: MaybeRef<T[P]>;
   };
 

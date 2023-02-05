@@ -41,16 +41,11 @@ export interface ColEx {
   tag?: string;
 }
 
-export type FormSchema<T = any> = {
+export interface BaseFormSchema <T = any> {
   // 字段属性名
-  field: T extends object ? keyof T : string;
+  field: T extends object ? keyof T : string ;
   // 标签上显示的自定义内容
   label: string | VNode;
-  // // 组件
-  // component: ComponentType;
-  // // // 子组件 属性
-  // componentProps?: ComponentProps;
-
   // 子组件
   render?: VNode;
   // 自定义
@@ -58,13 +53,15 @@ export type FormSchema<T = any> = {
   //
   colProps?: Partial<ColEx>;
   //
-  rules?: MaybeRef<Arrayable<FormItemRule>>;
-} & FullComponentProps;
+  rules?: Arrayable<FormItemRule>;
+}
+
+export type FormSchema<T = any> = MaybeRecordRef<BaseFormSchema<T>> & FullComponentProps;
 
 export interface FormProps<T extends object> {
   scrollToError: Boolean;
   // 表单操作
-  actions: FormActionButton[];
+  actions: MaybeRecordRef<FormActionButton>[];
   // 表单数据对象
   model?: Partial<T>;
   // 字段 schemas
@@ -101,7 +98,7 @@ export interface FormProps<T extends object> {
 
 export interface FormAction {
   // 设置表单属性
-  setProps: (props: Partial<MaybeRefRecordWrap<FormProps<any>>>) => void;
+  setProps: (props: Partial<MaybeRecordRef<FormProps<any>>>) => void;
   // 对整个表单作验证
   validate: (callback?: (valid: any) => void) => void;
   // 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
@@ -118,14 +115,13 @@ export interface FormActionButton {
   text: string;
   action: string;
   colProps?: Partial<ColEx>;
-
   icon?: VNode | string;
-  type?: MaybeRef<'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | ''>;
-  size?: MaybeRef<SizeType>;
-  loading?: MaybeRef<boolean>;
-  plain?: MaybeRef<boolean>;
-  round?: MaybeRef<boolean>;
-  circle?: MaybeRef<boolean>;
-  disabled?: MaybeRef<boolean>;
-  autofocus?: MaybeRef<boolean>;
+  type?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | '';
+  size?: SizeType;
+  loading?: boolean;
+  plain?: boolean;
+  round?: boolean;
+  circle?: boolean;
+  disabled?: boolean;
+  autofocus?: boolean;
 }

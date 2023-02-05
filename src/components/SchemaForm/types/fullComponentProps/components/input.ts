@@ -1,5 +1,4 @@
-import type { CSSProperties } from 'vue';
-import type { AssembleComponent } from '../../util';
+import type { AssembleComponent, StyleType } from '../../util';
 
 // 类型
 export interface InputProps {
@@ -17,9 +16,6 @@ export interface InputProps {
   clearable: boolean;
   // 是否显示切换密码图标
   showPassword: boolean;
-  // // 是否禁用
-  // disabled: boolean;
-
   // 自定义前缀图标
   prefixIcon: any;
   // 自定义后缀图标
@@ -53,7 +49,7 @@ export interface InputProps {
   // 输入时是否触发表单的校验
   validateEvent: boolean;
   // input 元素或 textarea 元素的 style	object
-  inputStyle: Arrayable<CSSProperties | string>;
+  inputStyle: StyleType;
   // 指定输入值的格式。(只有当 type 是"text"时才能工作)
   formatter: (value: string | number) => string;
   // 指定从格式化器输入中提取的值。(仅当 type 是"text"时才起作用)

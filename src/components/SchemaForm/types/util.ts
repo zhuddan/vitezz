@@ -1,4 +1,4 @@
-import type { CSSProperties, VNode } from 'vue';
+import type { CSSProperties, Ref, VNode } from 'vue';
 
 export type ComponentType =
   | 'Input'
@@ -40,7 +40,18 @@ export interface WithOption<OptionsProps extends object = object> {
   optionProps?: Partial<OptionsProps>;
 }
 
+export interface A1<CN extends ComponentType, CP extends object, E extends object = object> {
+  component: Ref<CN>;
+  componentProps?: MaybeRecordRef<Partial<CP & E & CommonProps>>;
+}
+
+export interface A2<CN extends ComponentType, CP extends object, E extends object = object> {
+  component: CN;
+  componentProps?: MaybeRecordRef<Partial<CP & E & CommonProps>>;
+}
+
+// export type AssembleComponent<CN extends ComponentType, CP extends object, E extends object = object> = A1<CN, CP, E> | A2<CN, CP, E>;
 export interface AssembleComponent<CN extends ComponentType, CP extends object, E extends object = object> {
-  component: MaybeRef<CN>;
-  componentProps?: MaybeRef<MaybeRefRecordWrap<Partial<CP & E & CommonProps>>>;
+  component: CN;
+  componentProps?: MaybeRecordRef<Partial<CP & E & CommonProps>>;
 }

@@ -8,11 +8,14 @@ const form1 = ref({
   name: '我是真爱坤',
   sex: '0',
   age: 18,
-  grade: 'A',
+  grade: 2.5,
   birthday: '2000-08-08',
   like: ['sing', 'dance', 'rap'],
-  address: [],
-  color: '#ffccff',
+  address: ['yn', 'km', 'wh'],
+  color: '#000000',
+  liZhi: false,
+  time: 2.5,
+  fss: [],
 });
 
 type Form1Type = typeof form1.value;
@@ -38,9 +41,19 @@ const rules = ref<FormRules<Form1Type>>({
     message: '年龄不能小于18',
     trigger: ['change'],
   }],
+  color: [{
+    validator(rule, value, cb) {
+      if (!value) {
+        cb('请选择颜色');
+        return;
+      }
+      if (value == '#000000')
+        cb(new Error('小🐓子，露出黑jio了吧'));
+      console.log(value);
+    },
+  }],
 });
 
-const f = ref<any>('Input');
 const type1 = ref('button');
 
 const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_common_status']);
@@ -65,11 +78,19 @@ const [register, { resetFields, validate }] = useForm({
   inline,
   schemas: [
     {
-      component: f,
+      component: 'Divider',
+      label: 'Ikun 信息',
+      field: 'divider' as any,
+      colProps: {
+        span: 24,
+      },
+    },
+    {
+      component: 'Input',
       field: 'name',
       label: '姓名',
       componentProps: {
-        type: type1,
+        // type: type1,
         inputStyle: {
           color: 'red',
         },
@@ -88,53 +109,36 @@ const [register, { resetFields, validate }] = useForm({
         controlsPosition: 'right',
       },
     },
-
-    {
-      component: 'Select',
-      field: 'grade',
-      label: '推荐等级',
-      componentProps: {
-        options: [
-          { label: 'A', value: 'A' },
-        ],
-      },
-      // componentProps: {
-      //   options: [
-      //     { label: 'A', value: 'A' },
-      //     { label: 'B', value: 'B' },
-      //     { label: 'C', value: 'C' },
-      //   ],
-      // },
-    },
     {
       component: 'RadioGroup',
       field: 'sex',
       label: '性别',
       componentProps: {
-        options: [
-          {
-            label: '男',
-            value: '0',
-            // size:'l'
-            optionProps: {
-              border: true,
-            },
-          },
-          {
-
-            label: '女',
-            value: '1',
-          },
-          {
-            label: '未知',
-            value: '2',
-          },
-        ],
-        onChange(v: any) {
+        options: sys_user_sex,
+        onChange(v) {
           console.log('sex change:', v);
         },
       },
     },
+    {
+      component: 'Divider',
+      label: 'Ikun 兴趣爱好',
+      field: 'divider' as any,
+      colProps: {
+        span: 24,
+      },
+    },
+    {
+      component: 'ColorPicker',
+      label: 'Ikun 最爱的颜色',
+      field: 'color',
+      componentProps: {
+        predefine: [
+          '#000000',
+        ],
+      },
+    },
+
     {
       component: 'CheckboxGroup',
       field: 'like',
@@ -142,11 +146,19 @@ const [register, { resetFields, validate }] = useForm({
       componentProps: {
         min: 1,
         options: [
-          { label: '唱', value: 'sing', optionProps: { size: 'small' } },
+          { label: '唱', value: 'sing' },
           { label: '跳', value: 'dance' },
           { label: 'rap', value: 'rap' },
           { label: '篮球', value: 'basketball' },
         ],
+      },
+    },
+    {
+      component: 'Divider',
+      label: 'Ikun 其他信息',
+      field: 'divider' as any,
+      colProps: {
+        span: 24,
       },
     },
     {
@@ -160,7 +172,7 @@ const [register, { resetFields, validate }] = useForm({
             label: '云南', value: 'yn',
             children: [
               {
-                label: '昆明市', value: 'yn',
+                label: '昆明市', value: 'km',
                 children: [
                   {
                     label: '五华区', value: 'wh',
@@ -187,9 +199,46 @@ const [register, { resetFields, validate }] = useForm({
       },
     },
     {
-      component: 'ColorPicker',
-      label: '颜色',
-      field: 'color',
+      component: 'Rate',
+      field: 'grade',
+      label: '真爱粉等级',
+      componentProps: {
+        allowHalf: true,
+        icons: [
+          h(Icon, {
+            icon: 'openmoji:basketball',
+          }),
+          h(Icon, {
+            icon: 'openmoji:basketball',
+          }),
+          h(Icon, {
+            icon: 'openmoji:basketball',
+          }),
+        ],
+        voidIcon: h(Icon, {
+          icon: 'openmoji:basketball',
+        }),
+      },
+    },
+    {
+      component: 'Switch',
+      field: 'liZhi',
+      label: '荔枝会不会',
+      componentProps: {
+        disabled: true,
+      },
+    },
+    {
+      component: 'Slider',
+      field: 'time',
+      label: '练习时长',
+      componentProps: {
+        min: 2.5,
+        max: 2.5,
+        marks: {
+          2.5: '两年半',
+        },
+      },
     },
   ],
   actions: [
@@ -229,6 +278,10 @@ function handleSubmit(e: any) {
   <SchemaForm @register="register" @submit="handleSubmit" />
 </template>
 
-<style scoped>
-
+<style lang="scss">
+ .el-icon{
+  .app-iconify+.app-iconify {
+    display: none !important;
+  }
+ }
 </style>

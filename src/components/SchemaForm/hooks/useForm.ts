@@ -4,7 +4,7 @@ import type { FormAction, FormProps } from '../types';
 
 type UseFormReturn = [(instance: FormAction) => void, FormAction];
 
-export default function useForm<T extends object>(props?: Partial<MaybeRefRecordWrap<FormProps<T>>>): UseFormReturn {
+export default function useForm<T extends object>(props?: Partial<MaybeRecordRef<FormProps<T>>>): UseFormReturn {
   const settings = useAppConfig();
   const formAction = ref<Nullable<FormAction>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
@@ -52,7 +52,7 @@ export default function useForm<T extends object>(props?: Partial<MaybeRefRecord
   }
 
   const methods: FormAction = {
-    async setProps(newFormProps: Partial<MaybeRefRecordWrap<FormProps<T>>>) {
+    async setProps(newFormProps: Partial<MaybeRecordRef<FormProps<T>>>) {
       const form = await getForm();
       form.setProps(newFormProps);
     },

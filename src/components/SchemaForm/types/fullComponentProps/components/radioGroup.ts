@@ -8,6 +8,7 @@ interface RadioProps {
   size: SizeType;
   name: string;
 }
+
 export type RadioGroupOption = WithOption<RadioProps>;
 
 interface RadioGroupProps {

@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core';
-import { ElCol, ElFormItem } from 'element-plus';
+import { ElCol, ElDivider, ElFormItem } from 'element-plus';
 
 import { isString } from '@/utils/is';
 
 import { componentMap } from '../componentMap';
 import type { FormSchema } from '../types';
 import { schemaFormContextKey } from '../token';
+import { left } from 'inquirer/lib/utils/readline';
 const props = defineProps<{
   schema: FormSchema;
   formModel: Object;
@@ -21,21 +22,37 @@ const model = useVModel(props, 'formModel', emits);
 const attrs = useAttrs();
 
 const getValues = computed(() => {
-  const { formModel, schema } = props;
+  const { formModel, schema } = toRefs(props);
   return {
     schema,
     model: formModel,
-    field: schema.field,
+    field: unref(schema).field,
   };
 });
 
+const slotKey = computed(() => unref(props.schema?.slot));
+
+const fieldKey = computed(() => unref(props.schema.field));
 // 刷新
 const slotComp = computed(() => {
-  const key = props.schema?.slot;
+  const key = unref(slotKey);
   if (key && (slots[key] as Function))
     return () => (slots[key] as any)(getValues.value);
   else
     return null;
+});
+
+const getBindValue = computed(() => {
+  const value: Recordable = {
+    ...attrs,
+    rules: props.schema.rules,
+    // model,
+    prop: props.schema.field,
+  };
+  if (isString(props.schema.label))
+    value.label = props.schema.label;
+
+  return value;
 });
 
 function renderComponent() {
@@ -45,32 +62,31 @@ function renderComponent() {
   if (slotComp.value && slotComp.value != null)
     return slotComp.value;
 
-  if (props.schema.component)
-    return componentMap.get(unref(props.schema.component));
-
-  return 'null';
+  if (props.schema.component == 'Divider') {
+    return () => h(
+      ElDivider,
+      {
+        ... {
+          contentPosition: 'left',
+          ...unref(getBindValue),
+        },
+      },
+      () => unref(props.schema.label),
+    );
+  }
+  return componentMap.get(unref(props.schema.component));
 }
-const getBindValue = computed(() => {
-  const value: Recordable = {
-    ...attrs,
-    rules: props.schema.rules,
-    model,
-    prop: props.schema.field,
-  };
-  if (isString(props.schema.label))
-    value.label = props.schema.label;
 
-  return value;
-});
 const compAttr = computed(() => {
   return {
     ...(props.schema.componentProps || {}),
   };
 });
-const labelIsVNode = computed(() => !isString(props.schema.label));
+const labelIsVNode = computed(() => !isString(unref(props.schema.label)));
+const isDivider = computed(() => unref(props.schema.component) == 'Divider');
 const LabelComp = computed(() => {
   if (labelIsVNode.value) {
-    if (typeof props.schema.label == 'string')
+    if (typeof props.schema.label == 'string' && !isDivider.value)
       return () => h(props.schema.label);
     else
       return null;
@@ -78,10 +94,10 @@ const LabelComp = computed(() => {
 });
 
 const colBindValue = computed(() => {
-  if (formContext?.colProps)
-    return formContext?.colProps;
   if (props.schema.colProps)
     return props.schema.colProps;
+  if (formContext?.colProps)
+    return formContext?.colProps;
   return undefined;
 });
 const style = computed(() => formContext?.inline ? undefined : { width: '100%' });
@@ -96,16 +112,16 @@ const style = computed(() => formContext?.inline ? undefined : { width: '100%' }
     <ElFormItem
       v-bind="{
         ...getBindValue,
-        model: undefined,
+        label: isDivider ? undefined : getBindValue.label,
       }"
     >
       <template v-if="labelIsVNode" #label>
         <LabelComp />
       </template>
       <slot
-        v-if="props.schema.slot && $slots[props.schema.slot]"
-        :model="model[props.schema.field]"
-        :name="props.schema.slot"
+        v-if="slotKey && $slots[slotKey]"
+        :model="model[fieldKey]"
+        :name="slotKey"
       ></slot>
       <component
         v-bind="{
@@ -113,7 +129,7 @@ const style = computed(() => formContext?.inline ? undefined : { width: '100%' }
         }"
         :is="renderComponent()"
         v-else
-        v-model="model[props.schema.field]"
+        v-model="model[fieldKey]"
         :style="style"
       />
     </ElFormItem>
