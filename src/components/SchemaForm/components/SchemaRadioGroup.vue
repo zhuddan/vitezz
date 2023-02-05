@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElRadio, ElRadioButton, ElRadioGroup, useAttrs } from 'element-plus';
-import type { RadioComponentType, RadioGroupOption } from '../types/components/radioGroup';
+import type { RadioComponentType, RadioGroupOption } from '../types/fullComponentProps/components/radioGroup';
 
 const props = defineProps({
   options: {

@@ -111,8 +111,6 @@ const [register, { resetFields, validate }] = useForm({
       field: 'sex',
       label: '性别',
       componentProps: {
-        // componentType: 'RadioButton',
-
         options: [
           {
             label: '男',
@@ -132,7 +130,7 @@ const [register, { resetFields, validate }] = useForm({
             value: '2',
           },
         ],
-        onChange(v) {
+        onChange(v: any) {
           console.log('sex change:', v);
         },
       },

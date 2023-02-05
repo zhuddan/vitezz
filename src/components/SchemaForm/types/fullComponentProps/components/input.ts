@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'vue';
-import type { AssembleComponent } from './common';
+import type { AssembleComponent } from '../../util';
 
 // 类型
 export interface InputProps {
@@ -59,13 +59,13 @@ export interface InputProps {
   // 指定从格式化器输入中提取的值。(仅当 type 是"text"时才起作用)
   parser: (value: string) => string;
 }
-// CSSProperties
+
 export interface InputEvent {
-  onBlur: Fn;
-  onFocus: Fn;
-  onChange: Fn;
+  // onBlur: Fn;
+  // onFocus: Fn;
+  // onChange: Fn;
   onInput: Fn;
-  onClear: Fn;
+  // onClear: Fn;
 }
 
 export type Input = AssembleComponent<'Input', InputProps, InputEvent>;

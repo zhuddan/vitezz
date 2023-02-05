@@ -1,4 +1,4 @@
-import type { AssembleComponent } from './common';
+import type { AssembleComponent } from '../../util';
 
 // 类型
 export interface InputNumberProps {
@@ -14,8 +14,8 @@ export interface InputNumberProps {
   precision: number;
   // 原生  readonly 属性，是否只读
   readonly: boolean;
-  // 是否禁用
-  disabled: boolean;
+  // // 是否禁用
+  // disabled: boolean;
   // 是否使用控制按钮
   controls: Boolean;
   // 控制按钮位置
@@ -31,7 +31,7 @@ export interface InputNumberProps {
   // 输入时是否触发表单的校验
   validateEvent: boolean;
 }
-// CSSProperties
+
 export interface InputNumberEvent {
   onChange: Fn;
   onBlur: Fn;

@@ -1,4 +1,4 @@
-import type { AssembleComponent, Effect, IconType, WithOption } from './common';
+import type { AssembleComponent, Effect, IconType, WithOption } from '../../util';
 
 interface OptionProps {
 }

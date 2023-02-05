@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import type { FormProps } from '../types';
-import type { Options } from '../types/componentProps';
+import type { SelectOption } from '../types/fullComponentProps/components/select';
 import { ElOption, ElSelect } from 'element-plus';
 const props = defineProps({
   options: {
-    type: Array as PropType<Options[]>,
+    type: Array as PropType<SelectOption[]>,
     default: () => [],
   },
 });

@@ -1,27 +1,10 @@
 import type { VNode } from 'vue';
 
-// import type { ComponentProps } from './componentProps';
-import type { FullComponentProps } from './components';
-export type ComponentType =
-  | 'Input'
-  | 'InputNumber'
-  | 'Select'
-  | 'RadioGroup'
-  | 'CheckboxGroup'
-  | 'Cascader'
-  | 'DatePicker'
-  | 'TimePicker'
-  | 'TimeSelect'
-  | 'Switch'
-  | 'Upload'
-  | 'Slider'
-  | 'Rate'
-  | 'Divider'
-  | 'ColorPicker';
+import type { FullComponentProps } from './fullComponentProps';
+
+import type { LabelPositionType, SizeType } from './util';
 
 type ColSpanType = number;
-export type LabelPositionType = 'left' | 'right' | 'top';
-export type SizeType = 'large' | 'default' | 'small';
 
 export interface RolEx {
   // 栅格间隔

@@ -1,4 +1,5 @@
-import type { ColEx, FormActionButton, FormSchema, LabelPositionType, RolEx, SizeType } from './types';
+import type { ColEx, FormActionButton, FormSchema, RolEx } from './types';
+import type { LabelPositionType, SizeType } from './types/util';
 export const formProps = {
   schemas: {
     type: Array as PropType<FormSchema[]>,

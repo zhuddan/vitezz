@@ -46,7 +46,7 @@ function renderComponent() {
     return slotComp.value;
 
   if (props.schema.component)
-    return componentMap.get(props.schema.component);
+    return componentMap.get(unref(props.schema.component));
 
   return 'null';
 }
