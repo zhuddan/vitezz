@@ -12,19 +12,18 @@ export const formProps = {
     type: Object as PropType<FormRules>,
     default: () => ({}),
   },
-  actions: {
+  actionButtons: {
     type: Array as PropType<FormActionButton[]>,
     default: () => [
       {
         type: 'primary',
         action: 'submit',
-        text: '提交',
+        label: '提交',
       },
     ],
   },
-  useScrollToErrorField: {
-    type: Boolean,
-    default: true,
+  actionButtonsColProps: {
+    type: Object as PropType<Partial<ColEx>>,
   },
   inline: {
     type: Boolean,

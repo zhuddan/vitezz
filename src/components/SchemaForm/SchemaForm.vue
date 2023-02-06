@@ -51,16 +51,19 @@ const getSchema = computed(() => {
 });
 const formEvents = useFormEvents({
   emit,
+  props,
   formElRef: formRef as Ref<FormAction>,
+  propsRef,
 });
-function setProps(newFormProps: Partial<MaybeRecordRef<FormProps<any>>>) {
-  const defaultFormProps = cloneDeep(props) as unknown as FormProps<any>;
-  (propsRef.value as FormProps<any>) = {
-    ...defaultFormProps,
-    ...propsRef.value,
-    ...toRaw(newFormProps),
-  } as FormProps<any>;
-}
+
+// function setProps(newFormProps: Partial<MaybeRecordRef<FormProps<any>>>) {
+//   const defaultFormProps = cloneDeep(props) as unknown as FormProps<any>;
+//   (propsRef.value as FormProps<any>) = {
+//     ...defaultFormProps,
+//     ...propsRef.value,
+//     ...toRaw(newFormProps),
+//   } as FormProps<any>;
+// }
 
 function setSchema(val: MaybeRef<FormSchema<any>[]>) {
   schemaRef.value = unref(val) as any;
@@ -83,26 +86,26 @@ watch(
 );
 
 const formAction: Partial<FormAction> = {
-  setProps,
   ...formEvents,
+  // setProps,
 };
 
 function onActionSubmit() {
   formEvents
-    .validate()
-    .then(() => {
-      emit('submit', toRaw(getModel.value));
-    })
-    .catch((err) => {
-      // emit('validateError', err);
-      // //  滚动到未验证通过的字段
-      // if (getBindValue.value.useScrollToErrorField) {
-      //   if (isObject(err)) {
-      //     const errFields = Object.keys(err);
-      //     errFields.length && formEvents.scrollToField(errFields[0]);
-      //   }
-      // }
-    });
+    .validate();
+  // .then(() => {
+  //   emit('submit', toRaw(getModel.value));
+  // })
+  // .catch((err) => {
+  //   // emit('validateError', err);
+  //   // //  滚动到未验证通过的字段
+  //   // if (getBindValue.value.useScrollToErrorField) {
+  //   //   if (isObject(err)) {
+  //   //     const errFields = Object.keys(err);
+  //   //     errFields.length && formEvents.scrollToField(errFields[0]);
+  //   //   }
+  //   // }
+  // });
 }
 
 function onReset() {
@@ -133,6 +136,7 @@ function setContentProps(values: Recordable) {
     }
   }
 }
+
 watch(getBindValue, setContentProps, { immediate: true, deep: true });
 
 provide(schemaFormContextKey, reactive({
@@ -153,7 +157,6 @@ provide(schemaFormContextKey, reactive({
         actions: undefined,
         rolProps: undefined,
         colProps: undefined,
-        useScrollToErrorField: undefined,
       }"
     >
       <component
@@ -171,17 +174,7 @@ provide(schemaFormContextKey, reactive({
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
         </SchemaFormItem>
-      </component>
-      <component
-        :is="getBindValue.inline ? 'div' : ElRow"
-        v-if="getBindValue.actions"
-        v-bind="getBindValue.baseRolProps"
-        :class="{ 'display-inline-block': getBindValue.inline }"
-      >
-        <SchemaFormAction
-          :form-props="getBindValue"
-          @action="onAction"
-        />
+        <SchemaFormAction />
       </component>
     </ElForm>
   </ElConfigProvider>

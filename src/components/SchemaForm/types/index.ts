@@ -8,5 +8,5 @@ export type { FormSchema } from './schema';
 
 export type { FormAction } from './action';
 
-export type { FormActionButton } from './button';
+export type { FormActionButton } from './actionButtons';
 

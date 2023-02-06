@@ -1,18 +1,26 @@
-import type { FormActionButton } from './button';
+import type { FormActionButton } from './actionButtons';
 import type { ColEx, RolEx } from './layout';
 import type { FormSchema } from './schema';
 import type { LabelPositionType, SizeType } from './common';
 
 export interface FormProps<T extends object> {
-  scrollToError: Boolean;
-  // 表单操作
-  actions: MaybeRecordRef<FormActionButton>[];
+
+  colProps?: Partial<ColEx>;
+
+  rolProps?: Partial<RolEx>;
   // 表单数据对象
   model?: Partial<T>;
   // 字段 schemas
   schemas: FormSchema<T>[];
   // 表单验证规则
   rules?: FormRules<T>;
+
+  // 表单操作
+  actionButtons: MaybeRecordRef<FormActionButton>[];
+  // 表单操作Col
+  actionButtonsColProps?: Partial<ColEx>;
+  // 原生
+  scrollToError: Boolean;
   // 行内表单模式
   inline?: boolean;
   // 表单域标签的位置， 当设置为 left 或 right 时，则也需要设置 label-width 属性
@@ -36,7 +44,4 @@ export interface FormProps<T extends object> {
   // 是否禁用该表单内的所有组件。 如果设置为 true, 它将覆盖内部分已禁用 `` prop。	boolean	false
   disabled?: boolean;
 
-  colProps?: Partial<ColEx>;
-
-  rolProps?: Partial<RolEx>;
 }

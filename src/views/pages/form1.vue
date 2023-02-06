@@ -7,7 +7,7 @@ import { HighLight } from '@/components/HighLight';
 const form1 = ref({
   name: '我是真爱坤',
   sex: '0',
-  age: 18,
+  age: 16,
   grade: 2.5,
   birthday: '2000-08-08',
   like: ['sing', 'dance', 'rap'],
@@ -63,7 +63,8 @@ const inline = ref(false);
 const [register, { resetFields, validate }] = useForm({
   scrollToError: true,
   size: 'large',
-  labelPosition: 'top',
+  labelPosition: 'left',
+  labelWidth: '4em',
   rules,
   colProps: {
     span: 24,
@@ -90,12 +91,11 @@ const [register, { resetFields, validate }] = useForm({
       field: 'name',
       label: '姓名',
       componentProps: (a, b) => {
-        // console.log(a, b);
         return {
-        // type: type1,
           inputStyle: {
             color: 'red',
           },
+          // size: 'large',
         };
       },
     },
@@ -244,11 +244,27 @@ const [register, { resetFields, validate }] = useForm({
       },
     },
   ],
-  actions: [
+  actionButtonsColProps: {
+    span: 24,
+  },
+  actionButtons: [
     {
       type: 'primary',
-      text: '提交',
-      action: 'submit',
+      label: '提交',
+      // action: 'submit',
+      icon: h(Icon, {
+        icon: 'ep:check',
+      }),
+      loading,
+      plain: true,
+      onClick: (e) => {
+        console.log(e);
+      },
+    },
+    {
+      type: 'primary',
+      label: '提交',
+      actionType: 'submit',
       icon: h(Icon, {
         icon: 'ep:check',
       }),
@@ -272,12 +288,6 @@ function handleSubmit(e: any) {
 
 <template>
   <HighLight :code="form1" language="json" />
-
-  <div>
-    <button @click="inline = !inline">
-      {{ inline ? 'inline' : 'block' }}
-    </button>
-  </div>
   <SchemaForm @register="register" @submit="handleSubmit" />
 </template>
 

@@ -1,65 +1,54 @@
 <script lang="ts" setup>
 import { ElButton, ElCol, ElFormItem, useAttrs } from 'element-plus';
 import { schemaFormContextKey } from '../token';
-
 import type { FormActionButton } from '../types';
-
-const emit = defineEmits(['action']);
-
 const formContext = inject(schemaFormContextKey);
-
-const colBindValue = computed(() => {
-  return formContext?.colProps;
-});
-
-const attrs = useAttrs();
-
-const getBindValue = computed(() => {
-  return {
-    ...attrs,
-  };
-});
+const colBindValue = computed(() => formContext?.actionButtonsColProps ?? formContext?.colProps);
 function getBtnBindValue(btn: MaybeRecordRef<FormActionButton>) {
-  const bindValue = {};
-  [
-    'icon',
-    'type',
-    'size',
-    'loading',
-    'plain',
-    'round',
-    'circle',
-    'disabled',
-    'autofocus',
-  ].forEach((e) => {
-    bindValue[e] = unref(btn[e]);
-  });
-
-  return {
-    bindValue,
-    text: btn.text,
-    action: btn.action,
-  };
+  const bindValue: Partial<FormActionButton> = {} ;
+  for (const key in btn) {
+    if (Object.prototype.hasOwnProperty.call(btn, key)) {
+      const element = btn[key];
+      bindValue[key] = unref(element);
+    }
+  }
+  return bindValue;
 }
 const buttons = computed(() => {
-  return unref(formContext?.actions)?.map(e => getBtnBindValue(e)) || [];
+  return unref(formContext?.actionButtons)?.map(e => getBtnBindValue(e as any)) || [];
 });
+
+async function handleClick(e: Partial<FormActionButton>) {
+  const onClickHandle = unref(e.onClick);
+  if (onClickHandle) {
+    onClickHandle({
+      ...e,
+      onClick: undefined,
+    });
+    return;
+  }
+  if (e.actionType == 'submit')
+    await formContext?.action.validate();
+}
 </script>
 
 <template>
+  <div style="position: fixed;">
+    {{ colBindValue }}
+  </div>
   <component
     :is="formContext?.inline ? 'div' : ElCol"
     v-bind="formContext?.inline ? {} : colBindValue"
     :class="{ 'display-inline-block': formContext?.inline }"
   >
-    <ElFormItem v-bind="getBindValue" label="">
+    <ElFormItem label="&nbsp;">
       <ElButton
         v-for="(btn, index) in buttons"
         :key="index"
-        v-bind="btn.bindValue"
-        @click="emit('action', btn.action)"
+        v-bind="{ ...btn, onClick: undefined }"
+        @click="handleClick(btn)"
       >
-        {{ btn.text }}
+        {{ btn.label }}
       </ElButton>
     </ElFormItem>
   </component>
