@@ -89,11 +89,14 @@ const [register, { resetFields, validate }] = useForm({
       component: 'Input',
       field: 'name',
       label: '姓名',
-      componentProps: {
+      componentProps: (a, b) => {
+        console.log(a);
+        return {
         // type: type1,
-        inputStyle: {
-          color: 'red',
-        },
+          inputStyle: {
+            color: 'red',
+          },
+        };
       },
     },
     {

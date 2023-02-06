@@ -2,7 +2,7 @@
 import { useVModel } from '@vueuse/core';
 import { ElCol, ElDivider, ElFormItem } from 'element-plus';
 
-import { isString } from '@/utils/is';
+import { isFunction, isString } from '@/utils/is';
 
 import { componentMap } from '../componentMap';
 import type { FormSchema } from '../types';
@@ -78,6 +78,9 @@ function renderComponent() {
 }
 
 const compAttr = computed(() => {
+  const componentProps = props.schema.componentProps || {};
+  if (isFunction(componentProps))
+    return componentProps(unref(model), formContext as any);
   return {
     ...(props.schema.componentProps || {}),
   };
