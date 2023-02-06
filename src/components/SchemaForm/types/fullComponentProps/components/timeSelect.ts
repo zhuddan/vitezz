@@ -1,4 +1,5 @@
-import type { AssembleComponent, Effect, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { Effect, IconType } from '../../common';
 
 // 类型
 export interface TimeSelectProps {

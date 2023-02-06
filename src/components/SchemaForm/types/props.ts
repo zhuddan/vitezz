@@ -1,7 +1,7 @@
 import type { FormActionButton } from './button';
 import type { ColEx, RolEx } from './layout';
 import type { FormSchema } from './schema';
-import type { LabelPositionType, SizeType } from './util';
+import type { LabelPositionType, SizeType } from './common';
 
 export interface FormProps<T extends object> {
   scrollToError: Boolean;

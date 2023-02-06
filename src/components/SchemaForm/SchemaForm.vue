@@ -4,7 +4,6 @@ import type { FormAction, FormProps, FormSchema } from './types';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import { ElConfigProvider, ElForm, ElRow } from 'element-plus';
 import { cloneDeep } from 'lodash-es';
-import { isObject } from '@/utils/is';
 
 import { useFormEvents } from './hooks/useFormEvents';
 import { formProps } from './props';
@@ -59,7 +58,7 @@ function setProps(newFormProps: Partial<MaybeRecordRef<FormProps<any>>>) {
   (propsRef.value as FormProps<any>) = {
     ...defaultFormProps,
     ...propsRef.value,
-    ...newFormProps,
+    ...toRaw(newFormProps),
   } as FormProps<any>;
 }
 
@@ -138,8 +137,9 @@ watch(getBindValue, setContentProps, { immediate: true, deep: true });
 
 provide(schemaFormContextKey, reactive({
   ...toRefs(_props),
-  ...formAction,
-}) as any);
+  action: formAction,
+  // ...formAction,
+}));
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import type { VNode } from 'vue';
+import type { SizeType } from './common';
 import type { ColEx } from './layout';
-import type { SizeType } from './util';
-
+// import type { SizeType } from './util';
 export interface FormActionButton {
   text: string;
   action: string;

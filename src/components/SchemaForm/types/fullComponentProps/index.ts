@@ -12,7 +12,7 @@ import type { Switch } from './components/switch';
 import type { TimePicker } from './components/timePicker';
 import type { TimeSelect } from './components/timeSelect';
 import type { Upload } from './components/upload';
-import type { ComponentType } from '../util';
+import type { ComponentType } from '../common';
 import type { Rate } from './components/rate';
 export type FullComponentProps<T extends object = any> =
  Input<T>

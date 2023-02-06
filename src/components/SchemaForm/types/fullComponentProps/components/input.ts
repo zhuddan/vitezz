@@ -1,5 +1,5 @@
-import type { AssembleComponent, StyleType } from '../../util';
-
+import type { AssembleComponent } from '../../util';
+import type { StyleType } from '../../common';
 // 类型
 export interface InputProps {
   // 类型

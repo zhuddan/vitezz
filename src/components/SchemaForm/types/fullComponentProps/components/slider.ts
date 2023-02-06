@@ -1,4 +1,5 @@
-import type { AssembleComponent, SizeType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { SizeType } from '../../common';
 
 // 类型
 export interface SliderProps {

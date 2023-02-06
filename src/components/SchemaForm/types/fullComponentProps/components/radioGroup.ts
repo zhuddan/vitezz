@@ -1,4 +1,5 @@
-import type { AssembleComponent, SizeType, WithOption } from '../../util';
+import type { SizeType } from '../../common';
+import type { AssembleComponent, WithOption } from '../../util';
 
 export type RadioComponentType = 'Radio' | 'RadioButton';
 

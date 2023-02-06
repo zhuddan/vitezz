@@ -1,4 +1,5 @@
-import type { AssembleComponent, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { IconType } from '../../common';
 
 // 类型
 export interface TimePickerProps {
