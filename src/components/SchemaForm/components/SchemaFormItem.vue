@@ -80,7 +80,7 @@ function renderComponent() {
 const compAttr = computed(() => {
   const componentProps = props.schema.componentProps || {};
   if (isFunction(componentProps))
-    return componentProps(unref(model), formContext as any);
+    return componentProps(toRaw(unref(model)), formContext as any);
   return {
     ...(props.schema.componentProps || {}),
   };

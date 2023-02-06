@@ -90,7 +90,7 @@ const [register, { resetFields, validate }] = useForm({
       field: 'name',
       label: '姓名',
       componentProps: (a, b) => {
-        console.log(a);
+        console.log(a, b);
         return {
         // type: type1,
           inputStyle: {
