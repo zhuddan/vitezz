@@ -7,9 +7,9 @@ import { isString } from '@/utils/is';
 import { componentMap } from '../componentMap';
 import type { FormSchema } from '../types';
 import { schemaFormContextKey } from '../token';
-import { left } from 'inquirer/lib/utils/readline';
+
 const props = defineProps<{
-  schema: FormSchema;
+  schema: FormSchema<any>;
   formModel: Object;
 }>();
 

@@ -68,11 +68,11 @@ const [register, { resetFields, validate }] = useForm({
   colProps: {
     span: 24,
     sm: 12,
-    md: 6,
-    lg: 4,
+    md: 8,
+    lg: 6,
   },
   rolProps: {
-    gutter: 20,
+    gutter: 40,
   },
   model: form1,
   inline,

@@ -38,4 +38,4 @@ export interface InputNumberEvent {
   onFocus: Fn;
 }
 
-export type InputNumber = AssembleComponent<'InputNumber', InputNumberProps, InputNumberEvent>;
+export type InputNumber<T extends object> = AssembleComponent<'InputNumber', InputNumberProps, InputNumberEvent, T>;

@@ -1,4 +1,5 @@
 import type { CSSProperties, Ref, VNode } from 'vue';
+import type { FormAction } from '.';
 
 export type ComponentType =
   | 'Input'
@@ -51,7 +52,8 @@ export interface A2<CN extends ComponentType, CP extends object, E extends objec
 }
 
 // export type AssembleComponent<CN extends ComponentType, CP extends object, E extends object = object> = A1<CN, CP, E> | A2<CN, CP, E>;
-export interface AssembleComponent<CN extends ComponentType, CP extends object, E extends object = object> {
+export interface AssembleComponent<CN extends ComponentType, CP extends object, EV extends object, D extends object = any> {
   component: CN;
-  componentProps?: MaybeRecordRef<Partial<CP & E & CommonProps>>;
+  componentProps?: MaybeRecordRef<Partial<CP & EV & CommonProps>> | ((formModel: D, formAction: FormAction) => MaybeRecordRef<Partial<CP & EV & CommonProps>>)
+  ;
 }

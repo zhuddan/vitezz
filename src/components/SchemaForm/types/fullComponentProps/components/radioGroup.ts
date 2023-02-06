@@ -28,4 +28,4 @@ interface RadioGroupEvent {
   onChange: Fn;
 }
 
-export type RadioGroup = AssembleComponent<'RadioGroup', RadioGroupProps, RadioGroupEvent>;
+export type RadioGroup<T extends object> = AssembleComponent<'RadioGroup', RadioGroupProps, RadioGroupEvent, T>;

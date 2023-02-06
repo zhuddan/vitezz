@@ -56,4 +56,4 @@ export interface TimePickerEvent {
   onVisibleChange: Fn;
 }
 
-export type TimePicker = AssembleComponent<'TimePicker', TimePickerProps, TimePickerEvent>;
+export type TimePicker<T extends object> = AssembleComponent<'TimePicker', TimePickerProps, TimePickerEvent, T>;

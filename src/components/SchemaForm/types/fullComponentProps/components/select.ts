@@ -85,4 +85,4 @@ interface SelectEvent {
   onFocus: Fn;
 }
 
-export type Select = AssembleComponent<'Select', SelectProps, SelectEvent>;
+export type Select<T extends object> = AssembleComponent<'Select', SelectProps, SelectEvent, T>;

@@ -53,4 +53,4 @@ interface CheckboxGroupEvent {
   onChange: Fn;
 }
 
-export type CheckboxGroup = AssembleComponent<'CheckboxGroup', CheckboxGroupProps, CheckboxGroupEvent>;
+export type CheckboxGroup<T extends object> = AssembleComponent<'CheckboxGroup', CheckboxGroupProps, CheckboxGroupEvent, T>;

@@ -67,4 +67,4 @@ export interface DatePickerEvent {
   onVisibleChange: Fn;
 }
 
-export type DatePicker = AssembleComponent<'DatePicker', DatePickerProps, DatePickerEvent>;
+export type DatePicker<T extends object> = AssembleComponent<'DatePicker', DatePickerProps, DatePickerEvent, T>;

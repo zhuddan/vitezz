@@ -64,4 +64,4 @@ export interface InputEvent {
   // onClear: Fn;
 }
 
-export type Input = AssembleComponent<'Input', InputProps, InputEvent>;
+export type Input<T extends object> = AssembleComponent<'Input', InputProps, InputEvent, T>;

@@ -35,4 +35,4 @@ export interface SwitchEvent {
   onChange: Fn;
 }
 
-export type Switch = AssembleComponent<'Switch', SwitchProps, SwitchEvent>;
+export type Switch<T extends object> = AssembleComponent<'Switch', SwitchProps, SwitchEvent, T>;

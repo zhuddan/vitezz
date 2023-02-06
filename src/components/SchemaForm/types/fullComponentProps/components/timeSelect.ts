@@ -38,4 +38,4 @@ export interface TimeSelectEvent {
   onFocus: Fn;
 }
 
-export type TimeSelect = AssembleComponent<'TimeSelect', TimeSelectProps, TimeSelectEvent>;
+export type TimeSelect<T extends object> = AssembleComponent<'TimeSelect', TimeSelectProps, TimeSelectEvent, T>;

@@ -40,4 +40,4 @@ export interface RateEvent {
   onChange: Fn;
 }
 
-export type Rate = AssembleComponent<'Rate', RateProps, RateEvent>;
+export type Rate<T extends object> = AssembleComponent<'Rate', RateProps, RateEvent, T>;

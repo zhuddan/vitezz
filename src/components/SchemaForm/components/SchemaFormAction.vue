@@ -19,7 +19,7 @@ const getBindValue = computed(() => {
     ...attrs,
   };
 });
-function getBtnBindValue(btn: FormActionButton) {
+function getBtnBindValue(btn: MaybeRecordRef<FormActionButton>) {
   const bindValue = {};
   [
     'icon',
@@ -32,7 +32,7 @@ function getBtnBindValue(btn: FormActionButton) {
     'disabled',
     'autofocus',
   ].forEach((e) => {
-    bindValue[e] = btn[e];
+    bindValue[e] = unref(btn[e]);
   });
 
   return {

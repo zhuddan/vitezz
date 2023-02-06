@@ -51,4 +51,4 @@ export interface SliderEvent {
   onInput: Fn;
 }
 
-export type Slider = AssembleComponent<'Slider', SliderProps, SliderEvent>;
+export type Slider<T extends object> = AssembleComponent<'Slider', SliderProps, SliderEvent, T>;

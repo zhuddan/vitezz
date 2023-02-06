@@ -13,4 +13,4 @@ export interface DividerEvent {
 
 }
 
-export type Divider = AssembleComponent<'Divider', DividerProps, DividerEvent>;
+export type Divider<T extends object> = AssembleComponent<'Divider', DividerProps, DividerEvent, T>;

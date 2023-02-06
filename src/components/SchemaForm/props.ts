@@ -2,15 +2,15 @@ import type { ColEx, FormActionButton, FormSchema, RolEx } from './types';
 import type { LabelPositionType, SizeType } from './types/util';
 export const formProps = {
   schemas: {
-    type: Array as PropType<FormSchema[]>,
+    type: Array as PropType<FormSchema<Recordable>[]>,
     default: () => [],
   },
   model: {
-    type: Object as PropType<Object>,
+    type: Object as PropType<Recordable>,
     default: () => ({}),
   },
   rules: {
-    type: Object as PropType<any>,
+    type: Object as PropType<FormRules>,
     default: () => ({}),
   },
   actions: {
