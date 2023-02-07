@@ -3,16 +3,16 @@ import SchemaForm, { useForm } from '@/components/SchemaForm';
 import Icon from '@/components/Icon';
 import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
 import { HighLight } from '@/components/HighLight';
-
+import { ElButton } from 'element-plus';
 const form1 = ref({
   name: '我是真爱坤',
   sex: '0',
-  age: 16,
+  age: 18,
   grade: 2.5,
   birthday: '2000-08-08',
   like: ['sing', 'dance', 'rap'],
   address: ['yn', 'km', 'wh'],
-  color: '#000000',
+  color: '#100000',
   liZhi: false,
   time: 2.5,
   fss: [],
@@ -47,9 +47,11 @@ const rules = ref<FormRules<Form1Type>>({
         cb('请选择颜色');
         return;
       }
-      if (value == '#000000')
+      if (value == '#000000') {
         cb(new Error('小🐓子，露出黑jio了吧'));
-      console.log(value);
+        return;
+      }
+      cb();
     },
   }],
 });
@@ -60,10 +62,10 @@ const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_
 const loading = ref(false);
 const inline = ref(false);
 
-const [register, { resetFields, validate }] = useForm({
+const [register, { resetFields, validate, setProps }] = useForm({
   scrollToError: true,
   size: 'large',
-  labelPosition: 'left',
+  labelPosition: 'top',
   labelWidth: '4em',
   rules,
   colProps: {
@@ -244,34 +246,9 @@ const [register, { resetFields, validate }] = useForm({
       },
     },
   ],
-  actionButtonsColProps: {
+  ActionBarColProps: {
     span: 24,
   },
-  actionButtons: [
-    {
-      type: 'primary',
-      label: '提交',
-      // action: 'submit',
-      icon: h(Icon, {
-        icon: 'ep:check',
-      }),
-      loading,
-      plain: true,
-      onClick: (e) => {
-        console.log(e);
-      },
-    },
-    {
-      type: 'primary',
-      label: '提交',
-      actionType: 'submit',
-      icon: h(Icon, {
-        icon: 'ep:check',
-      }),
-      loading,
-      plain: true,
-    },
-  ],
 });
 
 function handleResetFields() {
@@ -279,16 +256,30 @@ function handleResetFields() {
 }
 
 function handleSubmit(e: any) {
+  console.log(e);
+  setProps({
+    submitButtonOptions: {
+      loading: true,
+    },
+  });
   loading.value = true;
   setTimeout(() => {
-    loading.value = false;
+    setProps({
+      submitButtonOptions: {
+        loading: false,
+      },
+    });
   }, (500));
 }
 </script>
 
 <template>
   <HighLight :code="form1" language="json" />
-  <SchemaForm @register="register" @submit="handleSubmit" />
+  <SchemaForm @register="register" @submit="handleSubmit">
+    <template #action>
+      <ElButton>插槽按钮</ElButton>
+    </template>
+  </SchemaForm>
 </template>
 
 <style lang="scss">

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ElButton, ElCol, ElFormItem, useAttrs } from 'element-plus';
+import { ElButton, ElCol, ElFormItem } from 'element-plus';
 import { schemaFormContextKey } from '../token';
 import type { FormActionButton } from '../types';
 const formContext = inject(schemaFormContextKey);
-const colBindValue = computed(() => formContext?.actionButtonsColProps ?? formContext?.colProps);
+const colBindValue = computed(() => formContext?.ActionBarColProps ?? formContext?.colProps);
 function getBtnBindValue(btn: MaybeRecordRef<FormActionButton>) {
   const bindValue: Partial<FormActionButton> = {} ;
   for (const key in btn) {
@@ -15,7 +15,13 @@ function getBtnBindValue(btn: MaybeRecordRef<FormActionButton>) {
   return bindValue;
 }
 const buttons = computed(() => {
-  return unref(formContext?.actionButtons)?.map(e => getBtnBindValue(e as any)) || [];
+  if (!formContext?.showActionBar || (!formContext?.showResetButton && !formContext?.showSubmitButton))
+    return [];
+
+  return [
+    unref(formContext?.resetButtonOptions),
+    unref(formContext?.submitButtonOptions),
+  ]?.map(e => getBtnBindValue(e as any)) || [];
 });
 
 async function handleClick(e: Partial<FormActionButton>) {
@@ -28,14 +34,13 @@ async function handleClick(e: Partial<FormActionButton>) {
     return;
   }
   if (e.actionType == 'submit')
-    await formContext?.action.validate();
+    formContext?.action.submit();
+  if (e.actionType == 'reset')
+    formContext?.action.resetFields();
 }
 </script>
 
 <template>
-  <div style="position: fixed;">
-    {{ colBindValue }}
-  </div>
   <component
     :is="formContext?.inline ? 'div' : ElCol"
     v-bind="formContext?.inline ? {} : colBindValue"
@@ -50,6 +55,7 @@ async function handleClick(e: Partial<FormActionButton>) {
       >
         {{ btn.label }}
       </ElButton>
+      <slot name="action"></slot>
     </ElFormItem>
   </component>
 </template>

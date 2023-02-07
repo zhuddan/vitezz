@@ -14,12 +14,24 @@ export interface FormProps<T extends object> {
   schemas: FormSchema<T>[];
   // 表单验证规则
   rules?: FormRules<T>;
+  // // 表单操作
 
-  // 表单操作
-  actionButtons: MaybeRecordRef<FormActionButton>[];
-  // 表单操作Col
-  actionButtonsColProps?: Partial<ColEx>;
-  // 原生
+  // 是否显示操作栏
+  showActionBar: boolean;
+  // 操作栏 col props
+  ActionBarColProps?: Partial<ColEx>;
+  // 是否显示提交按钮
+  showSubmitButton: boolean;
+  // 是否显示重置按钮
+  showResetButton: boolean;
+  //
+  submitButtonOptions: Partial<FormActionButton>;
+  //
+  resetButtonOptions: Partial<FormActionButton>;
+  // 提交函数
+  submitHandler: () => Awaitable<void>;
+  // element-plus原生属性
+  // 校验失败自动滚动到第一个错误的表单字段
   scrollToError: Boolean;
   // 行内表单模式
   inline?: boolean;

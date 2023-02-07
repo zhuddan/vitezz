@@ -3,14 +3,14 @@ import type { Ref } from 'vue';
 import type { FormAction, FormProps, FormSchema } from './types';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import { ElConfigProvider, ElForm, ElRow } from 'element-plus';
-import { cloneDeep } from 'lodash-es';
 
 import { useFormEvents } from './hooks/useFormEvents';
-import { formProps } from './props';
+import { formProps } from './schemaFormProps';
 import { schemaFormContextKey } from './token';
 
-import SchemaFormAction from './components/SchemaFormAction.vue';
+import SchemaFormActionButton from './components/SchemaFormActionButton.vue';
 import SchemaFormItem from './components/SchemaFormItem.vue';
+import { merge } from 'lodash-es';
 
 const props = defineProps(formProps);
 const emit = defineEmits([
@@ -34,6 +34,29 @@ const getBindValue = computed<Recordable>(() => ({
 const getProps = computed((): FormProps<any> => {
   return { ...props, ...unref(propsRef) } as FormProps<any>;
 });
+
+const getSchema = computed(() => {
+  const schemas: FormSchema<any>[] = unref(schemaRef) || (unref(getProps).schemas as any);
+  return schemas;
+});
+
+const formAction = useFormEvents({
+  emit: emit as EmitType,
+  getBindValue,
+  formElRef: formRef as Ref<FormAction>,
+  propsRef,
+});
+
+function setSchema(val: MaybeRef<FormSchema<any>[]>) {
+  schemaRef.value = unref(val) as any;
+}
+
+const getModel = computed(() => {
+  return getBindValue.value.model;
+});
+//
+formAction.setProps(props);
+
 watch(
   () => unref(getProps).model,
   () => {
@@ -45,33 +68,6 @@ watch(
     immediate: true,
   },
 );
-const getSchema = computed(() => {
-  const schemas: FormSchema<any>[] = unref(schemaRef) || (unref(getProps).schemas as any);
-  return schemas;
-});
-const formEvents = useFormEvents({
-  emit,
-  props,
-  formElRef: formRef as Ref<FormAction>,
-  propsRef,
-});
-
-// function setProps(newFormProps: Partial<MaybeRecordRef<FormProps<any>>>) {
-//   const defaultFormProps = cloneDeep(props) as unknown as FormProps<any>;
-//   (propsRef.value as FormProps<any>) = {
-//     ...defaultFormProps,
-//     ...propsRef.value,
-//     ...toRaw(newFormProps),
-//   } as FormProps<any>;
-// }
-
-function setSchema(val: MaybeRef<FormSchema<any>[]>) {
-  schemaRef.value = unref(val) as any;
-}
-
-const getModel = computed(() => {
-  return getBindValue.value.model;
-});
 
 watch(
   () => unref(getProps).schemas,
@@ -84,42 +80,6 @@ watch(
     immediate: true,
   },
 );
-
-const formAction: Partial<FormAction> = {
-  ...formEvents,
-  // setProps,
-};
-
-function onActionSubmit() {
-  formEvents
-    .validate();
-  // .then(() => {
-  //   emit('submit', toRaw(getModel.value));
-  // })
-  // .catch((err) => {
-  //   // emit('validateError', err);
-  //   // //  滚动到未验证通过的字段
-  //   // if (getBindValue.value.useScrollToErrorField) {
-  //   //   if (isObject(err)) {
-  //   //     const errFields = Object.keys(err);
-  //   //     errFields.length && formEvents.scrollToField(errFields[0]);
-  //   //   }
-  //   // }
-  // });
-}
-
-function onReset() {
-  formEvents?.resetFields();
-  emit('reset');
-}
-
-function onAction(e: string) {
-  if (e == 'submit')
-    onActionSubmit();
-  if (e == 'reset')
-    onReset();
-  emit('action', e);
-}
 
 defineExpose(formAction);
 onMounted(() => {
@@ -142,7 +102,6 @@ watch(getBindValue, setContentProps, { immediate: true, deep: true });
 provide(schemaFormContextKey, reactive({
   ...toRefs(_props),
   action: formAction,
-  // ...formAction,
 }));
 </script>
 
@@ -174,7 +133,14 @@ provide(schemaFormContextKey, reactive({
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
         </SchemaFormItem>
-        <SchemaFormAction />
+        <SchemaFormActionButton>
+          <template
+            v-for="item in ['action']"
+            #[item]="data"
+          >
+            <slot :name="item" v-bind="data || {}"></slot>
+          </template>
+        </SchemaFormActionButton>
       </component>
     </ElForm>
   </ElConfigProvider>
