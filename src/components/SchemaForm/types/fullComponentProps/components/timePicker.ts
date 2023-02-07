@@ -1,4 +1,5 @@
-import type { AssembleComponent, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { IconType } from '../../common';
 
 // 类型
 export interface TimePickerProps {
@@ -56,4 +57,4 @@ export interface TimePickerEvent {
   onVisibleChange: Fn;
 }
 
-export type TimePicker = AssembleComponent<'TimePicker', TimePickerProps, TimePickerEvent>;
+export type TimePicker<T extends object> = AssembleComponent<'TimePicker', TimePickerProps, TimePickerEvent, T>;

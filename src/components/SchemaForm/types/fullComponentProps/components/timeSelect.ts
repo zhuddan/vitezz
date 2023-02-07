@@ -1,4 +1,5 @@
-import type { AssembleComponent, Effect, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { Effect, IconType } from '../../common';
 
 // 类型
 export interface TimeSelectProps {
@@ -38,4 +39,4 @@ export interface TimeSelectEvent {
   onFocus: Fn;
 }
 
-export type TimeSelect = AssembleComponent<'TimeSelect', TimeSelectProps, TimeSelectEvent>;
+export type TimeSelect<T extends object> = AssembleComponent<'TimeSelect', TimeSelectProps, TimeSelectEvent, T>;

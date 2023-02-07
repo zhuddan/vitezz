@@ -94,4 +94,4 @@ export interface CascaderEvent {
   onRemoveChange: Fn;
 }
 
-export type Cascader = AssembleComponent<'Cascader', CascaderProps, CascaderEvent>;
+export type Cascader<T extends object> = AssembleComponent<'Cascader', CascaderProps, CascaderEvent, T>;

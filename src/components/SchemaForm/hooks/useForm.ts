@@ -56,9 +56,9 @@ export default function useForm<T extends object>(props?: Partial<MaybeRecordRef
       const form = await getForm();
       form.setProps(newFormProps);
     },
-    async validate(callback?: (valid: any) => void) {
+    async validate(callback?: (valid: boolean) => void): Promise<void> {
       const form = await getForm();
-      form.validate(callback);
+      return form.validate(callback);
     },
     async validateField(props: string | string[], callback: (err: string) => void) {
       const form = await getForm();
@@ -75,6 +75,9 @@ export default function useForm<T extends object>(props?: Partial<MaybeRecordRef
     async scrollToField(prop: string) {
       const form = await getForm();
       form.scrollToField(prop);
+    },
+    async submit() {
+
     },
   };
 

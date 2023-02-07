@@ -2,14 +2,14 @@
 import { useVModel } from '@vueuse/core';
 import { ElCol, ElDivider, ElFormItem } from 'element-plus';
 
-import { isString } from '@/utils/is';
+import { isFunction, isString } from '@/utils/is';
 
 import { componentMap } from '../componentMap';
 import type { FormSchema } from '../types';
 import { schemaFormContextKey } from '../token';
-import { left } from 'inquirer/lib/utils/readline';
+
 const props = defineProps<{
-  schema: FormSchema;
+  schema: FormSchema<any>;
   formModel: Object;
 }>();
 
@@ -78,6 +78,9 @@ function renderComponent() {
 }
 
 const compAttr = computed(() => {
+  const componentProps = props.schema.componentProps || {};
+  if (isFunction(componentProps))
+    return componentProps(toRaw(unref(model)), formContext as any);
   return {
     ...(props.schema.componentProps || {}),
   };

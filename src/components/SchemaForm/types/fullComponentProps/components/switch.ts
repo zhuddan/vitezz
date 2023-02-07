@@ -1,4 +1,5 @@
-import type { AssembleComponent, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { IconType } from '../../common';
 
 // 类型
 export interface SwitchProps {
@@ -35,4 +36,4 @@ export interface SwitchEvent {
   onChange: Fn;
 }
 
-export type Switch = AssembleComponent<'Switch', SwitchProps, SwitchEvent>;
+export type Switch<T extends object> = AssembleComponent<'Switch', SwitchProps, SwitchEvent, T>;

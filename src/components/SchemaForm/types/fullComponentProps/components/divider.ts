@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'vue';
-import type { AssembleComponent, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { IconType } from '../../common';
 
 // 类型
 export interface DividerProps {
@@ -13,4 +14,4 @@ export interface DividerEvent {
 
 }
 
-export type Divider = AssembleComponent<'Divider', DividerProps, DividerEvent>;
+export type Divider<T extends object> = AssembleComponent<'Divider', DividerProps, DividerEvent, T>;

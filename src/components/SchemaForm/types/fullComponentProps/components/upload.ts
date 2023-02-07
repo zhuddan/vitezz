@@ -57,4 +57,4 @@ export interface UploadEvent {
 
 }
 
-export type Upload = AssembleComponent<'Upload', UploadProps, UploadEvent>;
+export type Upload<T extends object> = AssembleComponent<'Upload', UploadProps, UploadEvent, T>;

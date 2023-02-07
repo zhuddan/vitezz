@@ -1,4 +1,5 @@
-import type { AssembleComponent, IconType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { IconType } from '../../common';
 
 // 类型
 export interface RateProps {
@@ -40,4 +41,4 @@ export interface RateEvent {
   onChange: Fn;
 }
 
-export type Rate = AssembleComponent<'Rate', RateProps, RateEvent>;
+export type Rate<T extends object> = AssembleComponent<'Rate', RateProps, RateEvent, T>;

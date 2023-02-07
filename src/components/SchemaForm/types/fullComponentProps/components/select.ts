@@ -1,4 +1,5 @@
-import type { AssembleComponent, Effect, IconType, WithOption } from '../../util';
+import type { AssembleComponent, WithOption } from '../../util';
+import type { Effect, IconType } from '../../common';
 
 interface OptionProps { }
 
@@ -85,4 +86,4 @@ interface SelectEvent {
   onFocus: Fn;
 }
 
-export type Select = AssembleComponent<'Select', SelectProps, SelectEvent>;
+export type Select<T extends object> = AssembleComponent<'Select', SelectProps, SelectEvent, T>;

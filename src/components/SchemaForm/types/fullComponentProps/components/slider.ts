@@ -1,4 +1,5 @@
-import type { AssembleComponent, SizeType } from '../../util';
+import type { AssembleComponent } from '../../util';
+import type { SizeType } from '../../common';
 
 // 类型
 export interface SliderProps {
@@ -51,4 +52,4 @@ export interface SliderEvent {
   onInput: Fn;
 }
 
-export type Slider = AssembleComponent<'Slider', SliderProps, SliderEvent>;
+export type Slider<T extends object> = AssembleComponent<'Slider', SliderProps, SliderEvent, T>;

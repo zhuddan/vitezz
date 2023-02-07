@@ -1,4 +1,5 @@
-import type { AssembleComponent, SizeType, WithOption } from '../../util';
+import type { SizeType } from '../../common';
+import type { AssembleComponent, WithOption } from '../../util';
 
 export type RadioComponentType = 'Radio' | 'RadioButton';
 
@@ -28,4 +29,4 @@ interface RadioGroupEvent {
   onChange: Fn;
 }
 
-export type RadioGroup = AssembleComponent<'RadioGroup', RadioGroupProps, RadioGroupEvent>;
+export type RadioGroup<T extends object> = AssembleComponent<'RadioGroup', RadioGroupProps, RadioGroupEvent, T>;

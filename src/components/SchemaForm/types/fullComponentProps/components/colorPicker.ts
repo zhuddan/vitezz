@@ -25,4 +25,4 @@ export interface ColorPickerEvent {
   onActiveChange: Fn;
 }
 
-export type ColorPicker = AssembleComponent<'ColorPicker', ColorPickerProps, ColorPickerEvent>;
+export type ColorPicker<T extends object> = AssembleComponent<'ColorPicker', ColorPickerProps, ColorPickerEvent, T>;

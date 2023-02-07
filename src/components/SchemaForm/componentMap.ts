@@ -17,7 +17,7 @@ import type { Component } from 'vue';
 import SchemaCheckboxGroup from './components/SchemaCheckboxGroup.vue';
 import SchemaRadioGroup from './components/SchemaRadioGroup.vue';
 import SchemaSelect from './components/SchemaSelect.vue';
-import type { ComponentType } from './types/util';
+import type { ComponentType } from './types/common';
 
 const componentMap = new Map<ComponentType, Component>();
 

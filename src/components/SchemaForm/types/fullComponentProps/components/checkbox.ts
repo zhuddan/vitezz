@@ -1,4 +1,5 @@
-import type { AssembleComponent, SizeType, WithOption } from '../../util';
+import type { SizeType } from '../../common';
+import type { AssembleComponent, WithOption } from '../../util';
 
 export type CheckboxGroupComponentType = 'Checkbox' | 'CheckboxButton';
 
@@ -13,7 +14,6 @@ interface CheckboxGroupProps {
   border: boolean;
   // Checkbox 的尺寸
   size: SizeType;
-
   // boolean
   checked: boolean;
   //	设置不确定状态，仅负责样式控制
@@ -53,4 +53,4 @@ interface CheckboxGroupEvent {
   onChange: Fn;
 }
 
-export type CheckboxGroup = AssembleComponent<'CheckboxGroup', CheckboxGroupProps, CheckboxGroupEvent>;
+export type CheckboxGroup<T extends object> = AssembleComponent<'CheckboxGroup', CheckboxGroupProps, CheckboxGroupEvent, T>;
