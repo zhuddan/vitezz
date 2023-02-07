@@ -15,9 +15,11 @@
   "dependencies": {
     "@iconify/iconify": "^2.2.1",
     "@vueuse/core": "^8.9.4",
+    "@zhudddan/schema-form": "^0.0.9",
     "axios": "^0.27.2",
     "element-plus": "^2.2.28",
     "highlight.js": "^11.7.0",
+    "kitty-ui": "^4.19.2",
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
