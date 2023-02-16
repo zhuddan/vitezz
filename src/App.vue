@@ -4,5 +4,5 @@ import { isArray } from '@vue/shared';
 </script>
 
 <template>
-  <Layout />
+  <Button type="default" size="large" />
 </template>

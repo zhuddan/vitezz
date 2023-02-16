@@ -30,6 +30,7 @@ specifiers:
   fs-extra: ^10.1.0
   highlight.js: ^11.7.0
   inquirer: ^9.1.4
+  kitty-ui: ^4.19.2
   lodash-es: ^4.17.21
   nprogress: ^0.2.0
   path-browserify: ^1.0.1
@@ -64,6 +65,7 @@ dependencies:
   axios: 0.27.2
   element-plus: 2.2.28_vue@3.2.45
   highlight.js: 11.7.0
+  kitty-ui: 4.19.2
   lodash-es: 4.17.21
   nprogress: 0.2.0
   path-browserify: 1.0.1
@@ -451,6 +453,10 @@ packages:
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
+
+  /@kitty-ui/utils/2.0.4:
+    resolution: {integrity: sha512-dbk0nGfFjkQmYcANH8/zGC4yk7ibZhtLOtGg3oAWzaiM8AIae6qg5hOX08p9MCZ95fjS91ZwDFf8vkzWDpPbQg==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -872,6 +878,10 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  /@zhudddan/schema-form/0.0.9:
+    resolution: {integrity: sha512-U51VYnhsRHgJ1rAEmU+Av3plPE835XHEXcVvVSCPSb7+9whzvCGo7lmUUVWUOFuHs7ackj1CCO8mgz1UFZ6osQ==}
+    dev: false
 
   /acorn-jsx/5.3.2_acorn@8.8.1:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -2998,6 +3008,12 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /kitty-ui/4.19.2:
+    resolution: {integrity: sha512-qyd+mgB4z4tI51uy5eUcyc2FGPRtHYZAxiuCDLoYNPgWdLrS3a5fw2YVBQGCxFLYfzBvnkgOrRaTmhV2Wi8YRw==}
+    dependencies:
+      '@kitty-ui/utils': 2.0.4
+    dev: false
 
   /known-css-properties/0.26.0:
     resolution: {integrity: sha512-5FZRzrZzNTBruuurWpvZnvP9pum+fe0HcK8z/ooo+U+Hmp4vtbyp1/QDsqmufirXy4egGzbaH/y2uCZf+6W5Kg==}
