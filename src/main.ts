@@ -8,7 +8,7 @@ import { setupStore } from '@/store';
 import App from './App.vue';
 import { registerPlugins } from './plugins';
 import { initStore } from './store/initStore';
-
+// import { s } from '@element-plus/es/hooks';
 function __init__() {
   const app = createApp(App);
   // 注册 store
