@@ -1,6 +1,4 @@
-import { useCache } from '@/hooks/web/useCache';
-
-const webCache = useCache();
+import { webCache } from './cache';
 
 export function setToken(value: string) {
   webCache.set('TOKEN', value, { day: 7 });

@@ -1,4 +1,4 @@
-import { AxiosCanceler } from '@/utils/http/axiosCancel';
+import { AxiosCanceler } from '@zdzz/shared';
 import type { Router } from 'vue-router';
 
 export function createHttpGuard(router: Router) {

@@ -20,7 +20,8 @@
     ],
     "types": [
       "unplugin-vue-define-options",
-      "element-plus/global"
+      "element-plus/global",
+      "@zdzz/shared/global"
     ],
     "skipLibCheck": true,
     "typeRoots": [
