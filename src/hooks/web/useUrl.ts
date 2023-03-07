@@ -1,4 +1,4 @@
-import { isLink } from '@/utils/is';
+import { isLink } from '@zdzz/shared';
 
 import { useAppConfig } from '../config/useAppConfig';
 

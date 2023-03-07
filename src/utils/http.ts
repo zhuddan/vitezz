@@ -19,9 +19,4 @@ const transform = createRuoyiAxiosTransform({
   },
 });
 
-export const defHttp = createAxios({
-  transform,
-  requestOptions: {
-    apiUrl: VITE_APP_API_URL,
-  },
-});
+export const defHttp = createAxios(VITE_APP_API_URL, { transform });

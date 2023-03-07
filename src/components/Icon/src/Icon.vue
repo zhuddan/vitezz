@@ -2,7 +2,7 @@
 import Iconify from '@purge-icons/generated';
 import type { CSSProperties } from 'vue';
 
-import { isString } from '@/utils/is';
+import { isString } from '@zdzz/shared';
 
 import SvgIcon from './SvgIcon.vue';
 

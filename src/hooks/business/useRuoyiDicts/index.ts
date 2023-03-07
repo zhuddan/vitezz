@@ -1,42 +1,65 @@
-import type { Ref } from 'vue';
-import type { DictData, DictDataListRecord } from './typings';
-import type { DictBaseOptions } from './RuoyiDicts';
-import { Dict } from './RuoyiDicts';
-
+import type { DictBaseOptions, DictDataListRecord, DictDataLoadingRecord, LoadDict, OriginDictData } from '@zdzz/shared';
+import { computed, toRefs, unref } from 'vue';
+import { defHttp } from '@/utils/http';
+import { Dict } from '@zdzz/shared';
 export type DictTypes =
-| 'sys_user_sex' // 用户性别
-| 'sys_show_hide' // 菜单状态
-| 'sys_normal_disable' // 系统开关
-| 'sys_job_status' // 任务状态
-| 'sys_job_group' // 任务分组
-| 'sys_yes_no' // 系统是否
-| 'sys_notice_type' // 通知类型
-| 'sys_notice_status' // 通知状态
-| 'sys_oper_type' // 操作类型
-| 'sys_common_status'; // 系统状态
+| 'sys_user_sex'
+| 'sys_normal_disable'
+| 'sys_job_group'
+| 'sys_yes_no'
+| 'sys_common_status'
+| 'sys_common_status'
+| 'sys_notice_type';
 
-export function useRuoyiDicts<DT extends DictTypes = DictTypes>(dts: DT[], options: Partial<DictBaseOptions> = {}) {
-  const dict = new Dict<DT>(dts, options);
+const getDicts: LoadDict<DictTypes> = (dictType) => {
+  return new Promise<OriginDictData[]>((resolve, reject) => {
+    defHttp
+      .get<ResponseData<OriginDictData[]>>({
+        url: `/api/sys/type/${dictType}`,
+      }, {
+        withToken: false,
+        ignoreCancelToken: true,
+      })
+      .then((res) => {
+        if (!res.data) {
+          reject(
+            `[Dictionary error] Get dictionary data \`${dictType}\` with null.Please check your dictionary key with \`${dictType}\`.`,
+          );
+        }
+        else {
+          resolve(res.data);
+        }
+      }).catch((e) => {
+        reject(e);
+      });
+  });
+};
+interface BaseDicts<DT extends string, F, L> {
+  dicts: DictDataListRecord<DT>;
+  dictsLoading: DictDataLoadingRecord<DT>;
+  format: F; // typeof format;
+  load: L; // typeof load;
+}
+export function useDicts<DT extends DictTypes = DictTypes>(dts: DT[], options: Partial<DictBaseOptions> = {}) {
+  const dict = new Dict<DT>(dts, getDicts, options);
   // debug
   Dict.debug = true;
-
   const format = dict.format.bind(dict);
   const load = dict.load.bind(dict);
-
   const dicts = computed (() => dict.data.value);
+  const dictsLoading = computed (() => dict.loading.value);
   const useRuoyiDictsReturn = {
     format,
     load,
     dicts,
-    ...toRefs(dict.data.value),
+    dictsLoading,
+    ...toRefs(unref(dict.data)),
+    ...toRefs(unref(dict.loading)),
   };
 
-  type UseRuoyiDictsReturn = {
-    [key in DT]: Ref<DictData[]>
-  } & {
-    dicts: DictDataListRecord<DT>;
-    format: typeof format;
-    load: typeof load;
-  };
+  type UseRuoyiDictsReturn = RecordRef<DictDataListRecord<DT>>
+  & RecordRef<DictDataLoadingRecord<DT>>
+  & BaseDicts<DT, typeof format, typeof load>;
   return useRuoyiDictsReturn as unknown as UseRuoyiDictsReturn;
 }
+

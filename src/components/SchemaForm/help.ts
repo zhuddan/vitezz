@@ -1,6 +1,6 @@
 import type { Slots } from 'vue';
 
-import { isFunction } from '@/utils/is';
+import { isFunction } from '@zdzz/shared';
 
 export function getSlot(slots: Slots, slot = 'default', data?: any) {
   if (!slots || !Reflect.has(slots, slot))

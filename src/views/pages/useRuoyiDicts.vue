@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
-import { defHttp } from '@/utils/http';
-import axios from 'axios';
-const { sys_common_status, format } = useRuoyiDicts(
+import { useDicts } from '@/hooks/business/useRuoyiDicts';
+const { sys_common_status, format } = useDicts(
   ['sys_job_group', 'sys_yes_no', 'sys_common_status', 'sys_common_status'],
 );
 

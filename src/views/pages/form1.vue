@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SchemaForm, { useForm } from '@/components/SchemaForm';
 import Icon from '@/components/Icon';
-import { useRuoyiDicts } from '@/hooks/business/useRuoyiDicts';
+import { useDicts } from '@/hooks/business/useRuoyiDicts';
 import { HighLight } from '@/components/HighLight';
 import { ElButton } from 'element-plus';
 const form1 = ref({
@@ -58,7 +58,7 @@ const rules = ref<FormRules<Form1Type>>({
 
 const type1 = ref('button');
 
-const { sys_user_sex, sys_common_status } = useRuoyiDicts(['sys_user_sex', 'sys_common_status']);
+const { sys_user_sex, sys_common_status } = useDicts(['sys_user_sex', 'sys_common_status']);
 const loading = ref(false);
 const inline = ref(false);
 
