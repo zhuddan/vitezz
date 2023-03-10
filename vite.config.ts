@@ -17,9 +17,9 @@ export default defineConfig(({ command, mode }) => {
       port: Number(env.VITE_APP_PORT),
       host: true,
     },
-    optimizeDeps: {
-      // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
-      include: ['@iconify/iconify', '@purge-icons/generated'],
-    },
+    // optimizeDeps: {
+    //   // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
+    //   include: ['@iconify/iconify', '@purge-icons/generated'],
+    // },
   };
 });

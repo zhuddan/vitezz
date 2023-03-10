@@ -2,6 +2,7 @@ import type { DictBaseOptions, DictDataListRecord, DictDataLoadingRecord, LoadDi
 import { computed, toRefs, unref } from 'vue';
 import { defHttp } from '@/utils/http';
 import { Dict } from '@zdzz/shared';
+
 export type DictTypes =
 | 'sys_user_sex'
 | 'sys_normal_disable'

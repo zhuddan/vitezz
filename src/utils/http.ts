@@ -8,9 +8,7 @@ const { modalError, msgError } = useMessage();
 const transform = createRuoyiAxiosTransform({
   removeToken,
   getToken,
-  signoutHandler: () => {
-
-  },
+  signoutHandler: () => {},
   createMessage: (mode, msg) => {
     if (mode == 'modal')
       modalError(msg);

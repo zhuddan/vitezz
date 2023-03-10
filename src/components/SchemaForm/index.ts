@@ -1,6 +1,6 @@
 import 'element-plus/dist/index.css';
 
-import { withInstall } from '@/utils';
+import { withInstall } from '@zdzz/shared';
 import schemaFormItem from './components/SchemaFormItem.vue';
 import useForm from './hooks/useForm';
 import schemaForm from './SchemaForm.vue';

@@ -21,6 +21,7 @@
     "types": [
       "unplugin-vue-define-options",
       "element-plus/global",
+      "@zdzz/components/global",
       "@zdzz/shared/global"
     ],
     "skipLibCheck": true,

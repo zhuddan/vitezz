@@ -2,7 +2,7 @@
 import { usePermissionStore } from '@/store/modules/permission';
 import { useAppStore } from '@/store/modules/app';
 import SidebarItem from './SidebarItem.vue';
-import { sleep } from '@/utils';
+import { sleep } from '@zdzz/shared';
 import { useAppBreakpoints } from '@/hooks/web/useAppBreakpoints';
 
 defineOptions({

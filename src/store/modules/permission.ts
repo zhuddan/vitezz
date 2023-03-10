@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import BlankView from '@/components/BlankView.vue';
 import router from '@/router';
 import { homeRoutes } from '@/router/routes/baseRoutes';
-import { capitalize, handleTree } from '@/utils';
+import { capitalize, listToTree } from '@zdzz/shared';
 
 import type { PermissionState } from '../typings/permission';
 
@@ -64,7 +64,7 @@ function getRouteTree(list: RouteItem[]) {
   const sortList = assembleRouteList.sort(
     (a, b) => Number(b.signal.endsWith('index')) - Number(a.signal.endsWith('index')),
   );
-  return handleTree(sortList);
+  return listToTree(sortList);
 }
 
 function handleAssembleRoute(routeItemList: RouteItem[]) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SchemaForm, { useForm } from '@/components/SchemaForm';
-import Icon from '@/components/Icon';
+import { Icon } from '@zdzz/components';
 import { useDicts } from '@/hooks/business/useRuoyiDicts';
 import { HighLight } from '@/components/HighLight';
 import { ElButton } from 'element-plus';

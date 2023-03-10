@@ -2,7 +2,7 @@
 import { useVModel } from '@vueuse/core';
 import { ElCol, ElDivider, ElFormItem } from 'element-plus';
 
-import { isFunction, isString } from '@/utils/is';
+import { isFunction, isString } from '@zdzz/shared';
 
 import { componentMap } from '../componentMap';
 import type { FormSchema } from '../types';

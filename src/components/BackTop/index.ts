@@ -1,4 +1,4 @@
-import { withInstall } from '@/utils';
+import { withInstall } from '@zdzz/shared';
 
 import backTop from './src/BackTop.vue';
 
