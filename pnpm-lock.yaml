@@ -13,9 +13,9 @@ specifiers:
   '@typescript-eslint/parser': ^5.54.0
   '@vitejs/plugin-vue': ^3.2.0
   '@vueuse/core': ^9.13.0
-  '@zdzz/components': ^0.0.11
-  '@zdzz/hooks': ^0.0.15
-  '@zdzz/shared': ^0.0.22
+  '@zdzz/components': ^0.0.25
+  '@zdzz/hooks': ^0.0.19
+  '@zdzz/shared': ^0.0.29
   axios: ^1.3.4
   cross-env: ^7.0.3
   element-plus: ^2.2.33
@@ -58,9 +58,9 @@ specifiers:
 dependencies:
   '@element-plus/icons-vue': 2.1.0_vue@3.2.47
   '@vueuse/core': 9.13.0_vue@3.2.47
-  '@zdzz/components': 0.0.11_axios@1.3.4+vue@3.2.47
-  '@zdzz/hooks': 0.0.15_axios@1.3.4+vue@3.2.47
-  '@zdzz/shared': 0.0.22_axios@1.3.4
+  '@zdzz/components': 0.0.25_axios@1.3.4+vue@3.2.47
+  '@zdzz/hooks': 0.0.19_axios@1.3.4+vue@3.2.47
+  '@zdzz/shared': 0.0.29_axios@1.3.4
   axios: 1.3.4
   element-plus: 2.3.1_vue@3.2.47
   highlight.js: 11.7.0
@@ -853,14 +853,14 @@ packages:
       - '@vue/composition-api'
       - vue
 
-  /@zdzz/components/0.0.11_axios@1.3.4+vue@3.2.47:
-    resolution: {integrity: sha512-EpYVXshL6AR8Axrf0ZSM5xzaYPbUb+mL9YHwV4sv84fx87MevnJs9NdeHCsAoFYRxm9hoQ8LyvlIKOSM7vFKGQ==}
+  /@zdzz/components/0.0.25_axios@1.3.4+vue@3.2.47:
+    resolution: {integrity: sha512-sW7UdBl6xposr74OtFVziHx/6TcIdBTn5XkXkjq9WWdrbnmgC6x5orys2bqW7ccT5j+kbieTVSGVPrjcoHITbw==}
     peerDependencies:
       vue: ^3.2.20
     dependencies:
       '@iconify/iconify': 3.1.0
-      '@zdzz/hooks': 0.0.15_axios@1.3.4+vue@3.2.47
-      '@zdzz/shared': 0.0.22_axios@1.3.4
+      '@zdzz/hooks': 0.0.16_axios@1.3.4+vue@3.2.47
+      '@zdzz/shared': 0.0.28_axios@1.3.4
       pdfjs-dist: 2.13.216
       vue: 3.2.47
       xlsx: 0.18.5
@@ -869,20 +869,56 @@ packages:
       - worker-loader
     dev: false
 
-  /@zdzz/hooks/0.0.15_axios@1.3.4+vue@3.2.47:
-    resolution: {integrity: sha512-qc8CFQqcCvjQMVPHcrP8cdRS/v+D4PdVFmabhJ8l03zVNanDkJqf54mEYyoy/0cnE1o8wC9neA1GpgqbOLQ5Xw==}
+  /@zdzz/hooks/0.0.16_axios@1.3.4+vue@3.2.47:
+    resolution: {integrity: sha512-gUf+gX+SzRUClG+EGCKu94ME74qh620S76eRDIJR4ijLRX8t1U6/ASvR76pvNqMfKpyajZH/vWVQUR1ER3T+EA==}
     peerDependencies:
       vue: ^3.2.20
     dependencies:
-      '@zdzz/shared': 0.0.22_axios@1.3.4
+      '@zdzz/shared': 0.0.26_axios@1.3.4
       viewerjs: 1.11.3
       vue: 3.2.47
     transitivePeerDependencies:
       - axios
     dev: false
 
-  /@zdzz/shared/0.0.22_axios@1.3.4:
-    resolution: {integrity: sha512-jK0qvLwmUB2EgTzlqe3Ic82d8oxECpU47alfhaJ8PuN7RZpBHqKQd+XIonWjljwLnEspBebNUEdadehmOv9kmw==}
+  /@zdzz/hooks/0.0.19_axios@1.3.4+vue@3.2.47:
+    resolution: {integrity: sha512-O9Gwx4pCFUj1HfGNAHkdSZ0HV+Rb1gBG03GhdrM+xfWGpGKLBl4YxHMNknlEhRoZdQ4L3getjy+hs3UqJ6FfVw==}
+    peerDependencies:
+      vue: ^3.2.20
+    dependencies:
+      '@zdzz/shared': 0.0.29_axios@1.3.4
+      viewerjs: 1.11.3
+      vue: 3.2.47
+    transitivePeerDependencies:
+      - axios
+    dev: false
+
+  /@zdzz/shared/0.0.26_axios@1.3.4:
+    resolution: {integrity: sha512-OUmIgXH7+Uj4h8Ied/GpejiBwg4u09gWFRU5EmR/vpFuE+WQM5HNYPCI20C9CHg/vW0FEC2ri2/lRIazn25CoA==}
+    peerDependencies:
+      axios: ^1.3.4
+    dependencies:
+      '@types/file-saver': 2.0.5
+      '@types/lodash-es': 4.17.7
+      axios: 1.3.4
+      file-saver: 2.0.5
+      lodash-es: 4.17.21
+    dev: false
+
+  /@zdzz/shared/0.0.28_axios@1.3.4:
+    resolution: {integrity: sha512-0hh20LhsI3R8aKgPv2YwbUeZoavHtuscJye/RwmLCN/nf6ozuxHQug3hp9ioQOJVEGI/an7xch8NvOHMAECq0w==}
+    peerDependencies:
+      axios: ^1.3.4
+    dependencies:
+      '@types/file-saver': 2.0.5
+      '@types/lodash-es': 4.17.7
+      axios: 1.3.4
+      file-saver: 2.0.5
+      lodash-es: 4.17.21
+    dev: false
+
+  /@zdzz/shared/0.0.29_axios@1.3.4:
+    resolution: {integrity: sha512-G+mVQCO5G3Dqu3zetMHT/7bNoGGUM+l0GdgtjHIx3Id9Tv9lVFaP5RMgd5Mr4T2Mg1evv2UoC4mAQr+CDx/u1Q==}
     peerDependencies:
       axios: ^1.3.4
     dependencies:

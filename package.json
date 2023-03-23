@@ -11,14 +11,14 @@
     "preview": "vite preview",
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,types}/**/*.{vue,ts,tsx}\" --fix",
     "gen:icon": "esno build/generate/icon/index.ts ",
-    "a": "nun @zdzz/components @zdzz/hooks @zdzz/shared  && ni @zdzz/components @zdzz/hooks @zdzz/shared"
+    "reload": "nun @zdzz/components @zdzz/hooks @zdzz/shared  && ni @zdzz/components @zdzz/hooks @zdzz/shared"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "@vueuse/core": "^9.13.0",
-    "@zdzz/components": "^0.0.11",
-    "@zdzz/hooks": "^0.0.15",
-    "@zdzz/shared": "^0.0.22",
+    "@zdzz/components": "^0.0.25",
+    "@zdzz/hooks": "^0.0.19",
+    "@zdzz/shared": "^0.0.29",
     "axios": "^1.3.4",
     "element-plus": "^2.2.33",
     "highlight.js": "^11.7.0",
