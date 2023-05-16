@@ -1,10 +1,8 @@
 import '@/style/index.scss';
-import '@zdzz/components/dist/style.css';
 
 import router, { setupRouter } from '@/router';
 import { setupRouterGuard } from '@/router/setupRouterGuard';
 import { setupStore } from '@/store';
-import ZdComponents from '@zdzz/components';
 import App from './App.vue';
 import { registerPlugins } from './plugins';
 import { initStore } from './store/initStore';
@@ -13,7 +11,6 @@ import 'virtual:svg-icons-register';
 function __init__() {
   const app = createApp(App);
 
-  app.use(ZdComponents);
   // 注册 store
   setupStore(app);
   // 初始化 store

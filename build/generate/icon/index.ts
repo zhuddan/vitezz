@@ -51,13 +51,14 @@ async function generateIcon() {
         const data = await fs.readJSON(path.join(dir, 'json', `${info.id}.json`));
         if (data) {
           const { prefix } = data;
+          console.log(data);
           const isLocal = useType === 'local';
           const icons = Object.keys(data.icons).map(item => `${isLocal ? `${prefix}:` : ''}${item}`);
 
-          await fs.writeFileSync(
-            path.join(output, `icons.${info.id}.ts`),
-            `export default ${isLocal ? JSON.stringify(icons) : JSON.stringify({ prefix, icons })}`,
-          );
+          // await fs.writeFileSync(
+          //   path.join(output, `icons.${info.id}.ts`),
+          //   `export default ${isLocal ? JSON.stringify(icons) : JSON.stringify({ prefix, icons })}`,
+          // );
           prefixSet.push(prefix);
         }
       }

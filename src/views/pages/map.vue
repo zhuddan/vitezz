@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { init } from './map';
-const el = ref<ElRef>(null);
-init(el);
 </script>
 
 <template>

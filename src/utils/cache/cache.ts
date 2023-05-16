@@ -1,8 +1,10 @@
 import { WebCache } from '@zdzz/shared';
 import { name as projectName, version as projectVersion } from '../../../package.json';
 
-type WebCacheKey = 'TOKEN' | 'APP_COLLAPSE';
-export const webCache = new WebCache<WebCacheKey>({
+export const webCache = new WebCache<{
+  TOKEN: string;
+  APP_COLLAPSE: boolean;
+}>({
   projectName,
   projectVersion,
 });
