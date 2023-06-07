@@ -1,5 +1,6 @@
-import { usePermissionStore } from '@/store/modules/permission';
 import type { Router } from 'vue-router';
+
+import { usePermissionStore } from '@/store/modules/permission';
 
 export function createPermissionGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {

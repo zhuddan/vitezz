@@ -1,12 +1,11 @@
-import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
+import type { PermissionState } from '../typings/permission';
 
+import { defineStore } from 'pinia';
 import BlankView from '@/components/BlankView.vue';
 import router from '@/router';
 import { homeRoutes } from '@/router/routes/baseRoutes';
 import { capitalize, listToTree } from '@zdzz/shared';
-
-import type { PermissionState } from '../typings/permission';
 
 const DETAIL_PATH = 'detail_';
 interface RouteItem {

@@ -1,5 +1,6 @@
-import { defHttp } from '@/utils/http';
 import type { RuoyiListRequestUrl, UrlObj } from './typings';
+
+import { defHttp } from '@/utils/http';
 
 export function createRuoyiRequestUrl(option: RuoyiListRequestUrl): UrlObj {
   if (option instanceof Array) {

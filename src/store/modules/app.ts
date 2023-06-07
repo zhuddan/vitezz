@@ -1,8 +1,7 @@
-import { defineStore } from 'pinia';
-
-import { getAppCollapse, setAppCollapse } from '@/utils/cache';
-
 import type { AppState } from '../typings/app';
+
+import { defineStore } from 'pinia';
+import { getAppCollapse, setAppCollapse } from '@/utils/cache';
 
 export const useAppStore = defineStore({
   id: 'app',

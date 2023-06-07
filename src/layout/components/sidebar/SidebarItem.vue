@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import path from 'path-browserify';
 import type { RouteRecordRaw } from 'vue-router';
+
+import path from 'path-browserify';
 
 const props = defineProps({
   nav: {

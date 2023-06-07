@@ -1,5 +1,6 @@
-import { useRuoyiRequest } from './request';
 import type { RuoyiListRequestUrl } from './typings';
+
+import { useRuoyiRequest } from './request';
 
 interface ss {
   urls: RuoyiListRequestUrl;

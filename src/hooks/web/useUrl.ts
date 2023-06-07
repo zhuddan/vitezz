@@ -1,5 +1,4 @@
 import { isLink } from '@zdzz/shared';
-
 import { useAppConfig } from '../config/useAppConfig';
 
 export function useStaticUrl(staticUrl: string) {
